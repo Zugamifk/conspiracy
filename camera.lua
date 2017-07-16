@@ -35,7 +35,16 @@ function Camera:Draw(board)
 	for tile,x,y in tiles do
 		local cxt = context(x, y)
 		cxt.layer = "terrain"
-		TileGraphics.Draw(cxt, tile)
+		
+		-- how do it drawed tiles
+		wangtiles:Draw(cxt, tile)
+		
+		if tile.selected then
+			love.graphics.setColor(
+				255,255,255
+				)
+			love.graphics.rectangle("line", x, y, w, h)
+		end
 	end
 	-- tiles = world:GetTiles(
 		-- wx,

@@ -53,3 +53,29 @@ function Board:GetTiles(x,y,w,h)
 		end
 	end
 end
+
+function Board:GetSurrounding(x,y,r)
+	local xi = math.floor(x-r)
+	local yi = math.floor(y-r)
+	xi = math.max(xi,1)
+	yi = math.max(yi,1)
+	w = math.ceil(x+r)-xi
+	h = math.ceil(y+r)-yi
+	local x0 = xi
+	local X = math.min(xi+w, self.width)
+	local Y = math.min(yi+h, self.height)
+	--console:Log("GetTiles: x "..x..", y "..y..", w "..w..", h "..h)
+	return function()
+		if xi < X and yi < Y then
+			local t = self:GetTile(xi,yi)
+			local rx = xi
+			local ry = yi
+			xi = xi + 1
+			if xi == X then 
+				xi = x0
+				yi = yi + 1
+			end
+			return t, rx, ry
+		end
+	end
+end
