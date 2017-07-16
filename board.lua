@@ -3,6 +3,8 @@ Board = {
 	height = 100
 }
 
+--todo: optimize for big boards
+
 Board.mt = {
 	__index = Board
 }
@@ -10,9 +12,9 @@ Board.mt = {
 function Board.Create()
 	local b = {}
 	b.tiles = {}
-	for x = 1,100 do
+	for x = 1,Board.width do
 		b.tiles[x] = {}
-		for y = 1,100 do
+		for y = 1,Board.height do
 			b.tiles[x][y] = Tile.Create()
 		end
 	end

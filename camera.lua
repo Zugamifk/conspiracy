@@ -13,7 +13,6 @@ function Camera.Create(x,y,w,h, size)
 end
 
 function Camera:Draw(board)
-	
 	local s = self.size
 	local context = function(x,y) 
 		local cx,cy = self:WorldToScreenPosition(x,y)
@@ -37,9 +36,13 @@ function Camera:Draw(board)
 		cxt.layer = "terrain"
 		
 		-- how do it drawed tiles
-		wangtiles:Draw(cxt, tile)
+		TileGraphics.Draw(cxt, tile)
 		
 		if tile.selected then
+			local w = cxt.width
+			local h = cxt.height
+			local x = cxt.x
+			local y = cxt.y
 			love.graphics.setColor(
 				255,255,255
 				)

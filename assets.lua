@@ -14,13 +14,28 @@ function Assets:Load()
 	image:setFilter("nearest", "nearest")
 	local w, h = image:getDimensions()
 	local sprites = {}
-	sprites[1] = love.graphics.newQuad(0,0,16,16, w, h)
+	self:AddQuads(sprites, 1, 16, 0,0,16,16,w,h)
 	assets.ground = {
 		image = image,
 		sprites = sprites,
 		width = w, 
 		height = h
 	}
+end
+
+function Assets:AddQuads(list, index, count, x, y, w, h,iw,ih)
+	local x0 = x
+	for i=1,count do
+		list[index+i-1] = love.graphics.newQuad(x,y,w,h,iw,ih)
+		x = x + w
+		if x >= iw then 
+			x = x0
+			y = y + h
+		end
+		if y >= ih then
+			return
+		end
+	end
 end
 
 function Assets:GetImage(name)
@@ -44,7 +59,7 @@ function Assets:Draw(name, index, context)
 		local _,_,qw,qh = q:getViewport()
 		local sw = w/qw
 		local sh = h/qh
-		love.graphics.draw(img.image, img.sprites[1], x, y, 0, sw, sh)
+		love.graphics.draw(img.image, q, x, y, 0, sw, sh)
 	else
 		love.graphics.draw(img, x, y)
 	end

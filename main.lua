@@ -17,13 +17,16 @@ function love.load()
 	board = Board.Create()
 	boardcontrol = BoardControl.Create(board)
 	
+	TileGraphics.Init(board)
+	
 	local dx, dy = love.graphics.getDimensions()
 	camera = Camera.Create(5,5,dx,dy, 10)
 	cameracontrol = CameraControl.Create(camera)
 	
-	wangtiles = WangTiles.Create(Wang.Create())
-	wangtiles:Generate(board)
-	assets = Assets:Create()
+	-- wang = Wang.Create()
+	-- wangtiles = WangTiles.Create(wang)
+	-- wang:Generate(board)
+	assets = Assets.Create()
 	assets:Load()
 end
 

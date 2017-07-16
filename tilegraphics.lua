@@ -2,8 +2,81 @@ TileGraphics = {
 
 }
 
-function TileGraphics.Load()
+function TileGraphics.Init(board)
 	local wang = Wang.Create()
+	local getDraw = function(id)
+		return function(context)
+			assets:Draw("ground", id, context)
+		end
+	end
+	wang:AddRule(
+		getDraw(1),
+		1,1,1,1
+	)
+	wang:AddRule(
+		getDraw(2),
+		1,1,2,2
+	)
+	wang:AddRule(
+		getDraw(3),
+		2,2,1,1
+	)
+	wang:AddRule(
+		getDraw(4),
+		2,2,1,1
+	)
+	wang:AddRule(
+		getDraw(5),
+		2,1,2,1
+	)
+	wang:AddRule(
+		getDraw(6),
+		1,2,1,2
+	)
+	wang:AddRule(
+		getDraw(7),
+		2,1,1,2
+	)
+	wang:AddRule(
+		getDraw(8),
+		1,2,2,1
+	)
+	wang:AddRule(
+		getDraw(9),
+		2,2,2,2
+	)
+	wang:AddRule(
+		getDraw(10),
+		2,2,2,1
+	)
+	wang:AddRule(
+		getDraw(11),
+		2,1,2,2
+	)
+	wang:AddRule(
+		getDraw(12),
+		2,2,1,2
+	)
+	wang:AddRule(
+		getDraw(13),
+		1,2,2,2
+	)
+	wang:AddRule(
+		getDraw(14),
+		2,1,1,1
+	)
+	wang:AddRule(
+		getDraw(15),
+		1,1,2,1
+	)
+	wang:AddRule(
+		getDraw(16),
+		1,1,1,2
+	)
+	
+	
+	wang:Generate(board)
+	TileGraphics.wang = wang
 end
 
 -- Draw: draws a tile
@@ -15,7 +88,7 @@ function TileGraphics.Draw(context, tile)
 	local x = context.x
 	local y = context.y
 
-	assets:Draw("ground", 1, context)
+	TileGraphics.wang:Draw(context, tile)
 	-- if w > 25 and h > 15 then
 		-- love.graphics.setColor(0,0,0,255)
 		-- love.graphics.print(math.floor(tile.heat), x+5, y+3)

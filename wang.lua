@@ -11,8 +11,8 @@ function Wang.Create()
 	return setmetatable(w, Wang.mt)
 end
 
-function Wang:AddRule(func, id, l,r,t,b)
-	self.rules[id] = {l=l,r=r,t=t,b=b, func=func}
+function Wang:AddRule(func, l,r,t,b)
+	self.rules[#self.rules+1] = {l=l,r=r,t=t,b=b, func=func}
 end
 
 function Wang:GetRule(l,r,t,b)
@@ -32,6 +32,55 @@ end
 
 function Wang:Clear()
 	self.rules = {}
+end
+
+function Wang:Draw(context, tile)
+	local w = context.width
+	local h = context.height
+	local x = context.x
+	local y = context.y
+	if tile.wang then 
+		tile.wang.func(context)
+	end
+end
+
+function Wang:Generate(board)
+	local errors = 0
+	local resetRadius = 2
+	local w = board.width
+	local h = board.height
+	for iters = 1,10 do
+		for x = 1,w do
+			for y = 1,h do
+				if not board.tiles[x][y].wang then 
+					local l = x > 1 and board.tiles[x-1][y].wang and board.tiles[x-1][y].wang.r or nil
+					local r = x < w and board.tiles[x+1][y].wang and board.tiles[x+1][y].wang.l or nil
+					local t = y > 1 and board.tiles[x][y-1].wang and board.tiles[x][y-1].wang.b or nil
+					local b = y < h and board.tiles[x][y+1].wang and board.tiles[x][y+1].wang.t or nil
+					local rule = self:GetRule(l,r,t,b)
+					if rule then 
+						board.tiles[x][y].wang = rule
+					else
+						errors = errors + 1
+					end
+				end
+			end
+		end
+		if iters < 10 and errors > 0 then 
+			for x = 1,w do
+				for y = 1,h do
+					if not board.tiles[x][y].wang then
+						for t in board:GetSurrounding(x,y,resetRadius) do
+							t.wang = nil
+						end
+					end
+				end
+			end
+			errors = 0
+		else
+			break
+		end
+	end
 end
 
 function Wang.Test()
