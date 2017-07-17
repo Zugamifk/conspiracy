@@ -1,8 +1,10 @@
 require "mathx"
 require "console"
+require "consolecontrol"
 require "assets"
 require "tile"
 require "tilegraphics"
+require "character"
 require "board"
 require "boardcontrol"
 require "camera"
@@ -15,6 +17,8 @@ require "wangtiles"
 
 function love.load()
 	console = Console.Create()
+	consolecontrol = ConsoleControl.Create(console)
+	
 	board = Board.Create()
 	boardcontrol = BoardControl.Create(board)
 	
@@ -37,7 +41,7 @@ function love.draw()
 end
 
 function love.update(dt)
-	Input:DoEvents(console.control)
+	Input:DoEvents(consolecontrol)
 	Input:DoEvents(cameracontrol)
 	Input:DoEvents(boardcontrol)
 	Input:Update()
@@ -62,5 +66,10 @@ end
 
 function love.mousepressed( x, y, button, istouch )
 	Input:GenerateEvent("mousebutton", {x=x,y=y,button=button,buttonEvent="pressed"})
-	console:Log("mousebutton: "..button..", "..x..", "..y)
+	console:Log("mousebutton pressed: "..button..", "..x..", "..y)
+end
+
+function love.mousereleased(x,y,button)
+	Input:GenerateEvent("mousebutton", {x=x,y=y,button=button,buttonEvent="released"})
+	console:Log("mousebutton released: "..button..", "..x..", "..y)
 end
