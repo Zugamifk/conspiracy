@@ -3,7 +3,6 @@ TileGraphics = {
 }
 
 function TileGraphics.Init(board)
-	console:Log("...")
 
 	local wang = Wang.Create()
 	local getDraw = function(id)
@@ -11,40 +10,46 @@ function TileGraphics.Init(board)
 			assets:Draw("ground", id, context)
 		end
 	end
-		console:Log("??")
 
 	wang:AddRule(
 		getDraw(1),
 		1,1,1,1,
-		10
+		100
 	)
 	wang:AddRule(
 		getDraw(2),
-		1,1,2,2
+		1,1,2,2,
+		10
 	)
 	wang:AddRule(
 		getDraw(3),
-		2,2,1,1
+		2,2,1,1,
+		10
 	)
 	wang:AddRule(
 		getDraw(4),
-		2,2,1,1
+		2,2,1,1,
+		10
 	)
 	wang:AddRule(
 		getDraw(5),
-		2,1,2,1
+		2,1,2,1,
+		10
 	)
 	wang:AddRule(
 		getDraw(6),
-		1,2,1,2
+		1,2,1,2,
+		10
 	)
 	wang:AddRule(
 		getDraw(7),
-		2,1,1,2
+		2,1,1,2,
+		10
 	)
 	wang:AddRule(
 		getDraw(8),
-		1,2,2,1
+		1,2,2,1,
+		10
 	)
 	wang:AddRule(
 		getDraw(9),
@@ -68,19 +73,20 @@ function TileGraphics.Init(board)
 	)
 	wang:AddRule(
 		getDraw(14),
-		2,1,1,1
+		2,1,1,1,
+		5
 	)
 	wang:AddRule(
 		getDraw(15),
-		1,1,2,1
+		1,1,2,1,
+		5
 	)
 	wang:AddRule(
 		getDraw(16),
-		1,1,1,2
+		1,1,1,2,
+		5
 	)
 	
-	console:Log("??")
-
 	wang:Generate(board)
 	TileGraphics.wang = wang
 end

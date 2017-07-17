@@ -6,7 +6,8 @@ Tile.mt = {
 }
 
 function Tile.Create()
-	local t = {}
-
+	local t = {
+		objects = {}
+	}
 	return setmetatable(t, Tile.mt)
 end

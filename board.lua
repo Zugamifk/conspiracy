@@ -18,6 +18,7 @@ function Board.Create()
 			b.tiles[x][y] = Tile.Create()
 		end
 	end
+	b.tiles[25][25].objects[1] = Character.Create()
 	return setmetatable(b, Board.mt)
 end
 

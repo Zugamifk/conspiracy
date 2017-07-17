@@ -31,9 +31,12 @@ function Camera:Draw(board)
 		self.width/s+1, 
 		self.height/s+1)
 		
+	love.graphics.setColor(
+		255,255,255
+	)
+	
 	for tile,x,y in tiles do
 		local cxt = context(x, y)
-		cxt.layer = "terrain"
 		
 		-- how do it drawed tiles
 		TileGraphics.Draw(cxt, tile)
@@ -43,23 +46,20 @@ function Camera:Draw(board)
 			local h = cxt.height
 			local x = cxt.x
 			local y = cxt.y
-			love.graphics.setColor(
-				255,255,255
-				)
 			love.graphics.rectangle("line", x, y, w, h)
 		end
 	end
-	-- tiles = world:GetTiles(
-		-- wx,
-		-- wy,		
-		-- self.width/s+1, 
-		-- self.height/s+1)
-	-- for tile, x, y in tiles do
-		-- local cxt = context(x, y)
-		-- for _,o in ipairs(tile.objects) do
-			-- o:Draw(cxt)
-		-- end
-	-- end
+	tiles = board:GetTiles(
+		wx,
+		wy,		
+		self.width/s+1, 
+		self.height/s+1)
+	for tile, x, y in tiles do
+		local cxt = context(x, y)
+		for _,o in ipairs(tile.objects) do
+			o:Draw(cxt)
+		end
+	end
 	
 	-- cxt = context(50,50)
 	-- Wizard:Draw(cxt)

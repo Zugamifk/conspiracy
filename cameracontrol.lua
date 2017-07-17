@@ -33,7 +33,7 @@ function CameraControl:Update(events)
 		-- generate new event
 		Input:GenerateEvent("boardinput", {x=px, y = py, mouse = e})
 		-- clear mouse event
-		events.mousebutton = nil
+		events.mousebutton.used = true
 	end
 end
 

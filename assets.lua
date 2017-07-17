@@ -10,12 +10,17 @@ function Assets.Create()
 end
 
 function Assets:Load() 
-	local image = love.graphics.newImage("/Art/city.png")
+	self:AddSprites("/Art/city.png", "ground", 16,16,16)
+	self:AddSprites("/Art/character.png", "character", 1,16,16)
+end
+
+function Assets:AddSprites(path, name, count, width, height)
+	local image = love.graphics.newImage(path)
 	image:setFilter("nearest", "nearest")
 	local w, h = image:getDimensions()
 	local sprites = {}
-	self:AddQuads(sprites, 1, 16, 0,0,16,16,w,h)
-	assets.ground = {
+	self:AddQuads(sprites, 1, count, 0,0,width,height,w,h)
+	assets[name] = {
 		image = image,
 		sprites = sprites,
 		width = w, 

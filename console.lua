@@ -7,12 +7,10 @@ function Console.Create()
 	console.head = 1
 	console.lineHeight = 15
 	console.enabled = true
-	console.control = {
-		Update = function(self, events)
-			if events["`"] and events["`"].event == "pressed" then
-				console.enabled = not console.enabled
-			end
-		end
+	console.view = {
+		width = 300,
+		height = 500,
+		statsHeight = 30
 	}
 	return setmetatable(console, {__index = Console})
 end
@@ -38,16 +36,22 @@ function Console:DrawStats(x,y,w,h)
 	love.graphics.print("FPS: "..love.timer.getFPS().."\tAverage Delta: "..love.timer.getAverageDelta(), x+5, y+15)
 end
 
-function Console:Draw(x,y,w,h)
+function Console:Draw()
 	if self.enabled then
+		local view = self.view
+		local x = 0
+		local y = 0
+		local w = view.width
+		local h = view.height
+	
 		love.graphics.setColor(17,21,32,180)
 		love.graphics.rectangle("fill", x,y,w,h)
 		love.graphics.setColor(154,85,70,255)
 		love.graphics.rectangle("line", x,y,w,h)
 		
-		self:DrawStats(x,y,w,30)
-		y = y + 30
-		h = h - 30
+		self:DrawStats(x,y,w,view.statsHeight)
+		y = y + view.statsHeight
+		h = h - view.statsHeight
 		
 		love.graphics.stencil(
 			function()

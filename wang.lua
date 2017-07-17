@@ -60,7 +60,6 @@ function Wang:Generate(board)
 	local resetRadius = 2
 	local w = board.width
 	local h = board.height
-	console:Log("hi!")
 	for iters = 1,10 do
 		for x = 1,w do
 			for y = 1,h do

@@ -1,25 +1,27 @@
 Input = {
 	events = {},
-	newevents = {},
-	updating = false
+	newevents = {}
 }
 
 function Input:GenerateEvent(scancode, event)
-	if updating then 
-		self.newevents[scancode] = {event=event} 
-	else
-		self.events[scancode] = {event=event}
-	end
+	self.newevents[scancode] = {event=event} 
 end
 
 function Input:DoEvents(context)
-	context:Update(self.events)
+	local ne = {}
+	for k,e in pairs(self.events) do
+		if not e.used then
+			ne[k] = e
+		end
+	end
+	context:Update(ne)
 end
 
 function Input:Update()
 	local count = 0
 	for k,e in pairs(self.events) do
 		count = count +1
+		e.used = false
 		if k == "mousebutton" then
 			if love.mouse.isDown(e.event.button) then
 				e.event.buttonEvent = "held"
