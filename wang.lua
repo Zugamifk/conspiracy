@@ -11,8 +11,9 @@ function Wang.Create()
 	return setmetatable(w, Wang.mt)
 end
 
-function Wang:AddRule(func, l,r,t,b)
-	self.rules[#self.rules+1] = {l=l,r=r,t=t,b=b, func=func}
+function Wang:AddRule(func, l,r,t,b, weight)
+	weight = weight or 1
+	self.rules[#self.rules+1] = {l=l,r=r,t=t,b=b, func=func, weight = weight}
 end
 
 function Wang:GetRule(l,r,t,b)
@@ -25,8 +26,18 @@ function Wang:GetRule(l,r,t,b)
 			table.insert(worker, rule)
 		end
 	end
+			--console:Log(#worker)
 	if #worker > 0 then 
-		return worker[math.random(#worker)] 
+		local weights = {}
+		for i,v in ipairs(worker) do
+			local wi = (i-1)*2+1
+			weights[wi] = 1
+			weights[wi+1] = v.weight
+		end
+		local d = Distribution.CreateWeightedDistribution(weights)
+		local i = d.distribution(math.random())
+		--console:Log(i)
+		return worker[i] 
 	end
 end
 
@@ -49,6 +60,7 @@ function Wang:Generate(board)
 	local resetRadius = 2
 	local w = board.width
 	local h = board.height
+	console:Log("hi!")
 	for iters = 1,10 do
 		for x = 1,w do
 			for y = 1,h do

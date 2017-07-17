@@ -3,15 +3,20 @@ TileGraphics = {
 }
 
 function TileGraphics.Init(board)
+	console:Log("...")
+
 	local wang = Wang.Create()
 	local getDraw = function(id)
 		return function(context)
 			assets:Draw("ground", id, context)
 		end
 	end
+		console:Log("??")
+
 	wang:AddRule(
 		getDraw(1),
-		1,1,1,1
+		1,1,1,1,
+		10
 	)
 	wang:AddRule(
 		getDraw(2),
@@ -74,7 +79,8 @@ function TileGraphics.Init(board)
 		1,1,1,2
 	)
 	
-	
+	console:Log("??")
+
 	wang:Generate(board)
 	TileGraphics.wang = wang
 end

@@ -8,6 +8,7 @@ require "boardcontrol"
 require "camera"
 require "input"
 require "cameracontrol"
+require "distribution"
 
 require "wang"
 require "wangtiles"
@@ -32,7 +33,7 @@ end
 
 function love.draw()
 	camera:Draw(board)
-	console:Draw(0,0,300,500)
+	console:Draw(0,0,500,500)
 end
 
 function love.update(dt)
