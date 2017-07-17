@@ -1,13 +1,8 @@
-Tile = {
-}
-
-Tile.mt = {
-	__index = Tile
-}
+Tile = Class()
 
 function Tile.Create()
 	local t = {
 		objects = {}
 	}
-	return setmetatable(t, Tile.mt)
+	return t
 end

@@ -1,16 +1,11 @@
-BoardControl = {
-}
-
-BoardControl.mt = {
-	__index = BoardControl
-}
+BoardControl = Class()
 
 function BoardControl.Create(board)
 	local bc = {
 		board = board,
 		selectedtile = nil
 	}
-	return setmetatable(bc, BoardControl.mt)
+	return bc
 end
 
 function BoardControl:Update(events)
@@ -27,4 +22,9 @@ function BoardControl:SelectTile(x,y)
 	local t = self.board:GetTile(x,y)
 	t.selected = true
 	self.selectedtile = t
+	if #t.objects>0 then 
+		ui:SelectObject(t.objects[1])
+	else
+		ui:SelectObject(nil)
+	end
 end

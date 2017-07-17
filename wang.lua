@@ -1,14 +1,8 @@
-Wang = {
-}
-
-Wang.mt = {
-	__index = Wang
-}
-
+Wang = Class()
 function Wang.Create()
 	local w = {}
 	w.rules = {}
-	return setmetatable(w, Wang.mt)
+	return w
 end
 
 function Wang:AddRule(func, l,r,t,b, weight)
@@ -95,7 +89,7 @@ function Wang:Generate(board)
 end
 
 function Wang.Test()
-	local wang = Wang.Create()
+	local wang = Wang()
 	local log = function(msg) 
 		return function() console:Log(msg) end 
 	end

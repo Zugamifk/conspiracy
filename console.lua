@@ -1,4 +1,4 @@
-Console = {}
+Console = Class()
 
 function Console.Create()
 	local console= {}
@@ -12,7 +12,7 @@ function Console.Create()
 		height = 500,
 		statsHeight = 30
 	}
-	return setmetatable(console, {__index = Console})
+	return console
 end
 
 function Console:Log(message)

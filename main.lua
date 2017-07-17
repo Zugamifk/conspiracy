@@ -1,4 +1,5 @@
 require "mathx"
+require "class"
 require "console"
 require "consolecontrol"
 require "assets"
@@ -7,31 +8,36 @@ require "tilegraphics"
 require "character"
 require "board"
 require "boardcontrol"
+require "cameracontext"
 require "camera"
 require "input"
 require "cameracontrol"
 require "distribution"
 
+require "userinterface"
+
 require "wang"
 require "wangtiles"
 
 function love.load()
-	console = Console.Create()
-	consolecontrol = ConsoleControl.Create(console)
+	console = Console()
+	consolecontrol = ConsoleControl(console)
 	
-	board = Board.Create()
-	boardcontrol = BoardControl.Create(board)
+	board = Board()
+	boardcontrol = BoardControl(board)
 	
 	TileGraphics.Init(board)
 	
 	local dx, dy = love.graphics.getDimensions()
-	camera = Camera.Create(5,5,dx,dy, 10)
-	cameracontrol = CameraControl.Create(camera)
+	camera = Camera(5,5,dx,dy, 10)
+	cameracontrol = CameraControl(camera)
+	
+	ui = UserInterface()
 	
 	-- wang = Wang.Create()
 	-- wangtiles = WangTiles.Create(wang)
 	-- wang:Generate(board)
-	assets = Assets.Create()
+	assets = Assets()
 	assets:Load()
 end
 

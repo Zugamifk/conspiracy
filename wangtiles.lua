@@ -1,8 +1,4 @@
-WangTiles = {}
-
-WangTiles.mt = {
-	__index = WangTiles
-}
+WangTiles = Class()
 
 function WangTiles.Create(wang)
 	local w = {}
@@ -70,7 +66,7 @@ function WangTiles.Create(wang)
 		WangTiles.GetDrawFunction(c4,c3,c5,c5),
 		4,3,5,5
 	)
-	return setmetatable(w, WangTiles.mt)
+	return w
 end
 
 function WangTiles.GetDrawFunction(l,r,t,b)

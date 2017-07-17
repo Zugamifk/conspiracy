@@ -1,16 +1,12 @@
-Distribution = {}
-
-Distribution.mt = {
-	__index = Distribution
-}
+Distribution = Class()
 
 function Distribution.Create()
 	local w = {}
-	return setmetatable(w, Distribution.mt)
+	return w
 end
 
 function Distribution.CreateWeightedDistribution(...)
-	local self = Distribution.Create()
+	local self = Distribution()
 	local arg = {...}
 	if #arg == 1 and type(arg[1]) == "table" then
 		arg = arg[1]

@@ -1,12 +1,8 @@
-Assets = {}
-
-Assets.mt = {
-	__index = Assets
-}
+Assets = Class()
 
 function Assets.Create()
 	local a = {}
-	return setmetatable(a, Assets.mt)
+	return a
 end
 
 function Assets:Load() 

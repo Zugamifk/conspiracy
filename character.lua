@@ -1,13 +1,9 @@
-Character = {}
-
-Character.mt = {
-	__index = Character
-}
+Character = Class()
 
 function Character.Create()
 	local cc = {
 	}
-	return setmetatable(cc, Character.mt)
+	return cc
 end
 
 function Character:Draw(context)

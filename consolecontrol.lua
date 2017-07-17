@@ -1,9 +1,4 @@
-ConsoleControl = {
-}
-
-ConsoleControl.mt = {
-	__index = ConsoleControl
-}
+ConsoleControl = Class()
 
 function ConsoleControl.Create(console)
 	local cc = {
@@ -11,7 +6,7 @@ function ConsoleControl.Create(console)
 		focused = false,
 		mouseAction = nil
 	}
-	return setmetatable(cc, ConsoleControl.mt)
+	return cc
 end
 
 function ConsoleControl:Update(events)

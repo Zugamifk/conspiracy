@@ -1,25 +1,20 @@
-Board = {
+Board = Class({
 	width = 100,
 	height = 100
-}
+})
 
 --todo: optimize for big boards
-
-Board.mt = {
-	__index = Board
-}
-
 function Board.Create()
 	local b = {}
 	b.tiles = {}
 	for x = 1,Board.width do
 		b.tiles[x] = {}
 		for y = 1,Board.height do
-			b.tiles[x][y] = Tile.Create()
+			b.tiles[x][y] = Tile()
 		end
 	end
-	b.tiles[25][25].objects[1] = Character.Create()
-	return setmetatable(b, Board.mt)
+	b.tiles[25][25].objects[1] = Character()
+	return b
 end
 
 function Board:GetTile(x,y)

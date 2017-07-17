@@ -4,7 +4,7 @@ TileGraphics = {
 
 function TileGraphics.Init(board)
 
-	local wang = Wang.Create()
+	local wang = Wang()
 	local getDraw = function(id)
 		return function(context)
 			assets:Draw("ground", id, context)
