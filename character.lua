@@ -2,6 +2,7 @@ Character = Class()
 
 function Character.Create()
 	local cc = {
+		
 	}
 	return cc
 end

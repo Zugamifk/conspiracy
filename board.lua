@@ -1,6 +1,7 @@
 Board = Class({
 	width = 100,
-	height = 100
+	height = 100,
+	selection = nil -- current selected board object
 })
 
 --todo: optimize for big boards
@@ -13,7 +14,7 @@ function Board.Create()
 			b.tiles[x][y] = Tile()
 		end
 	end
-	b.tiles[25][25].objects[1] = Character()
+	b.tiles[25][25]:AddObject(Character())
 	return b
 end
 
@@ -76,4 +77,9 @@ function Board:GetSurrounding(x,y,r)
 			return t, rx, ry
 		end
 	end
+end
+
+function Board:MoveObject(object, destination)
+	object.tile:RemoveObject(object)
+	destination:AddObject(object)
 end

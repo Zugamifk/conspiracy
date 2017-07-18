@@ -11,7 +11,14 @@ end
 function BoardControl:Update(events)
 	if events.boardinput then
 		local i = events.boardinput.event
-		self:SelectTile(i.x, i.y)
+		local m = i.mouse
+		if m.button == 1 then 
+			self:SelectTile(i.x, i.y)
+		else
+			if ui.selected then
+				board:MoveObject(ui.selected, self.board:GetTile(i.x,i.y))
+			end
+		end
 	end
 end
 
