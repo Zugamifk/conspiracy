@@ -11,7 +11,7 @@ function Board.Create()
 	for x = 1,Board.width do
 		b.tiles[x] = {}
 		for y = 1,Board.height do
-			b.tiles[x][y] = Tile()
+			b.tiles[x][y] = Tile(x,y)
 		end
 	end
 	b.tiles[25][25]:AddObject(Character())
@@ -29,6 +29,10 @@ function Board:GetTile(x,y)
 end
 
 function Board:GetTiles(x,y,w,h)
+	x = x or 1
+	y = y or 1
+	w = w or self.width
+	h = h or self.height
 	local xi = math.floor(x)
 	local yi = math.floor(y)
 	xi = math.max(xi,1)

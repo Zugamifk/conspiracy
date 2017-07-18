@@ -14,7 +14,7 @@ function Input:DoEvents(context)
 			ne[k] = e
 		end
 	end
-	context:Update(ne)
+	context:UpdateEvents(ne)
 end
 
 function Input:Update()

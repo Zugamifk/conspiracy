@@ -13,6 +13,7 @@ require "camera"
 require "input"
 require "cameracontrol"
 require "distribution"
+require "pathfinding"
 
 require "userinterface"
 
@@ -25,6 +26,7 @@ function love.load()
 	
 	board = Board()
 	boardcontrol = BoardControl(board)
+	pathfinding = PathFinding(board)
 	
 	TileGraphics.Init(board)
 	
@@ -51,6 +53,8 @@ function love.update(dt)
 	Input:DoEvents(cameracontrol)
 	Input:DoEvents(boardcontrol)
 	Input:Update()
+	
+	boardcontrol:Update(dt)
 end
 
 function love.keypressed( key, scancode, isrepeat )

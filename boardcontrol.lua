@@ -8,7 +8,7 @@ function BoardControl.Create(board)
 	return bc
 end
 
-function BoardControl:Update(events)
+function BoardControl:UpdateEvents(events)
 	if events.boardinput then
 		local i = events.boardinput.event
 		local m = i.mouse
@@ -16,8 +16,17 @@ function BoardControl:Update(events)
 			self:SelectTile(i.x, i.y)
 		else
 			if ui.selected then
-				board:MoveObject(ui.selected, self.board:GetTile(i.x,i.y))
+				ui.selected.path = pathfinding:Path(ui.selected.tile, self.board:GetTile(i.x,i.y))
+				--board:MoveObject(ui.selected, self.board:GetTile(i.x,i.y))
 			end
+		end
+	end
+end
+
+function BoardControl:Update(dt)
+	for t in self.board:GetTiles() do
+		for i,o in ipairs(t.objects) do 
+			o:Update(dt)
 		end
 	end
 end

@@ -9,7 +9,7 @@ function ConsoleControl.Create(console)
 	return cc
 end
 
-function ConsoleControl:Update(events)
+function ConsoleControl:UpdateEvents(events)
 	if events["`"] and events["`"].event == "pressed" then
 		console.enabled = not console.enabled
 	end

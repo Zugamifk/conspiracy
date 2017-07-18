@@ -1,7 +1,9 @@
 Tile = Class()
 
-function Tile.Create()
+function Tile.Create(x,y)
 	local t = {
+		x=x,
+		y=y,
 		objects = {}
 	}
 	return t

@@ -4,7 +4,7 @@ function CameraControl.Create(camera)
 	return setmetatable({camera = camera}, CameraControl.mt)
 end
 
-function CameraControl:Update(events)
+function CameraControl:UpdateEvents(events)
 	local c = self.camera
 	if events.w then
 		c.y = c.y-5
