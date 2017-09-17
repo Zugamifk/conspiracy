@@ -2,7 +2,7 @@ Character = Class()
 
 function Character.Create()
 	local cc = {
-		speed = 1, -- tiles per second
+		speed = 5, -- tiles per second
 		timer = 0, -- for timing
 		tile = nil
 	}
@@ -11,6 +11,9 @@ end
 
 function Character:Draw(context)
 	assets:Draw("character", 1, context)
+	if self.path then 
+		pathfinding:DebugDraw(context, self.path)
+	end
 end
 
 function Character:Update(dt)

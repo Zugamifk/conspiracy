@@ -1,5 +1,7 @@
 require "mathx"
+require "namespace"
 require "class"
+require "rect"
 require "console"
 require "consolecontrol"
 require "assets"
@@ -15,7 +17,8 @@ require "cameracontrol"
 require "distribution"
 require "pathfinding"
 
-require "userinterface"
+require "UI/ui"
+require "UI/userinterface"
 
 require "wang"
 require "wangtiles"
@@ -35,6 +38,7 @@ function love.load()
 	cameracontrol = CameraControl(camera)
 	
 	ui = UserInterface()
+	uicontrol = UI.Controller(ui)
 	
 	-- wang = Wang.Create()
 	-- wangtiles = WangTiles.Create(wang)
@@ -50,6 +54,7 @@ end
 
 function love.update(dt)
 	Input:DoEvents(consolecontrol)
+	Input:DoEvents(uicontrol)
 	Input:DoEvents(cameracontrol)
 	Input:DoEvents(boardcontrol)
 	Input:Update()
@@ -82,4 +87,13 @@ end
 function love.mousereleased(x,y,button)
 	Input:GenerateEvent("mousebutton", {x=x,y=y,button=button,buttonEvent="released"})
 	console:Log("mousebutton released: "..button..", "..x..", "..y)
+end
+
+function love.resize(w,h)
+	camera.width = w
+	camera.height = h
+end
+
+function love.UIFocus(object)
+	ui.controller:Focus(object)
 end

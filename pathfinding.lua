@@ -26,6 +26,7 @@ function PathFinding:Path(start, goal)
 			open[t] = true
 			openCount = openCount + 1
 			pathScores[t] = math.huge
+			includeScores[t] = math.huge
 		end
 		local newScore = pathScores[current] + 1
 		if newScore > pathScores[t] then
@@ -70,4 +71,19 @@ end
 -- manhatten distance
 function PathFinding:Distance(start, goal)
 	return math.abs(goal.x-start.x) + math.abs(goal.y+start.y)
+end
+
+function PathFinding:DebugDraw(context, path)
+	if #path < 2 then return end
+	local w = context.width
+	local h = context.height
+	local ox = w/2
+	local oy = h/2
+	local points = {}
+	for _,t in ipairs(path) do
+		local tx,ty = camera:WorldToScreenPosition(t.x,t.y)
+		table.insert(points, tx+ox)
+		table.insert(points, ty+oy)
+	end
+	love.graphics.line(points)
 end

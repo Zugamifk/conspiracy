@@ -38,6 +38,11 @@ function Input:Update()
 	for k,e in pairs(self.newevents) do
 		self.events[k] = e
 	end
+	
+	local mp = {}
+	mp.x, mp.y = love.mouse.getPosition()
+	self.events.mouseposition = mp
+	
 	self.newevents = {}
 	--if count > 0 then 
 	--	console:Log(Input)

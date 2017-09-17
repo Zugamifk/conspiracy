@@ -1,5 +1,5 @@
 Class = {
-
+	type = "Class"
 }
 
 Class.__index = Class
