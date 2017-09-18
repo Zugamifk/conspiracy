@@ -5,30 +5,12 @@ UI = Namespace{
 	Colors = require "UI/colors",
 	Style = require "UI/style",
 	
+	Draw = require "UI/draw",
+	
+	Selectable = require "UI/selectable",
+	Text = require "UI/text",
 	StatusBar = require "UI/statusbar",
+	Graph = require "UI/graph",
+	ScrollView = require "UI/scrollview",
 	Window = require "UI/window"
 }
-
-function UI.Box(rect, style, focused)
-	focused = focused or false
-	
-	local w = rect.width
-	local h = rect.height
-	local x = rect.x
-	local y = rect.y
-	
-	love.graphics.setColor(style.colors.background)
-	love.graphics.rectangle("fill", x,y,w,h)
-	
-	if style.drawOutline then 
-		local color = focused and style.colors.focusoutline
-			or style.colors.outline
-		love.graphics.setColor(color)
-		love.graphics.rectangle("line", x,y,w,h)
-	end
-end
-
-function UI.Text(rect, text, style)
-	love.graphics.setColor(style.colors.text)
-	love.graphics.print(text, rect.x, rect.y)
-end

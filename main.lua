@@ -80,20 +80,16 @@ function love.wheelmoved( x, y )
 end
 
 function love.mousepressed( x, y, button, istouch )
-	Input:GenerateEvent("mousebutton", {x=x,y=y,button=button,buttonEvent="pressed"})
+	Input:GenerateEvent("mousebutton", {x=x,y=y,button=button,buttonevent="pressed"})
 	console:Log("mousebutton pressed: "..button..", "..x..", "..y)
 end
 
 function love.mousereleased(x,y,button)
-	Input:GenerateEvent("mousebutton", {x=x,y=y,button=button,buttonEvent="released"})
+	Input:GenerateEvent("mousebutton", {x=x,y=y,button=button,buttonevent="released"})
 	console:Log("mousebutton released: "..button..", "..x..", "..y)
 end
 
 function love.resize(w,h)
 	camera.width = w
 	camera.height = h
-end
-
-function love.UIFocus(object)
-	ui.controller:Focus(object)
 end

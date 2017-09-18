@@ -7,9 +7,14 @@ function Style.Create()
 		drawOutline = true,
 		
 		-- scales
-		lineHeight = 16,
-		verticalPadding = 10,
-		horizontalPadding = 10,
+		lineheight = 16,
+		verticalpadding = 10,
+		horizontalpadding = 10,
+		
+		--scrollbars
+		scrollbarwidth = 5,
+		scrollbarminheight = 25,
+		scrollbarpadding = 3,
 		
 		-- colors
 		colors = UI.Colors.default

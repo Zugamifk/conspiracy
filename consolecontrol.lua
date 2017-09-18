@@ -11,13 +11,13 @@ end
 
 function ConsoleControl:UpdateEvents(events)
 	if events["`"] and events["`"].event == "pressed" then
-		console.enabled = not console.enabled
+		self.console.enabled = not self.console.enabled
 	end
 	
 	if events.mousebutton then
 		local e = events.mousebutton.event
 		local v = self.console.view
-		if e.buttonEvent ~= "released" and (self.focused or (e.x < v.width+5 and e.y < v.height+5)) then  
+		if e.buttonevent ~= "released" and (self.focused or (e.x < v.width+5 and e.y < v.height+5)) then  
 			self.focused = true
 			self:HandleClick(e)
 			-- use mouse event
@@ -31,8 +31,8 @@ end
 
 function ConsoleControl:HandleClick(event)
 	local v = self.console.view
-	console:Log(event.buttonEvent)
-	if event.button == 1 and event.buttonEvent == "held" then
+	console:Log(event.buttonevent)
+	if event.button == 1 and event.buttonevent == "held" then
 		if self.mouseAction then 
 			self:mouseAction(event)
 		else

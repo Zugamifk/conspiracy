@@ -13,17 +13,17 @@ function StatusBar:SetText(text)
 end
 
 function StatusBar:Draw(rect, style)	
-	local verticalPadding = 5
+	local verticalpadding = 5
 	-- correct height for stlye
-	rect.y = rect.height
-	rect.height = style.lineHeight + verticalPadding * 2
+	rect.y = rect.y + rect.height
+	rect.height = style.lineheight + verticalpadding * 2
 	rect.y = rect.y - rect.height
 	
-	UI.Box(rect, style)
+	UI.Draw.FramedBox(rect, style)
 	
-	rect.y = rect.y + verticalPadding
-	rect.x = rect.x + style.horizontalPadding
-	UI.Text(rect, self.text, style)
+	rect.y = rect.y + verticalpadding
+	rect.x = rect.x + style.horizontalpadding
+	UI.Draw.Text(rect, self.text, style)
 end
 
 return StatusBar

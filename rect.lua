@@ -21,3 +21,11 @@ function Rect:Contains(x,y)
 			self.y + self.height >= y
 	end
 end
+
+function Rect:Copy()
+	return Rect(self.x, self.y, self.width, self.height)
+end
+
+function Rect.Zero()
+	return Rect(0,0,0,0)
+end

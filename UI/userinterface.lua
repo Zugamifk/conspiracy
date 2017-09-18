@@ -4,12 +4,31 @@ function UserInterface.Create()
 	local ui = {
 		style = UI.Style(),
 		statusbar = UI.StatusBar("Hello, World!"),
-		
-		selectables = { -- objects that can recieve input
-			UI.Window(Rect(400,25,300,175))
-		}
-	}
 
+		selectables = {}, -- objects that can recieve input
+		windows = {}
+	}
+	
+	local windowwidth = 300
+	local graphwindow = UI.Window(Rect(400,25,windowwidth,600))
+	graphwindow:AddObject(UI.StatusBar("UI Test Window"))
+	
+	local graph = UI.Graph()
+	graph:AddLine(nil, function (x) return x*x end,0,10,-2,2)
+	graphwindow:AddObject(graph, Rect(25,25,200,100))
+	
+	local scrollview = UI.ScrollView()
+	local scrollrect = Rect(10,150,windowwidth-20,380)
+	for i=1,50 do
+		scrollview:AddObject(UI.Text("Line "..i), Rect(0,0,scrollrect.width,ui.style.lineheight))
+	end
+	graphwindow:AddObject(scrollview, scrollrect)
+	
+	table.insert(ui.selectables, scrollview.scrollbar)
+	table.insert(ui.selectables, graphwindow)
+	
+	table.insert(ui.windows, graphwindow)
+	
 	return setmetatable(ui, UserInterface.mt)
 end
 
@@ -40,7 +59,7 @@ function UserInterface:Draw(rect)
 		end
 	end
 	
-	for i,s in ipairs(self.selectables) do
+	for i,s in ipairs(self.windows) do
 		s:Draw(rect, self.style)
 	end
 	

@@ -24,7 +24,7 @@ function Input:Update()
 		e.used = false
 		if k == "mousebutton" then
 			if love.mouse.isDown(e.event.button) then
-				e.event.buttonEvent = "held"
+				e.event.buttonevent = "held"
 				e.event.x, e.event.y = love.mouse.getPosition()
 			else
 				self.events[k] = nil
@@ -38,10 +38,6 @@ function Input:Update()
 	for k,e in pairs(self.newevents) do
 		self.events[k] = e
 	end
-	
-	local mp = {}
-	mp.x, mp.y = love.mouse.getPosition()
-	self.events.mouseposition = mp
 	
 	self.newevents = {}
 	--if count > 0 then 

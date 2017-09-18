@@ -36,11 +36,13 @@ function BoardControl:SelectTile(x,y)
 		self.selectedtile.selected = false
 	end
 	local t = self.board:GetTile(x,y)
-	t.selected = true
 	self.selectedtile = t
-	if #t.objects>0 then 
-		ui:SelectObject(t.objects[1])
-	else
-		ui:SelectObject(nil)
+	if t then		
+		t.selected = true
+		if #t.objects>0 then 
+			ui:SelectObject(t.objects[1])
+		else
+			ui:SelectObject(nil)
+		end
 	end
 end
