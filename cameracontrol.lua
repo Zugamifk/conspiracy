@@ -19,10 +19,10 @@ function CameraControl:UpdateEvents(events)
 		c.x = c.x+5
 	end
 	if events.mousewheelX then
-		self:SetSize (c.size+mathx.sign(events.mousewheelX.event))
+		self:SetSize (c.size+math.sign(events.mousewheelX.event))
 	end
 	if events.mousewheelY then
-		self:SetSize(c.size+mathx.sign(events.mousewheelY.event))
+		self:SetSize(c.size+math.sign(events.mousewheelY.event))
 	end
 	if events.mousebutton then
 		local e = events.mousebutton.event

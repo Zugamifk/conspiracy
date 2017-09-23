@@ -26,20 +26,20 @@ require "wangtiles"
 function love.load()
 	console = Console()
 	consolecontrol = ConsoleControl(console)
-	
+
 	board = Board()
 	boardcontrol = BoardControl(board)
 	pathfinding = PathFinding(board)
-	
+
 	TileGraphics.Init(board)
-	
+
 	local dx, dy = love.graphics.getDimensions()
 	camera = Camera(5,5,dx,dy, 10)
 	cameracontrol = CameraControl(camera)
-	
+
 	ui = UserInterface()
 	uicontrol = UI.Controller(ui)
-	
+
 	-- wang = Wang.Create()
 	-- wangtiles = WangTiles.Create(wang)
 	-- wang:Generate(board)
@@ -58,19 +58,24 @@ function love.update(dt)
 	Input:DoEvents(cameracontrol)
 	Input:DoEvents(boardcontrol)
 	Input:Update()
-	
+
 	boardcontrol:Update(dt)
 end
 
 function love.keypressed( key, scancode, isrepeat )
 	if key == 'escape' then
 		love.event.push('quit') -- Quit the game.
-	end	
-	if key == 'r' then 
+	end
+	if key == 'r' then
 		love.load()
 	end
 	Input:GenerateEvent(scancode, "pressed")
 	console:Log("pressed "..scancode.." key: "..key)
+end
+
+function love.textinput(text)
+	Input:GenerateEvent("textinput", text)
+	console:Log("textinput: "..text)
 end
 
 function love.wheelmoved( x, y )

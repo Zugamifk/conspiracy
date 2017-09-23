@@ -9,49 +9,63 @@ function Controller.Create(ui)
 end
 
 function Controller:UpdateEvents(events)
+	--toggle console
 	if events["`"] and events["`"].event == "pressed" then
 		console.enabled = not console.enabled
 	end
-	
-	if not self.inputfocus then 
-		local f = nil --this might not work
-		local mx,my = love.mouse.getPosition()
-		for i,s in ipairs(self.ui.selectables) do
-			if s.rect:Contains(mx,my) then
-				f = s
-				break
-			end
-		end
-		if f ~= self.focus then
-			self:Focus(f)
+
+	-- get input focus
+	local f = nil --this might not work
+	local mx,my = love.mouse.getPosition()
+	for i,s in ipairs(self.ui.selectables) do
+		if s.rect:Contains(mx,my) then
+			f = s
+			break
 		end
 	end
-	
-	if self.focus and events.mousebutton then
-		local e = events.mousebutton.event
-		if e.buttonevent == "pressed" then
-			if self.focus.MouseDown then 
-				self.focus:MouseDown()
+	if f ~= self.focus then
+		self:Focus(f)
+	end
+	if events.mousebutton and
+		events.mousebutton.event.buttonevent == "pressed" then
+		self.inputfocus = f;
+	end
+
+	-- input events
+	if self.inputfocus then
+		if events.mousebutton then
+			local e = events.mousebutton.event
+			if e.buttonevent == "pressed" then
+				if self.inputfocus.MouseDown then
+					self.inputfocus:MouseDown()
+				end
+			elseif e.buttonevent == "held" and self.inputfocus.Drag then
+				self.inputfocus:Drag()
+			elseif e.buttonevent == "released" then
+				if self.inputfocus.MouseUp then
+					self.inputfocus:MouseUp()
+				end
+				if not self.inputfocus.focused then
+					self.inputfocus = nil
+				end
 			end
-			self.inputfocus = self.focus
-		elseif e.buttonevent == "held" and self.focus.Drag then
-			self.focus:Drag()
-		elseif e.buttonevent == "released" then
-			if self.focus.MouseUp then 
-				self.focus:MouseUp()
-			end
-			self.inputfocus = nil
+		end
+		if events.textinput and self.inputfocus.textinput then
+			self.inputfocus.textinput(events.textinput.event)
+		end
+		if events["return"] and events["return"].event == "pressed" then
+			self.inputfocus:Submit()
 		end
 	end
 end
 
 function Controller:Focus(object)
-	if self.focus then 
+	if self.focus then
 		self.focus:Focus(false)
 	end
 	self.focus = object
 	self.ui.statusbar.text = "focus "..tostring(object)
-	if object then 
+	if object then
 		object:Focus(true)
 	end
 end

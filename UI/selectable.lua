@@ -28,6 +28,7 @@ function Selectable:Focus(isfocused)
 	else
 		self.state = "normal"
 	end
+	console:Log("Focused "..tostring(self))
 end
 
 function Selectable:MouseDown()
@@ -37,6 +38,7 @@ function Selectable:MouseDown()
 		y = y-self.rect.y
 	}
 	self.state = "selected"
+	console:Log("selected "..tostring(self))
 	if self.onMouseDown then
 		self:onMouseDown(self.dragoffset)
 	end
@@ -57,6 +59,12 @@ function Selectable:Drag()
 	}
 	if self.onDrag then
 		self:onDrag(self.dragoffset)
+	end
+end
+
+function Selectable:Submit()
+	if self.onSubmit then
+		self:onSubmit()
 	end
 end
 

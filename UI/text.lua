@@ -2,7 +2,7 @@ local Text = Class()
 
 function Text.Create(text)
 	return {
-		text = text
+		text = text or ""
 	}
 end
 

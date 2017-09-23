@@ -1,5 +1,5 @@
 local ScrollView = Class()
-	
+
 function ScrollView.Create()
 	local scrollview = {
 		scrollposition = 0,
@@ -7,7 +7,7 @@ function ScrollView.Create()
 		contentsheight = 0,
 		scrollheight = 0
 	}
-	
+
 	local scrollbar = UI.Selectable(Rect.Zero())
 	local scrollmousestart = 0
 	local scrollpositionstart = 0
@@ -36,7 +36,7 @@ function ScrollView:Draw(rect, style)
 	local yposition = 0
 	local viewporty = self.scrollposition * math.max(self.contentsheight - rect.height, 0)
 	for i,o in ipairs(self.contents) do
-		if yposition >= viewporty then
+		if yposition + o.rect.height >= viewporty then
 			local r = o.rect:Copy()
 			r.y = yposition - viewporty + rect.y
 			r.x = rect.x
@@ -54,7 +54,7 @@ function ScrollView:Draw(rect, style)
 			style.scrollbarminheight,
 			2*scrollbarheight/self.contentsheight
 		)
-		local scrollbary = style.scrollbarpadding + 
+		local scrollbary = style.scrollbarpadding +
 			self.scrollposition * (scrollbarheight-scrollbarsize)
 		self.scrollbar:Draw(Rect(
 			rect.x + rect.width - style.scrollbarpadding - style.scrollbarwidth,
@@ -77,5 +77,5 @@ function ScrollView:AddObject(object, rect, position)
 	self.contentsheight = self.contentsheight + rect.height
 	table.insert(self.contents, position, newObject)
 end
-	
+
 return ScrollView

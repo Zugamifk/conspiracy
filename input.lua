@@ -4,13 +4,14 @@ Input = {
 }
 
 function Input:GenerateEvent(scancode, event)
-	self.newevents[scancode] = {event=event} 
+	self.newevents[scancode] = {event=event}
 end
 
 function Input:DoEvents(context)
 	local ne = {}
 	for k,e in pairs(self.events) do
-		if not e.used then
+		if 	not e.used
+		 then
 			ne[k] = e
 		end
 	end
@@ -38,9 +39,9 @@ function Input:Update()
 	for k,e in pairs(self.newevents) do
 		self.events[k] = e
 	end
-	
+
 	self.newevents = {}
-	--if count > 0 then 
+	--if count > 0 then
 	--	console:Log(Input)
 	--end
 end

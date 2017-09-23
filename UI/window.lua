@@ -5,7 +5,7 @@ function Window.Create(rect)
 		rect = rect,
 		focused = false,
 		objects = {},
-		
+
 		dragoffset = {x=0,y=0}
 	}
 end
