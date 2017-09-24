@@ -24,7 +24,7 @@ function View.Create(rect, console)
     view.scrollview = scrollview
 
 	local textinput = UI.TextInput()
-	function textinput.selectable:onSubmit()
+	textinput.onSubmit = function()
         local text = textinput.text.text
         textinput.text.text = ""
         if view.onSubmit then

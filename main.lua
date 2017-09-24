@@ -2,7 +2,9 @@ require "mathx"
 require "namespace"
 require "class"
 require "rect"
+
 require "Console/console"
+
 require "assets"
 require "tile"
 require "tilegraphics"
@@ -18,6 +20,8 @@ require "pathfinding"
 
 require "UI/ui"
 require "UI/userinterface"
+
+require "Animation/animation"
 
 require "wang"
 require "wangtiles"
@@ -37,9 +41,11 @@ function love.load()
 	cameracontrol = CameraControl(camera)
 
 	ui = UserInterface()
-	uicontrol = UI.Controller(ui)
+	uicontrol = ui.controller
 
-	Console.Initialize(ui)
+	Console.Initialize(uicontrol)
+
+	Animation.Editor.Window(Rect(400,0,400,600), ui)
 
 	-- wang = Wang.Create()
 	-- wangtiles = WangTiles.Create(wang)

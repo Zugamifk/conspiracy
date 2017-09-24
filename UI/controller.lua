@@ -9,27 +9,30 @@ function Controller.Create(ui)
 end
 
 function Controller:UpdateEvents(events)
-	--toggle console
 	if events["`"] and events["`"].event == "pressed" then
-		console.enabled = not console.enabled
+		self:SetWindowActive("console")
 	end
 
 	-- get input focus
 	local f = nil --this might not work
 	local mx,my = love.mouse.getPosition()
 	-- find a selectable
-	for i,s in ipairs(self.ui.selectables) do
-		if s.rect:Contains(mx,my) then
-			f = s
-			break
+	for k,sl in pairs(self.ui.selectables) do
+		for i,s in ipairs(sl) do
+			if s.rect:Contains(mx,my) then
+				f = s
+				break
+			end
 		end
 	end
 	-- find a window
 	if not f then
-		for i,s in ipairs(self.ui.windows) do
-			if s.rect:Contains(mx,my) then
-				f = s
-				break
+		for k,s in pairs(self.ui.windows) do
+			if s.enabled then
+				if s.rect:Contains(mx,my) then
+					f = s
+					break
+				end
 			end
 		end
 	end
@@ -57,29 +60,54 @@ function Controller:UpdateEvents(events)
 				if self.inputfocus.MouseUp then
 					self.inputfocus:MouseUp()
 				end
-				if not self.inputfocus.focused then
+				if self.inputfocus ~= self.focus then
 					self.inputfocus = nil
 				end
 			end
 		end
-		if events.textinput and self.inputfocus.textinput then
-			self.inputfocus.textinput(events.textinput.event)
+		if events.textinput and self.inputfocus.TextInput then
+			self.inputfocus:TextInput(events.textinput.event)
 		end
 		if events["return"] and events["return"].event == "pressed" then
-			self.inputfocus:Submit()
+			if self.inputfocus.Submit then
+				self.inputfocus:Submit()
+			end
 		end
 	end
 end
 
 function Controller:Focus(object)
-	if self.focus then
+	if self.focus and self.focus.Focus then
 		self.focus:Focus(false)
 	end
 	self.focus = object
 	self.ui.statusbar.text = "focus "..tostring(object)
-	if object then
+	if object and object.Focus then
 		object:Focus(true)
 	end
 end
 
+function Controller:SetWindowActive(name, enabled)
+	local window = self.ui.windows[name]
+	if not window then
+		console:Log("No window named "..name.." exists!")
+		return
+	end
+
+	if type(enabled) ~= "boolean" then
+		enabled = not window.enabled
+	end
+
+	window:SetActive(enabled)
+
+	if enabled then
+		self.ui.selectables[name] = window.selectables
+	else
+		self.ui.selectables[name] = nil
+	end
+end
+
+function Controller:AddWindow(name, window)
+	self.ui.windows[name] = window
+end
 return Controller

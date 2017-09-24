@@ -2,15 +2,10 @@ local TextInput = Class()
 
 function TextInput.Create()
     local textinput = {
-        text = UI.Text()
+        text = UI.Text(),
+        rect = Rect.Zero(),
+        onSubmit = nil -- callback
     }
-
-    local select = UI.Selectable(Rect.Zero())
-    select.textinput = function(text)
-        textinput:AddText(text)
-        console:Log("text: "..text)
-    end
-    textinput.selectable = select
 
     return textinput
 end
@@ -22,7 +17,21 @@ end
 function TextInput:Draw(rect, style)
     UI.Draw.FramedBox(rect, style)
     self.text:Draw(rect, style)
-    self.selectable.rect = rect
+    self.rect = rect
+end
+
+function TextInput:Submit()
+    if self.onSubmit then
+        self.onSubmit()
+    end
+end
+
+function TextInput:TextInput(text)
+    self:AddText(text)
+end
+
+function TextInput:GetSelectable()
+    return self
 end
 
 return TextInput

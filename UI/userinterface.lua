@@ -6,7 +6,8 @@ function UserInterface.Create()
 		statusbar = UI.StatusBar("Hello, World!"),
 
 		selectables = {}, -- objects that can recieve input
-		windows = {}
+		windows = {},
+		controller = nil
 	}
 
 	local windowwidth = 300
@@ -22,16 +23,16 @@ function UserInterface.Create()
 	graphwindow:AddObject(scrollview, scrollrect)
 
 	local textinput = UI.TextInput()
-	function textinput.selectable:onSubmit()
+	textinput.onSubmit = function()
 		scrollview:AddObject(UI.Text(textinput.text.text), Rect(0,0,scrollrect.width,ui.style.lineheight))
 		textinput.text.text = ""
 	end
 	graphwindow:AddObject(textinput, Rect(10,550, windowwidth-100, ui.style.lineheight+5))
 
-	table.insert(ui.selectables, scrollview.scrollbar)
-	table.insert(ui.selectables, textinput.selectable)
-
-	table.insert(ui.windows, graphwindow)
+	local controller = UI.Controller(ui)
+	ui.controller = controller
+	controller:AddWindow("uitest", graphwindow)
+	controller:SetWindowActive("uitest", true)
 
 	return setmetatable(ui, UserInterface.mt)
 end
@@ -47,7 +48,7 @@ function UserInterface:Draw(rect)
 		selectedrect.width = 290
 		selectedrect.y = h - 200
 		selectedrect.height = 190
-		UI.Draw.Box(selectedrect, self.style)
+		UI.Draw.FramedBox(selectedrect, self.style)
 		selectedrect.x = selectedrect.x + 10
 		selectedrect.width = 32
 		selectedrect.y = selectedrect.y + 10
@@ -63,20 +64,24 @@ function UserInterface:Draw(rect)
 		end
 	end
 
-	for i,s in ipairs(self.windows) do
-		s:Draw(rect, self.style)
+	for k,s in pairs(self.windows) do
+		if s.enabled then
+			s:Draw(rect, self.style)
+		end
 	end
 
 	self.statusbar:Draw(rect, self.style)
 end
 
+
 function UserInterface:SelectObject(object)
 	self.selected = object
 end
 
-function UserInterface:AddWindow(window)
-	self.windows[#self.windows+1] = window
-	for i,s in ipairs(window.selectables) do
-		self.selectables[#self.selectables+1] = s
-	end
+function UserInterface:GetWindow(name)
+	return self.windows[name]
+end
+
+function UserInterface:AddWindow(name, window)
+	self.controller:AddWindow(name, window)
 end

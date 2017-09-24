@@ -25,7 +25,6 @@ function ScrollView.Create()
 		scrollview.scrollposition = math.clamp(scrollview.scrollposition,0,1)
 	end
 	scrollview.scrollbar = scrollbar
-	scrollview.selectable = scrollbar
 	return scrollview
 end
 
@@ -110,6 +109,10 @@ end
 
 function ScrollView:ContentsLength()
 	return #self.contents
+end
+
+function ScrollView:GetSelectable()
+	return self.scrollbar
 end
 
 return ScrollView

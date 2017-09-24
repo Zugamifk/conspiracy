@@ -7,30 +7,73 @@ Console = Namespace{
 	Control = require "Console/control"
 }
 
-function Console.Initialize(userinterface)
+function Console.Initialize(uicontroller)
     local model = Console.Model()
 	local view = Console.View(Rect(250,25,200,400), model)
 
     local commands = Console.Commands()
     local control = Console.Control(model, commands)
-    commands:AddCommand(
-        "log",
-        function(message)
-            control:Log(message)
-        end
-    )
+
     view.onSubmit = function(text)
         control:OnSubmit(text)
     end
 
-	userinterface:AddWindow(view.window)
+	uicontroller:AddWindow("console", view.window)
+    uicontroller:SetWindowActive("console", true)
 
     Console.current = {
         model = model,
         view = view,
         control = control,
-        commands = commands
+        commands = commands,
+        uicontrol = uicontroller
     }
+    Console.InitCommands(Console.current)
+end
+
+function Console.InitCommands(csl)
+    local cmd = csl.commands
+    local ctrl = csl.control
+    local uicontrol = csl.uicontrol
+    -- log command
+    cmd:AddCommand(
+        "log",
+        function(message)
+            ctrl:Log(message)
+        end
+    )
+
+    -- set windows active
+    cmd:AddCommand(
+        "win",
+        function(name, enabled)
+            if not name or name == "" then
+                ctrl:Log("must provide name of window to open!")
+                return
+            end
+            if name == "log" then
+                if enabled then
+                    console.enabled = Console.Commands.GetBoolForArg(enabled)
+                else
+                    console.enabled = not console.enabled
+                end
+                return
+            end
+            local window = uicontrol.ui:GetWindow(name)
+            if not window then
+                ctrl:Log("no window named "..name.."!")
+                return
+            end
+            local newenabled = not window.enabled
+            if enabled then
+                local a = Console.Commands.GetBoolForArg(enabled)
+                if type(a) == "boolean" then
+                    newenabled = a
+                end
+            end
+            uicontrol:SetWindowActive(name, newenabled)
+        end
+    )
 end
 
 function Console.Update(dt)

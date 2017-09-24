@@ -8,7 +8,9 @@ function Window.Create(rect)
 
 		dragoffset = {x=0,y=0},
 
-		selectables = {}
+		selectables = {},
+
+		enabled = false -- if true, is visible and active
 	}
 end
 
@@ -19,8 +21,8 @@ function Window:AddObject(object, rect)
 		rect.y = 0
 	end
 	self.objects[#self.objects+1] = {object = object, rect = rect}
-	if object.selectable then
-		self.selectables[#self.selectables+1] = object.selectable
+	if object.GetSelectable then
+		self.selectables[#self.selectables+1] = object:GetSelectable()
 	end
 end
 
@@ -57,4 +59,7 @@ function Window:Drag()
 	self.rect.y = y+self.dragoffset.y
 end
 
+function Window:SetActive(enabled)
+	self.enabled = enabled
+end
 return Window
