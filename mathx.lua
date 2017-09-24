@@ -11,3 +11,7 @@ end
 function math.clamp(x,min,max)
 	return math.min(math.max(x,min), max)
 end
+
+function math.mod(a,b)
+    return ((a % b) + b) % b
+end

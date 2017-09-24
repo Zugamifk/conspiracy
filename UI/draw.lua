@@ -5,6 +5,8 @@ function Draw.FramedBox(rect, style, isfocused)
 	if style.drawOutline then
 		local color = focused and style.colors.focusoutline
 			or style.colors.outline
+		love.graphics.setLineStyle(style.linestyle)
+		love.graphics.setLineWidth(style.linewidth)
 		Draw.Box(rect, color, true)
 	end
 end

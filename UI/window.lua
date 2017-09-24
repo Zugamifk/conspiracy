@@ -6,7 +6,9 @@ function Window.Create(rect)
 		focused = false,
 		objects = {},
 
-		dragoffset = {x=0,y=0}
+		dragoffset = {x=0,y=0},
+
+		selectables = {}
 	}
 end
 
@@ -17,6 +19,9 @@ function Window:AddObject(object, rect)
 		rect.y = 0
 	end
 	self.objects[#self.objects+1] = {object = object, rect = rect}
+	if object.selectable then
+		self.selectables[#self.selectables+1] = object.selectable
+	end
 end
 
 function Window:Draw(_,style)

@@ -2,8 +2,7 @@ require "mathx"
 require "namespace"
 require "class"
 require "rect"
-require "console"
-require "consolecontrol"
+require "Console/console"
 require "assets"
 require "tile"
 require "tilegraphics"
@@ -24,8 +23,8 @@ require "wang"
 require "wangtiles"
 
 function love.load()
-	console = Console()
-	consolecontrol = ConsoleControl(console)
+	console = Console.OldConsole()
+	consolecontrol = Console.OldControl(console)
 
 	board = Board()
 	boardcontrol = BoardControl(board)
@@ -39,6 +38,8 @@ function love.load()
 
 	ui = UserInterface()
 	uicontrol = UI.Controller(ui)
+
+	Console.Initialize(ui)
 
 	-- wang = Wang.Create()
 	-- wangtiles = WangTiles.Create(wang)
@@ -58,6 +59,8 @@ function love.update(dt)
 	Input:DoEvents(cameracontrol)
 	Input:DoEvents(boardcontrol)
 	Input:Update()
+
+	Console.Update()
 
 	boardcontrol:Update(dt)
 end

@@ -17,15 +17,27 @@ function Controller:UpdateEvents(events)
 	-- get input focus
 	local f = nil --this might not work
 	local mx,my = love.mouse.getPosition()
+	-- find a selectable
 	for i,s in ipairs(self.ui.selectables) do
 		if s.rect:Contains(mx,my) then
 			f = s
 			break
 		end
 	end
+	-- find a window
+	if not f then
+		for i,s in ipairs(self.ui.windows) do
+			if s.rect:Contains(mx,my) then
+				f = s
+				break
+			end
+		end
+	end
+	-- switch focus
 	if f ~= self.focus then
 		self:Focus(f)
 	end
+	-- update input focus if mouse button was pressed
 	if events.mousebutton and
 		events.mousebutton.event.buttonevent == "pressed" then
 		self.inputfocus = f;

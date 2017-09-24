@@ -30,7 +30,6 @@ function UserInterface.Create()
 
 	table.insert(ui.selectables, scrollview.scrollbar)
 	table.insert(ui.selectables, textinput.selectable)
-	table.insert(ui.selectables, graphwindow)
 
 	table.insert(ui.windows, graphwindow)
 
@@ -73,4 +72,11 @@ end
 
 function UserInterface:SelectObject(object)
 	self.selected = object
+end
+
+function UserInterface:AddWindow(window)
+	self.windows[#self.windows+1] = window
+	for i,s in ipairs(window.selectables) do
+		self.selectables[#self.selectables+1] = s
+	end
 end

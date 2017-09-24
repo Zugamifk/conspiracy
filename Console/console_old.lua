@@ -1,4 +1,4 @@
-Console = Class()
+local Console = Class()
 
 function Console.Create()
 	local console= {}
@@ -43,16 +43,16 @@ function Console:Draw()
 		local y = 0
 		local w = view.width
 		local h = view.height
-	
+
 		love.graphics.setColor(17,21,32,180)
 		love.graphics.rectangle("fill", x,y,w,h)
 		love.graphics.setColor(154,85,70,255)
 		love.graphics.rectangle("line", x,y,w,h)
-		
+
 		self:DrawStats(x,y,w,view.statsHeight)
 		y = y + view.statsHeight
 		h = h - view.statsHeight
-		
+
 		love.graphics.stencil(
 			function()
 				love.graphics.rectangle("fill", x+5,y+5,w-10,h-10)
@@ -71,3 +71,5 @@ function Console:Draw()
 		love.graphics.setStencilTest()
 	end
 end
+
+return Console

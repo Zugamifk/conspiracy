@@ -1,6 +1,6 @@
-ConsoleControl = Class()
+local Control = Class()
 
-function ConsoleControl.Create(console)
+function Control.Create(console)
 	local cc = {
 		console = console,
 		focused = false,
@@ -9,15 +9,15 @@ function ConsoleControl.Create(console)
 	return cc
 end
 
-function ConsoleControl:UpdateEvents(events)
+function Control:UpdateEvents(events)
 	if events["`"] and events["`"].event == "pressed" then
 		self.console.enabled = not self.console.enabled
 	end
-	
+
 	if events.mousebutton then
 		local e = events.mousebutton.event
 		local v = self.console.view
-		if e.buttonevent ~= "released" and (self.focused or (e.x < v.width+5 and e.y < v.height+5)) then  
+		if e.buttonevent ~= "released" and (self.focused or (e.x < v.width+5 and e.y < v.height+5)) then
 			self.focused = true
 			self:HandleClick(e)
 			-- use mouse event
@@ -29,11 +29,11 @@ function ConsoleControl:UpdateEvents(events)
 	end
 end
 
-function ConsoleControl:HandleClick(event)
+function Control:HandleClick(event)
 	local v = self.console.view
-	console:Log(event.buttonevent)
+	self.console:Log(event.buttonevent)
 	if event.button == 1 and event.buttonevent == "held" then
-		if self.mouseAction then 
+		if self.mouseAction then
 			self:mouseAction(event)
 		else
 			if event.x > v.width - 5 and event.x < v.width + 5 then
@@ -46,10 +46,12 @@ function ConsoleControl:HandleClick(event)
 	end
 end
 
-function ConsoleControl:ResizeX(event)
+function Control:ResizeX(event)
 	self.console.view.width = event.x
 end
 
-function ConsoleControl:ResizeY(event)
+function Control:ResizeY(event)
 	self.console.view.height = event.y
 end
+
+return Control
