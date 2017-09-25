@@ -3,7 +3,7 @@ local Selectable = Class()
 function Selectable.Create(rect)
 	return {
 		state = "normal",
-		rect = rect,
+		rect = rect or Rect.Zero(),
 		focused = false,
 		dragoffset = {x=0,y=0}
 	}

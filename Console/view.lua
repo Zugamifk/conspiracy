@@ -13,16 +13,33 @@ function View.Create(rect, console)
         scrollview = nil,
 
         -- callbacks
-        onSubmit = nil
+        onSubmit = nil,
+        onClose = nil
     }
     local windowwidth = rect.width
+
+    local titlebar = UI.TitleBar("Console")
+    titlebar:AddButton(
+        "x",
+        function()
+            if view.onClose then
+                view:onClose()
+            end
+        end
+     )
+    window:AddObject(titlebar, Rect(0,0,windowwidth,lineheight))
+
     local scrollview = UI.ScrollView()
     scrollview.options.startsfrom = "bottom"
     scrollview.options.direction = "up"
-	local scrollrect = Rect(10,10,windowwidth-20,rect.height - lineheight - 20)
+    local ypos = lineheight + 5
+    local inputheight = lineheight
+    local scrollheight  = rect.height - ypos -inputheight -10
+	local scrollrect = Rect(5,ypos,windowwidth-10,scrollheight)
 	window:AddObject(scrollview, scrollrect)
     view.scrollview = scrollview
 
+    ypos = ypos + scrollheight + 3
 	local textinput = UI.TextInput()
 	textinput.onSubmit = function()
         local text = textinput.text.text
@@ -31,7 +48,7 @@ function View.Create(rect, console)
             view.onSubmit(text)
         end
 	end
-	window:AddObject(textinput, Rect(10,rect.height - lineheight - 8, windowwidth-20, lineheight+5))
+	window:AddObject(textinput, Rect(5,ypos, windowwidth-10, lineheight+4))
 
     return view
 end

@@ -9,7 +9,9 @@ UI = Namespace{
 
 	Selectable = require "UI/selectable",
 	Text = require "UI/text",
+	Button = require "UI/button",
 	TextInput = require "UI/textinput",
+	TitleBar = require "UI/titlebar",
 	StatusBar = require "UI/statusbar",
 	Graph = require "UI/graph",
 	ScrollView = require "UI/scrollview",

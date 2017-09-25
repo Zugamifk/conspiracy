@@ -3,8 +3,8 @@ local Controller = Class()
 function Controller.Create(ui)
 	return {
 		ui = ui,
-		focus = nil,
-		inputfocus = nil
+		focus = nil, -- object currently undder cursor
+		inputfocus = nil -- last object clicked on
 	}
 end
 
@@ -104,6 +104,14 @@ function Controller:SetWindowActive(name, enabled)
 		self.ui.selectables[name] = window.selectables
 	else
 		self.ui.selectables[name] = nil
+		for i,s in ipairs(window.selectables) do
+			if s == self.focus then
+				self:Focus(nil)
+			end
+			if s == self.inputfocus then
+				self.inputfocus = nil
+			end
+		end
 	end
 end
 

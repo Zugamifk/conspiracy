@@ -1,4 +1,6 @@
 require "mathx"
+require "tablep"
+
 require "namespace"
 require "class"
 require "rect"
@@ -46,6 +48,8 @@ function love.load()
 	Console.Initialize(uicontrol)
 
 	Animation.Editor.Window(Rect(400,0,400,600), ui)
+
+	tablep.Test()
 
 	-- wang = Wang.Create()
 	-- wangtiles = WangTiles.Create(wang)

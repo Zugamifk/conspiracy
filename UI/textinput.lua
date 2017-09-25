@@ -30,7 +30,7 @@ function TextInput:TextInput(text)
     self:AddText(text)
 end
 
-function TextInput:GetSelectable()
+function TextInput:GetSelectables()
     return self
 end
 

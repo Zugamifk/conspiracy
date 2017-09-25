@@ -111,7 +111,7 @@ function ScrollView:ContentsLength()
 	return #self.contents
 end
 
-function ScrollView:GetSelectable()
+function ScrollView:GetSelectables()
 	return self.scrollbar
 end
 

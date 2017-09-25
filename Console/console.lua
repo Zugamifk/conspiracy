@@ -17,6 +17,9 @@ function Console.Initialize(uicontroller)
     view.onSubmit = function(text)
         control:OnSubmit(text)
     end
+    view.onClose = function(v)
+        uicontroller:SetWindowActive("console", false)
+    end
 
 	uicontroller:AddWindow("console", view.window)
     uicontroller:SetWindowActive("console", true)
