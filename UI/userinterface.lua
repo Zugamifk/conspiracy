@@ -1,13 +1,12 @@
 UserInterface = Class()
 
-function UserInterface.Create()
-	local ui = {
-		style = UI.Style(),
+function UserInterface:Create()
+	local ui = self
+	ui.style = UI.Style()
 
-		selectables = {}, -- objects that can recieve input
-		windows = {},
-		controller = nil
-	}
+	ui.selectables = {} -- objects that can recieve input
+	ui.windows = {}
+	ui.controller = nil
 
 	local windowwidth = 300
 	local graphwindow = UI.Window(Rect(400,25,windowwidth,600))
@@ -55,8 +54,6 @@ function UserInterface.Create()
 	)
 	ui.statusbar = statusbar
 	ui.selectables.statusbar = statusbar:GetSelectables()
-
-	return setmetatable(ui, UserInterface.mt)
 end
 
 function UserInterface:Draw(rect)
