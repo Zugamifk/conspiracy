@@ -41,6 +41,13 @@ end
 -- generates a null iterator no matter what it's given
 -- a
 function proc.zero()
+
+end
+
+-- empty monad
+-- Ma
+function proc.empty()
+    return proc.result(proc.zero)
 end
 
 -- Ma -> (a->Ma) -> Ma
@@ -102,6 +109,19 @@ function proc.concat(a,b)
     )
 end
 
+function proc.fold(a)
+    return proc.bind(a,
+        function(aa)
+            local i = aa()
+            if i then return
+                proc.concat(i, proc.fold(aa))
+            else
+                return proc.empty()
+            end
+        end
+    )
+end
+
 function proc.totable(a)
     local t = {}
     local i = 1
@@ -120,7 +140,7 @@ setmetatable(tablep, {__index=proc})
 function tablep.Test()
     local tpt = {"a", "A", "good", "BAD"}
     local ttt = {"b", "B", "happy", "SAD"}
-	local tpr = tablep.concat(tpt,ttt)
+	local tpr = tablep.fold({tpt,ttt})
         :filter(function(a) return a == a:lower() end)
         :map(function(a) return "-"..a.."_" end)
     local tpi = makeprocessobject(tpt)

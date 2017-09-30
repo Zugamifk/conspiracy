@@ -37,19 +37,27 @@ function KeyFrameEditor:Draw(rect, style)
         love.graphics.line(rect.x, rect.y+origin.y+y*linespace, rect.x+rect.width, rect.y+origin.y+y*linespace)
     end
     for n in self.keyframe:Nodes() do
-        if not self.nodeeditors[n] then
-            self:AddNodeEditor(n)
-        end
         local ne = self.nodeeditors[n]
+        if ne then
         local ner = rect:Copy()
-        ner:SetPositionByCentre(rect:Position() + self:KeyFrameToRectSpace(rect, n.position))
-        ner.width = 50
-        ner.height = 50
-        ne:Draw(ner, style)
+            ner.width = 16
+            ner.height = 16
+            ner:SetPositionByCentre(rect:Position() + self:KeyFrameToRectSpace(rect, n.position))
+            ne:Draw(ner, style)
+        end
     end
     UI.EndMask()
 
     self.selectable.rect = rect:Copy()
+end
+
+function KeyFrameEditor:RefreshKeyFrame()
+    console:Log("refreshing keyframe")
+    for n in self.keyframe:Nodes() do
+        if not self.nodeeditors[n] then
+            self:AddNodeEditor(n)
+        end
+    end
 end
 
 function KeyFrameEditor:RectToKeyFrameSpace(rect, vec)
@@ -71,6 +79,7 @@ function KeyFrameEditor:KeyFrameToRectSpace(rect, vec)
 end
 
 function KeyFrameEditor:AddNodeEditor(node)
+    console:Log("added node editor")
     local editor = Animation.Editor.NodeEditor(node)
     self.nodeeditors[node] = editor
 end
@@ -87,7 +96,15 @@ function KeyFrameEditor:MouseUp(pos)
 end
 
 function KeyFrameEditor:GetSelectables()
-    return {self.selectable}
+    local results =
+        tablep.map(
+            self.nodeeditors,
+            function(ne) return ne:GetSelectables() end)
+        :fold()
+        :concat({self.selectable})
+        :totable()
+    console:Log("returning "..#results.." results")
+    return results
 end
 
 return KeyFrameEditor

@@ -9,6 +9,7 @@ function Control.Create(model)
 end
 
 function Control:AddNodeToKeyFrame(pos)
+    console:Log("Adding node at "..tostring(pos))
     self.model.keyframe:AddNode(pos.x, pos.y)
 end
 

@@ -19,6 +19,10 @@ function View.Create(rect, model)
     return view
 end
 
+function View:Refresh()
+    self.keyframeeditor:RefreshKeyFrame()
+end
+
 function View:SetOnClickKeyFrameEditorField(callback)
     self.keyframeeditor.onSelectedField = callback
 end

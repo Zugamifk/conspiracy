@@ -1,6 +1,6 @@
 local NodeEditor = Class()
 
-function NodeEditor.Create(noce)
+function NodeEditor.Create(node)
     local ne = {
         focused = false,
         selectable = UI.Selectable(),
@@ -23,7 +23,8 @@ function NodeEditor:Draw(rect, style)
     self.circle.x = centre.x
     self.circle.y = centre.y
     self.circle.r = r
-    UI.Draw.Circle(self.circle, self.selectable:GetColor(style))
+    local c = self.selectable:GetColor(style)
+    UI.Draw.Circle(self.circle, c)
     self.selectable.rect = rect:Copy()
 end
 

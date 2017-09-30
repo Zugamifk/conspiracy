@@ -14,7 +14,7 @@ function mt:__newindex(k, v)
 end
 
 function mt:__tostring()
-    return "vec2 ("..x..", "..y..")"
+    return "vec2 ("..self.x..", "..self.y..")"
 end
 
 function mt:__unm()

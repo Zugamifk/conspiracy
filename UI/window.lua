@@ -21,14 +21,6 @@ function Window:AddObject(object, rect)
 		rect.y = 0
 	end
 	self.objects[#self.objects+1] = {object = object, rect = rect}
-	if object.GetSelectables then
-		local selectables = object:GetSelectables()
-		if selectables then
-			for _,s in ipairs(selectables) do
-				self.selectables[#self.selectables+1] = s
-			end
-		end
-	end
 end
 
 function Window:Draw(_,style)
@@ -66,5 +58,30 @@ end
 
 function Window:SetActive(enabled)
 	self.enabled = enabled
+	if enabled then
+		self:RefreshSelecablesCache()
+	end
 end
+
+function Window:RefreshSelecablesCache()
+	local i =1
+	for _,o in ipairs(self.objects) do
+		if o.object.GetSelectables then
+			local selectables = o.object:GetSelectables()
+			if selectables then
+				for _,s in ipairs(selectables) do
+					self.selectables[i] = s
+					i = i + 1
+				end
+			end
+		end
+	end
+	if i < #self.selectables then
+		for j = i,#self.selectables do
+			self.selectables[j] = nil
+		end
+	end
+	console:Log("refreshed selectables: now "..#self.selectables)
+end
+
 return Window

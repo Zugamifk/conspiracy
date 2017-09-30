@@ -19,7 +19,13 @@ function Window.Create(rect, ui)
 
         local control = editor.Control(model)
 
-        view:SetOnClickKeyFrameEditorField(function(pos) control:AddNodeToKeyFrame(pos) end)
+        view:SetOnClickKeyFrameEditorField(
+            function(pos)
+                control:AddNodeToKeyFrame(pos)
+                view:Refresh()
+                view.window:RefreshSelecablesCache()
+            end
+        )
 
         --view.window.enabled = true
 
