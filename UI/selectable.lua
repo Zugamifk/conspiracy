@@ -1,12 +1,25 @@
 local Selectable = Class()
 
-function Selectable.Create(rect)
-	return {
+function Selectable.Create(rect, callbacks)
+	local sel = {
 		state = "normal",
 		rect = rect or Rect.Zero(),
 		focused = false,
 		dragoffset = vec2(0,0)
 	}
+
+	if callbacks then
+		Selectable.SetCallbacks(sel, callbacks)
+	end
+
+	return sel
+end
+
+function Selectable:SetCallbacks(callbacks)
+	for e,f in pairs(callbacks) do
+		self[e] = f
+		console:Log("set "..e)
+	end
 end
 
 function Selectable:GetColor(style)
@@ -40,14 +53,14 @@ function Selectable:MouseDown()
 	self.state = "selected"
 	console:Log("selected "..tostring(self))
 	if self.onMouseDown then
-		self:onMouseDown(self.dragoffset)
+		self.onMouseDown(self.dragoffset)
 	end
 end
 
 function Selectable:MouseUp()
 	self:Focus(self.focused)
 	if self.onMouseUp then
-		self:onMouseUp(self.dragoffset)
+		self.onMouseUp(self.dragoffset)
 	end
 end
 
@@ -58,13 +71,13 @@ function Selectable:Drag()
 		y-self.rect.y
 	)
 	if self.onDrag then
-		self:onDrag(self.dragoffset)
+		self.onDrag(self.dragoffset)
 	end
 end
 
 function Selectable:Submit()
 	if self.onSubmit then
-		self:onSubmit()
+		self.onSubmit()
 	end
 end
 

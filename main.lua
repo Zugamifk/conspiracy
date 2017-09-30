@@ -1,5 +1,6 @@
 require "mathx"
 vec2 = require "vec2"
+callback = require "callback"
 require "tablep"
 
 require "namespace"

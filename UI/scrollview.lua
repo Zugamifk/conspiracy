@@ -15,11 +15,11 @@ function ScrollView.Create()
 	local scrollbar = UI.Selectable(Rect.Zero())
 	local scrollmousestart = 0
 	local scrollpositionstart = 0
-	function scrollbar:onMouseDown()
+	function scrollbar.onMouseDown()
 		_,scrollmousestart =love.mouse.getPosition()
 		scrollpositionstart = scrollview.scrollposition
 	end
-	function scrollbar:onDrag()
+	function scrollbar.onDrag()
 		local _,my = love.mouse.getPosition()
 		scrollview.scrollposition = scrollpositionstart+(my-scrollmousestart)/scrollview.scrollheight
 		scrollview.scrollposition = math.clamp(scrollview.scrollposition,0,1)

@@ -27,4 +27,8 @@ function View:SetOnClickKeyFrameEditorField(callback)
     self.keyframeeditor.onSelectedField = callback
 end
 
+function View:SetOnMoveKeyFrameNode(callback)
+    self.keyframeeditor.onMoveNode = callback
+end
+
 return View

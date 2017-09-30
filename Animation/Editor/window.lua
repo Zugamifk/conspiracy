@@ -13,7 +13,7 @@ function Window.Create(rect, ui)
         window.model = model
 
         local view = editor.View(rect, model)
-        view.keyframeeditor.keyframe = keyframe
+        view.keyframeeditor:SetKeyFrame(keyframe)
 
         ui:AddWindow("animation", view.window)
 
@@ -27,6 +27,11 @@ function Window.Create(rect, ui)
             end
         )
 
+        view:SetOnMoveKeyFrameNode(
+            function(node, pos)
+                control:MoveNode(node, pos)
+            end
+        )
         --view.window.enabled = true
 
         return window

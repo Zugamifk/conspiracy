@@ -10,7 +10,11 @@ function Graph.Create()
 end
 
 function Graph:AddVertex(v)
-    table.insert(self.vertices, v)
+    self.vertices[v] = v
+end
+
+function Graph:HasVertex(v)
+    return self.vertices[v] ~= nil
 end
 
 function Graph:Connect(a,b)

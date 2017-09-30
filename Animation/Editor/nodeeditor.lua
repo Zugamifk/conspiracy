@@ -3,17 +3,24 @@ local NodeEditor = Class()
 function NodeEditor.Create(node)
     local ne = {
         focused = false,
-        selectable = UI.Selectable(),
+        selectable = nil,
         circle = Circle(),
         node = node,
 
+        selectable = nil,
+
         -- callbacks
-        onSelectedNode = nil,
-        onMoveNode = nil
+        onSelectedNode = nil, -- function(self)
+        onMoveNode = nil -- function(self, pos)
     }
-    function ne.selectable:onMouseUp(p)
-        NodeEditor.MouseUp(ne, p)
-    end
+
+    local callbacks = {
+        onMouseUp = callback(ne, NodeEditor.MouseUp),
+        onDrag = callback(ne, NodeEditor.Drag)
+    }
+    local sel = UI.Selectable(nil, callbacks)
+    ne.selectable = sel
+
     return ne
 end
 
@@ -25,6 +32,8 @@ function NodeEditor:Draw(rect, style)
     self.circle.r = r
     local c = self.selectable:GetColor(style)
     UI.Draw.Circle(self.circle, c)
+
+    -- refactor out
     self.selectable.rect = rect:Copy()
 end
 
@@ -33,12 +42,15 @@ function NodeEditor:SetNode(node)
 end
 
 function NodeEditor:Drag(pos)
-    self.position = self.position + pos
+    if self.onMoveNode then
+        console:Log("dragged node to "..tostring(pos))
+        self:onMoveNode(pos)
+    end
 end
 
-function NodeEditor:MouseUp(pos)
+function NodeEditor:MouseUp()
     if self.onSelectedNode then
-        self.onSelectedField(pos)
+        self:onSelectedNode()
     end
 end
 

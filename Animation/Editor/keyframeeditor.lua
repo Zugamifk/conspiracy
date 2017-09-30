@@ -6,15 +6,17 @@ function KeyFrameEditor.Create()
         selectable = UI.Selectable(),
 
         position = vec2(0,0),
+        rectorigin = vec2(0,0), -- position in rect space
 
         keyframe = nil,
         nodeeditors = {},
 
 
         -- callbacks
-        onSelectedField = nil
+        onSelectedField = nil, -- function(pos)
+        onMoveNode = nil -- function(node, pos)
     }
-    function kfe.selectable:onMouseUp(p)
+    function kfe.selectable.onMouseUp(p)
         KeyFrameEditor.MouseUp(kfe, p)
     end
     return kfe
@@ -28,38 +30,68 @@ function KeyFrameEditor:Draw(rect, style)
     local linespace = 50
     local min = self:RectToKeyFrameSpace(rect, vec2(0,0))
     local max = self:RectToKeyFrameSpace(rect, vec2(rect.width, rect.height))
-    local origin = self:KeyFrameToRectSpace(rect, self.position)
+    local origin = rect:Centre()
+
+    -- background grid
     love.graphics.setColor(style.colors.line1)
     for x = math.floor(min.x), math.ceil(max.x) do
-        love.graphics.line(rect.x+origin.x+x*linespace, rect.y, rect.x+origin.x+x*linespace, rect.y+rect.height)
+        love.graphics.line(
+            origin.x+x*linespace,
+            rect.y,
+            origin.x+x*linespace,
+            rect.y+rect.height)
     end
     for y = math.floor(min.y), math.ceil(max.y) do
-        love.graphics.line(rect.x, rect.y+origin.y+y*linespace, rect.x+rect.width, rect.y+origin.y+y*linespace)
+        love.graphics.line(
+            rect.x,
+            origin.y+y*linespace,
+            rect.x+rect.width,
+            origin.y+y*linespace)
     end
+
+    -- nodes
     for n in self.keyframe:Nodes() do
         local ne = self.nodeeditors[n]
         if ne then
-        local ner = rect:Copy()
+            local ner = rect:Copy()
             ner.width = 16
             ner.height = 16
-            ner:SetPositionByCentre(rect:Position() + self:KeyFrameToRectSpace(rect, n.position))
+            ner:SetPositionByCentre(
+                rect:Position() + self:KeyFrameToRectSpace(rect, n.position))
             ne:Draw(ner, style)
         end
     end
+
     UI.EndMask()
 
     self.selectable.rect = rect:Copy()
+    self.rectorigin = origin
 end
 
+-- set current keyframe and reinitialize
+function KeyFrameEditor:SetKeyFrame(keyframe)
+    self.keyframe = keyframe
+    self:RefreshKeyFrame()
+end
+
+-- reinitialize editor with current keyframe
 function KeyFrameEditor:RefreshKeyFrame()
     console:Log("refreshing keyframe")
-    for n in self.keyframe:Nodes() do
-        if not self.nodeeditors[n] then
-            self:AddNodeEditor(n)
+    for n, e in pairs(self.nodeeditors) do
+        if not self.keyframe:HasNode(n) then
+            self.nodeeditors[n] = nil
+        end
+    end
+    if self.keyframe then
+        for n in self.keyframe:Nodes() do
+            if not self.nodeeditors[n] then
+                self:AddNodeEditor(n)
+            end
         end
     end
 end
 
+-- transform a position in the rect to a position in keyframe space
 function KeyFrameEditor:RectToKeyFrameSpace(rect, vec)
     local xi, yi = vec.x/rect.width, vec.y/rect.height
     local asp = rect.height/rect.width
@@ -69,6 +101,7 @@ function KeyFrameEditor:RectToKeyFrameSpace(rect, vec)
     )
 end
 
+-- transform a position in keyframe space to a position in the rect
 function KeyFrameEditor:KeyFrameToRectSpace(rect, vec)
     local asp = rect.height/rect.width
     local xi, yi = (vec.x-self.position.x)*asp, vec.y-self.position.y
@@ -78,16 +111,26 @@ function KeyFrameEditor:KeyFrameToRectSpace(rect, vec)
     )
 end
 
+-- add a new editor for a node
 function KeyFrameEditor:AddNodeEditor(node)
     console:Log("added node editor")
     local editor = Animation.Editor.NodeEditor(node)
+    function editor.onMoveNode(node, pos)
+        pos = vec2(love.mouse.getPosition())-self.selectable.rect:Position()
+        if self.onMoveNode then
+            pos = self:RectToKeyFrameSpace(self.selectable.rect, pos)
+            self.onMoveNode(node.node, pos)
+        end
+    end
     self.nodeeditors[node] = editor
 end
 
+-- event when dragging in the field
 function KeyFrameEditor:Drag(pos)
     self.position = self.position + pos
 end
 
+-- event when clicking in the field
 function KeyFrameEditor:MouseUp(pos)
     pos = self:RectToKeyFrameSpace(self.selectable.rect, pos)
     if self.onSelectedField then
@@ -95,6 +138,7 @@ function KeyFrameEditor:MouseUp(pos)
     end
 end
 
+-- get all selectable objects in this editor
 function KeyFrameEditor:GetSelectables()
     local results =
         tablep.map(
