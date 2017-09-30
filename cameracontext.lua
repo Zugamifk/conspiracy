@@ -10,6 +10,10 @@ function CameraContext.Create(x,y,w,h)
 	return cc
 end
 
+function CameraContext:Rect()
+	return Rect(self.x, self.y, self.width, self.height)
+end
+
 function CameraContext:Copy()
 	return CameraContext(self.x, self.y, self.width, self.height)
 end

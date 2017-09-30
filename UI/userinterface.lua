@@ -3,7 +3,6 @@ UserInterface = Class()
 function UserInterface.Create()
 	local ui = {
 		style = UI.Style(),
-		statusbar = UI.StatusBar("Hello, World!"),
 
 		selectables = {}, -- objects that can recieve input
 		windows = {},
@@ -32,7 +31,30 @@ function UserInterface.Create()
 	local controller = UI.Controller(ui)
 	ui.controller = controller
 	controller:AddWindow("uitest", graphwindow)
-	controller:SetWindowActive("uitest", true)
+	--controller:SetWindowActive("uitest", true)
+
+	local statusbar = UI.StatusBar("Hello, World!")
+	statusbar:AddButton(
+		"~",
+		function()
+			controller:SetWindowActive("console")
+			console.enabled = not console.enabled
+		end
+	)
+	statusbar:AddButton(
+		 "A",
+		 function()
+			 controller:SetWindowActive("animation")
+		 end
+	)
+	statusbar:AddButton(
+		"T",
+		function()
+			controller:SetWindowActive("uitest")
+		end
+	)
+	ui.statusbar = statusbar
+	ui.selectables.statusbar = statusbar:GetSelectables()
 
 	return setmetatable(ui, UserInterface.mt)
 end

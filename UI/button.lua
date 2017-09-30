@@ -14,13 +14,19 @@ function Button.Create(text)
 end
 
 function Button:Draw(rect, style)
-    self.selectable:Draw(rect, style)
+    rect = rect:Copy()
+    self.selectable.rect = rect
+    UI.Draw.Box(rect, self:GetColor(style))
     local ty = rect.y + rect.height / 2 - style.lineheight/2 +2
     rect.y = ty
     local tx = rect.x + 2
     rect.x = tx
     self.text:Draw(rect, style)
-    self.selectable.rect = rect
+end
+
+function Button:GetColor(style)
+	local c = style.colors.button
+	return c[self.selectable.state]
 end
 
 function Button:SetOnClick(onclick)
@@ -29,7 +35,7 @@ function Button:SetOnClick(onclick)
 end
 
 function Button:GetSelectables()
-    return self.selectable
+    return {self.selectable}
 end
 
 return Button

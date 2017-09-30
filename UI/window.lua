@@ -24,12 +24,8 @@ function Window:AddObject(object, rect)
 	if object.GetSelectables then
 		local selectables = object:GetSelectables()
 		if selectables then
-			if type(selectables) == "table" then
-				for _,s in ipairs(selectables) do
-					self.selectables[#self.selectables+1] = s
-				end
-			else
-				self.selectables[#self.selectables+1] = selectables
+			for _,s in ipairs(selectables) do
+				self.selectables[#self.selectables+1] = s
 			end
 		end
 	end

@@ -1,9 +1,13 @@
 require "mathx"
+vec2 = require "vec2"
 require "tablep"
 
 require "namespace"
 require "class"
 require "rect"
+require "circle"
+
+require "Graph/graph"
 
 require "Console/console"
 
@@ -47,7 +51,7 @@ function love.load()
 
 	Console.Initialize(uicontrol)
 
-	Animation.Editor.Window(Rect(400,0,400,600), ui)
+	local animeditor = Animation.Editor.Window(Rect(400,0,400,600), ui)
 
 	tablep.Test()
 

@@ -31,7 +31,7 @@ function TextInput:TextInput(text)
 end
 
 function TextInput:GetSelectables()
-    return self
+    return {self}
 end
 
 return TextInput

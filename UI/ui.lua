@@ -8,12 +8,30 @@ UI = Namespace{
 	Draw = require "UI/draw",
 
 	Selectable = require "UI/selectable",
-	Text = require "UI/text",
-	Button = require "UI/button",
-	TextInput = require "UI/textinput",
-	TitleBar = require "UI/titlebar",
-	StatusBar = require "UI/statusbar",
-	Graph = require "UI/graph",
-	ScrollView = require "UI/scrollview",
-	Window = require "UI/window"
 }
+
+UI:AddNames{
+	Text = "UI/text",
+	Button =  "UI/button",
+	TextInput = "UI/textinput",
+	TitleBar = "UI/titlebar",
+	StatusBar = "UI/statusbar",
+	Graph = "UI/graph",
+	ScrollView = "UI/scrollview",
+	Window = "UI/window"
+}
+
+function UI.BeginMask(rect)
+	-- this stencil is for objects in viewport
+	love.graphics.stencil(
+		function()
+			love.graphics.rectangle("fill", rect.x, rect.y, rect.width, rect.height)
+		end,
+		"replace",
+		1)
+	love.graphics.setStencilTest("greater", 0)
+end
+
+function UI.EndMask()
+	love.graphics.setStencilTest()
+end

@@ -2,10 +2,17 @@ local function load(file)
     return require ("Animation/Editor/"..file)
 end
 local Editor = Namespace{
-    Window = load"window",
+
     Model = load"model",
     View = load"view",
+    Control = load"control",
 
-    KeyFrameEditor = load"keyframeeditor"
+
+}
+
+Editor:AddNames{
+        NodeEditor = "Animation/Editor/nodeeditor",
+        KeyFrameEditor = "Animation/Editor/keyframeeditor",
+        Window = "Animation/Editor/window"
 }
 return Editor

@@ -5,7 +5,7 @@ function Selectable.Create(rect)
 		state = "normal",
 		rect = rect or Rect.Zero(),
 		focused = false,
-		dragoffset = {x=0,y=0}
+		dragoffset = vec2(0,0)
 	}
 end
 
@@ -17,8 +17,8 @@ end
 function Selectable:Draw(rect, style, drawf)
 	drawf = drawf or UI.Draw.Box
 	local color = self:GetColor(style)
-	drawf(rect,color)
-	self.rect = rect
+	self.rect = rect:Copy()
+	drawf(self.rect,color)
 end
 
 function Selectable:Focus(isfocused)
@@ -33,10 +33,10 @@ end
 
 function Selectable:MouseDown()
 	local x,y = love.mouse.getPosition()
-	self.dragoffset = {
-		x = x-self.rect.x,
-		y = y-self.rect.y
-	}
+	self.dragoffset = vec2(
+		x-self.rect.x,
+		y-self.rect.y
+	)
 	self.state = "selected"
 	console:Log("selected "..tostring(self))
 	if self.onMouseDown then
@@ -53,10 +53,10 @@ end
 
 function Selectable:Drag()
 	local x,y = love.mouse.getPosition()
-	self.dragoffset = {
-		x = x-self.rect.x,
-		y = x-self.rect.y
-	}
+	self.dragoffset = vec2(
+		x-self.rect.x,
+		y-self.rect.y
+	)
 	if self.onDrag then
 		self:onDrag(self.dragoffset)
 	end

@@ -1,63 +1,77 @@
--- a :: function that returns an iterator
--- Ma :: a procedure on the iterator. a fucntion that returns a
+-- a :: an iterator
+-- Ma :: a procedure on the iterator. can also be used as an iterator
 
 local proc = {
     __processing = true -- flag for if we need to wrap a table or iterator
 }
 
--- takes an iterator and a function that takes and iterator and returns a value
--- return a function that returns iterators
-local function makea(iter, f)
+-- makes a generator of iterators for processing
+local function makeiter(t)
+    local k = nil
     return function()
-        -- get iterator
-        local current = f(iter)
-        -- iterator
-        return function()
-            -- apply filter
-            local c = current
-            if c then
-                current = f(iter)
-                return c
-            end
-        end
+        local nk,r = next(t,k)
+        k = nk
+        return r
     end
 end
 
--- takes an A and a function that takes an iterator and returns values
--- returns a Ma
-local function makema(a, f)
-    return proc.result(makea(a(), f))
+-- table -> Ma
+local function makeprocessobject(t)
+    if type(t) == "table" then
+        if t.__processing then
+            return t
+        else
+            return proc.result(makeiter(t))
+        end
+    else
+        return proc.result(t)
+    end
 end
--- generates a result
--- type a -> Ma
+-- generates an iterator wrapped in a monad, can be called like a normal iterator
+-- a -> Ma
 function proc.result(a)
     return setmetatable(
-    {value = a},
+    {iter = a},
     {
         __call = a,
         __index = proc
     })
 end
 
-
--- generate a computation
--- type Ma -> (a -> Ma) -> Ma
-function proc.bind(a, next)
-    return next(a.value)
+-- generates a null iterator no matter what it's given
+-- a
+function proc.zero()
 end
 
--- filter an iterator
--- type Ma -> ( a -> a ) -> Ma
-function proc.filter(a, f)
-    return a:bind(
-        -- a->Ma
+-- Ma -> (a->Ma) -> Ma
+function proc.bind(a, f)
+    a = makeprocessobject(a)
+    return f(a.iter)
+end
+
+function proc.map(a, f)
+    return proc.bind(a,
         function(b)
-            return makema(
-                b,
-                function(iter)
-                    local c = iter()
-                    while c and not f(c) do
-                        c = iter()
+            return proc.result(
+                function()
+                    local c = b()
+                    if c ~= nil then
+                        return f(c)
+                    end
+                end
+            )
+        end
+    )
+end
+
+function proc.filter(a,f)
+    return proc.bind(a,
+        function(b)
+            return proc.result(
+                function()
+                    local c = b()
+                    while c ~= nil and not f(c) do
+                        c = b()
                     end
                     return c
                 end
@@ -66,80 +80,50 @@ function proc.filter(a, f)
     )
 end
 
-function proc.map(a, f)
-    return a:bind(
-        -- a->Ma
-        function(b)
-            return makema(
-                b,
-                function(iter)
-                    local c = iter()
-                    if c then
-                        c = f(c)
-                        return c
-                    end
+function proc.concat(a,b)
+    return proc.bind(a,
+        function(aa)
+            return proc.bind(b,
+                function(bb)
+                    return proc.result(
+                        function()
+                            local c = aa and aa()
+                            if c ~= nil then
+                                return c
+                            else
+                                aa = nil
+                                return bb()
+                            end
+                        end
+                    )
                 end
             )
         end
     )
 end
 
-tablep = {}
-setmetatable(proc, {__index=tablep})
-
--- makes an a generator of iterators for processing
-local function makeiterpairs(t)
-    return function()
-        local k = nil
-        return function()
-            local nk,r = next(t,k)
-            k = nk
-            return r
-        end
-    end
-end
-
-local function getiter(a)
-    return a()
-end
-
-local function gettable(iter)
-    local result = {}
+function proc.totable(a)
+    local t = {}
     local i = 1
-    for r in iter() do
-        result[i] = r
+    --console:Log("a: "..tostring(a))
+    for v in a do
+        t[i] = v
         i = i + 1
+    --    console:Log("v: "..tostring(v))
     end
-    return result
+    return t
 end
 
-local function makeprocessobject(t)
-    if t.__processing then
-        return t
-    else
-        return proc.result(makeiterpairs(t))
-    end
-end
-
-function tablep.Filter(t,f)
-    t = makeprocessobject(t)
-    return t:filter(f)
-end
-
-function tablep.Map(t,f)
-    t = makeprocessobject(t)
-    return t:map(f)
-end
-
-function tablep.Identity(t)
---    return gettable(getiter(proc.result(makeiterpairs(t))))
-end
+tablep = {}
+setmetatable(tablep, {__index=proc})
 
 function tablep.Test()
     local tpt = {"a", "A", "good", "BAD"}
-	local tpr = tablep.Filter(tpt, function(a) return a == a:lower() end)
-        :Map(function(a) return "-"..a.."_" end)
-    local tpi = tablep.Identity(tpt)
-    local rt = gettable(tpr)
+    local ttt = {"b", "B", "happy", "SAD"}
+	local tpr = tablep.concat(tpt,ttt)
+        :filter(function(a) return a == a:lower() end)
+        :map(function(a) return "-"..a.."_" end)
+    local tpi = makeprocessobject(tpt)
+    local rt = tpr:totable()
 	console:Log(table.concat(rt))
 end

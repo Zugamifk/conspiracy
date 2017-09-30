@@ -13,28 +13,28 @@ end
 
 function Camera:Draw(board)
 	local s = self.size
-	local context = function(x,y) 
+	local context = function(x,y)
 		local cx,cy = self:WorldToScreenPosition(x,y)
 		return CameraContext(cx,cy,s,s)
 	end
-	
+
 	local wx,wy = self:ScreenToWorldPosition(0, 0)
 	local tiles = board:GetTiles(
 		wx,
-		wy,		
-		self.width/s+1, 
+		wy,
+		self.width/s+1,
 		self.height/s+1)
-		
+
 	love.graphics.setColor(
 		255,255,255
 	)
-	
+
 	for tile,x,y in tiles do
 		local cxt = context(x, y)
-		
+
 		-- how do it drawed tiles
 		TileGraphics.Draw(cxt, tile)
-		
+
 		if tile.selected then
 			local w = cxt.width
 			local h = cxt.height
@@ -45,8 +45,8 @@ function Camera:Draw(board)
 	end
 	tiles = board:GetTiles(
 		wx,
-		wy,		
-		self.width/s+1, 
+		wy,
+		self.width/s+1,
 		self.height/s+1)
 	for tile, x, y in tiles do
 		local cxt = context(x, y)
@@ -54,8 +54,8 @@ function Camera:Draw(board)
 			o:Draw(cxt)
 		end
 	end
-	
-	ui:Draw(CameraContext(0,0,self.width, self.height))
+
+	ui:Draw(Rect(0,0,self.width, self.height))
 end
 
 function Camera:WorldToScreenPosition(x,y)

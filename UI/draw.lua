@@ -25,6 +25,20 @@ function Draw.Box(rect, color, line)
 	love.graphics.rectangle(style, x,y,w,h)
 end
 
+function Draw.Circle(circle, color, line)
+	local r = circle.r
+	local x = circle.x
+	local y = circle.y
+	local style = "fill"
+
+	love.graphics.setColor(color)
+	if line then
+		style = "line"
+	end
+	love.graphics.circle(style, x,y,r)
+end
+
+
 function Draw.Text(rect, text, style)
 	love.graphics.setColor(style.colors.text)
 	love.graphics.print(text, rect.x, rect.y)

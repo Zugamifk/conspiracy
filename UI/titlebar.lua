@@ -19,7 +19,6 @@ function TitleBar:Draw(rect, style)
     br.y = tpos
     self.text:Draw(br, style)
 
-
     br = br:Copy()
     local buttonwidth = rect.height - 4
     br.x = br.x + br.width - buttonwidth - 2
@@ -40,11 +39,7 @@ function TitleBar:AddButton(text, onclick)
 end
 
 function TitleBar:GetSelectables()
-    local s = {}
-    for _,b in ipairs(self.buttons) do
-        s[#s+1] = b:GetSelectables()
-    end
-    return s
+    return tablep.map(self.buttons, function(b) return b:GetSelectables()[1] end):totable()
 end
 
 return TitleBar
