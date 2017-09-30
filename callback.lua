@@ -8,5 +8,4 @@ function mt:__call(obj, f)
     end
 end
 
-
 return setmetatable(Callback, mt)

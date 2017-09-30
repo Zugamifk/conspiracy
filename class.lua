@@ -11,6 +11,7 @@ function Class.__call(class,...)
 	-- construct new instance
 	local result = setmetatable({}, mt)
 
+	-- initialize base class object if needed
 	if class.base then
 		result.base = class.base()
 	end

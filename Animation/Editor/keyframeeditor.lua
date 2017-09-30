@@ -9,7 +9,9 @@ function KeyFrameEditor:Create()
     self.position = vec2(0,0)
     self.rectorigin = vec2(0,0) -- position in rect space
 
-    self.keyframe = nil
+    self.keyframe = nil -- current keyframe being edited
+    self.selectednode = nil -- current selected node
+
     self.nodeeditors = {}
 
     -- callbacks
@@ -120,6 +122,11 @@ function KeyFrameEditor:AddNodeEditor(node)
     self.nodeeditors[node] = editor
 end
 
+-- event when selecting a node
+function KeyFrameEditor:SelectNode(node)
+    self.selectednode = node
+end
+
 -- event when dragging in the field
 function KeyFrameEditor:Drag(pos)
     self.position = self.position + pos
@@ -127,9 +134,13 @@ end
 
 -- event when clicking in the field
 function KeyFrameEditor:MouseUp(pos)
-    pos = self:RectToKeyFrameSpace(self.selectable.rect, pos)
-    if self.onSelectedField then
-        self.onSelectedField(pos)
+    if self.selectednode == nil then
+        pos = self:RectToKeyFrameSpace(self.selectable.rect, pos)
+        if self.onSelectedField then
+            self.onSelectedField(pos)
+        end
+    else
+        self.selectednode = nil
     end
 end
 
