@@ -1,7 +1,7 @@
 local Window = Class()
 
 function Window:Create(rect)
-	self.rect = rect:Copy()
+	self.rect = nil
 	self.focused = false
 	self.objects = {}
 
@@ -10,42 +10,38 @@ function Window:Create(rect)
 	self.selectables = {}
 
 	self.enabled = false -- if true, is visible and active
+
+	if rect then
+		self.rect = rect:Copy()
+	end
 end
 
-function Window:AddObject(object, rect)
-	if not rect then
-		rect = self.rect:Copy()
-		rect.x = 0
-		rect.y = 0
-	end
-	self.objects[#self.objects+1] = {object = object, rect = rect}
+function Window:AddObject(object)
+	self.objects[#self.objects+1] = object
 end
 
 function Window:Draw(_,style)
 	UI.Draw.FramedBox(self.rect, style, self.focused)
 	for i,o in ipairs(self.objects) do
-		local rect = o.rect:Copy()
-		rect.x = rect.x + self.rect.x
-		rect.y = rect.y+self.rect.y
-		o.object:Draw(rect, style)
+		o:Draw(style)
 	end
 end
 
 function Window:Focus(isfocused)
 	self.focused = isfocused
 	local x,y = love.mouse.getPosition()
-	self.dragoffset = {
-		x = self.rect.x - x,
-		y = self.rect.y - y
-	}
+	self.dragoffset = vec2(
+		self.rect.x - x,
+		self.rect.y - y
+	)
 end
 
 function Window:MouseDown()
 	local x,y = love.mouse.getPosition()
-	self.dragoffset = {
-		x = self.rect.x - x,
-		y = self.rect.y - y
-	}
+	self.dragoffset = vec2(
+		self.rect.x - x,
+		self.rect.y - y
+	)
 end
 
 function Window:Drag()
@@ -57,15 +53,15 @@ end
 function Window:SetActive(enabled)
 	self.enabled = enabled
 	if enabled then
-		self:RefreshSelecablesCache()
+		self:RefreshSelectablesCache()
 	end
 end
 
-function Window:RefreshSelecablesCache()
+function Window:RefreshSelectablesCache()
 	local i =1
 	for _,o in ipairs(self.objects) do
-		if o.object.GetSelectables then
-			local selectables = o.object:GetSelectables()
+		if o.GetSelectables then
+			local selectables = o:GetSelectables()
 			if selectables then
 				for _,s in ipairs(selectables) do
 					self.selectables[i] = s
@@ -80,6 +76,14 @@ function Window:RefreshSelecablesCache()
 		end
 	end
 	console:Log("refreshed selectables: now "..#self.selectables)
+end
+
+-- rebuild rects and reposition object, regenrate graphics
+function Window:Rebuild(rect)
+	RefreshSelectablesCache()
+	for _,o in ipairs(self.object) do
+		o:Rebuild(rect)
+	end
 end
 
 return Window

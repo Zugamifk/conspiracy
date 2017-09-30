@@ -1,6 +1,5 @@
 UI = Namespace{
 	Events = require "UI/events",
-	Controller = require "UI/controller",
 
 	Colors = require "UI/colors",
 	Style = require "UI/style",
@@ -19,6 +18,10 @@ UI:AddNames{
 	Graph = "UI/graph",
 	ScrollView = "UI/scrollview",
 	Window = "UI/window"
+}
+
+UI:AddNames{
+	UserInterface = "UI/userinterface"
 }
 
 function UI.BeginMask(rect)

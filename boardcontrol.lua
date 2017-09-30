@@ -29,17 +29,17 @@ function BoardControl:Update(dt)
 end
 
 function BoardControl:SelectTile(x,y)
-	if self.selectedtile then
-		self.selectedtile.selected = false
-	end
-	local t = self.board:GetTile(x,y)
-	self.selectedtile = t
-	if t then
-		t.selected = true
-		if #t.objects>0 then
-			ui:SelectObject(t.objects[1])
-		else
-			ui:SelectObject(nil)
-		end
-	end
+	-- if self.selectedtile then
+	-- 	self.selectedtile.selected = false
+	-- end
+	-- local t = self.board:GetTile(x,y)
+	-- self.selectedtile = t
+	-- if t then
+	-- 	t.selected = true
+	-- 	if #t.objects>0 then
+	-- 		ui:SelectObject(t.objects[1])
+	-- 	else
+	-- 		ui:SelectObject(nil)
+	-- 	end
+	-- end
 end

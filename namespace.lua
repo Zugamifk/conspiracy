@@ -5,12 +5,13 @@ Namespace = {
 Namespace.mt = {}
 
 function Namespace.mt.__call(t,namespace)
-	namespace = namespace or {}
+	local ns = {}
 	local mt = {
 		__call = t.__call,
 		__index = t
 	}
-	return setmetatable(namespace, mt)
+	Namespace.AddNames(ns, namespace)
+	return setmetatable(ns, mt)
 end
 
 function Namespace:AddNames(t)
@@ -18,7 +19,11 @@ function Namespace:AddNames(t)
 		if self[n] then
 			error ("name "..n.." already exists in the table! can not load "..c)
 		end
-		self[n] = require(c)
+		if type(c) == "string" then
+			self[n] = require(c)
+		else
+			self[n] = c
+		end
 	end
 end
 
