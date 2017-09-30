@@ -1,12 +1,9 @@
 Tile = Class()
 
-function Tile.Create(x,y)
-	local t = {
-		x=x,
-		y=y,
-		objects = {}
-	}
-	return t
+function Tile:Create(x,y)
+	self.x=x
+	self.y=y
+	self.objects = {}
 end
 
 function Tile:AddObject(object)

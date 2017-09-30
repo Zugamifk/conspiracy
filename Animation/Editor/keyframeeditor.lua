@@ -1,25 +1,20 @@
 local KeyFrameEditor = Class()
 
-function KeyFrameEditor.Create()
-    local kfe = {
-        focused = false,
-        selectable = UI.Selectable(),
+function KeyFrameEditor:Create()
+    self.focused = false
+    self.selectable = UI.Selectable(nil,{
+        onMouseUp = callback(self, KeyFrameEditor.MouseUp)
+    })
 
-        position = vec2(0,0),
-        rectorigin = vec2(0,0), -- position in rect space
+    self.position = vec2(0,0)
+    self.rectorigin = vec2(0,0) -- position in rect space
 
-        keyframe = nil,
-        nodeeditors = {},
+    self.keyframe = nil
+    self.nodeeditors = {}
 
-
-        -- callbacks
-        onSelectedField = nil, -- function(pos)
-        onMoveNode = nil -- function(node, pos)
-    }
-    function kfe.selectable.onMouseUp(p)
-        KeyFrameEditor.MouseUp(kfe, p)
-    end
-    return kfe
+    -- callbacks
+    self.onSelectedField = nil -- function(pos)
+    self.onMoveNode = nil -- function(node, pos)
 end
 
 function KeyFrameEditor:Draw(rect, style)

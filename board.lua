@@ -5,8 +5,8 @@ Board = Class({
 })
 
 --todo: optimize for big boards
-function Board.Create()
-	local b = {}
+function Board:Create()
+	local b = self
 	b.tiles = {}
 	for x = 1,Board.width do
 		b.tiles[x] = {}
@@ -15,7 +15,6 @@ function Board.Create()
 		end
 	end
 	b.tiles[25][25]:AddObject(Character())
-	return b
 end
 
 function Board:GetTile(x,y)
@@ -48,7 +47,7 @@ function Board:GetTiles(x,y,w,h)
 			local rx = xi
 			local ry = yi
 			xi = xi + 1
-			if xi == X then 
+			if xi == X then
 				xi = x0
 				yi = yi + 1
 			end
@@ -74,7 +73,7 @@ function Board:GetSurrounding(x,y,r)
 			local rx = xi
 			local ry = yi
 			xi = xi + 1
-			if xi == X then 
+			if xi == X then
 				xi = x0
 				yi = yi + 1
 			end

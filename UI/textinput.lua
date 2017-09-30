@@ -1,13 +1,9 @@
 local TextInput = Class()
 
-function TextInput.Create()
-    local textinput = {
-        text = UI.Text(),
-        rect = Rect.Zero(),
-        onSubmit = nil -- callback
-    }
-
-    return textinput
+function TextInput:Create()
+    self.text = UI.Text()
+    self.rect = Rect.Zero()
+    self.onSubmit = nil -- callback
 end
 
 function TextInput:AddText(text)

@@ -1,7 +1,7 @@
 CameraControl = Class()
 
-function CameraControl.Create(camera)
-	return setmetatable({camera = camera}, CameraControl.mt)
+function CameraControl:Create(camera)
+	self.camera = camera
 end
 
 function CameraControl:UpdateEvents(events)

@@ -1,12 +1,9 @@
 -- required in UI.lua
 local StatusBar = Class()
 
-function StatusBar.Create(defaultText)
-	local statusbar = {
-		text = defaultText or "",
-		buttons = {}
-	}
-	return statusbar
+function StatusBar:Create(defaultText)
+	self.text = defaultText or ""
+	self.buttons = {}
 end
 
 function StatusBar:SetText(text)

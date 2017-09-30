@@ -1,10 +1,8 @@
 local Graph = Class()
 
-function Graph.Create()
-	return {
-		samples = 100,
-		lines = {}
-	}
+function Graph:Create()
+	self.samples = 100
+	self.lines = {}
 end
 
 function Graph:Draw(rect,style)
@@ -12,10 +10,10 @@ function Graph:Draw(rect,style)
 	local h = rect.height
 	local x = rect.x
 	local y = rect.y
-	
+
 	love.graphics.setColor(style.colors.background)
 	love.graphics.rectangle("fill", x,y,w,h)
-	
+
 	local centre = rect.y + rect.height/2
 	love.graphics.line(rect.x, centre, rect.x+rect.width,centre)
 	for _,l in ipairs(self.lines) do

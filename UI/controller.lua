@@ -1,11 +1,9 @@
 local Controller = Class()
 
-function Controller.Create(ui)
-	return {
-		ui = ui,
-		focus = nil, -- object currently undder cursor
-		inputfocus = nil -- last object clicked on
-	}
+function Controller:Create(ui)
+	self.ui = ui
+	self.focus = nil -- object currently undder cursor
+	self.inputfocus = nil -- last object clicked on
 end
 
 function Controller:UpdateEvents(events)

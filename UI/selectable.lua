@@ -1,18 +1,14 @@
 local Selectable = Class()
 
-function Selectable.Create(rect, callbacks)
-	local sel = {
-		state = "normal",
-		rect = rect or Rect.Zero(),
-		focused = false,
-		dragoffset = vec2(0,0)
-	}
+function Selectable:Create(rect, callbacks)
+	self.state = "normal"
+	self.rect = rect or Rect.Zero()
+	self.focused = false
+	self.dragoffset = vec2(0,0)
 
 	if callbacks then
-		Selectable.SetCallbacks(sel, callbacks)
+		Selectable.SetCallbacks(self, callbacks)
 	end
-
-	return sel
 end
 
 function Selectable:SetCallbacks(callbacks)

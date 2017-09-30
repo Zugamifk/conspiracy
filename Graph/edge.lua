@@ -1,11 +1,8 @@
 local Edge = Class()
 
-function Edge.Create(a,b)
-    local edge = {
-        a = a,
-        b = b
-    }
-    return edge
+function Edge:Create(a,b)
+    self.a = a
+    self.b = b
 end
 
 return Edge

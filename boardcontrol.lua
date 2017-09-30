@@ -1,18 +1,15 @@
 BoardControl = Class()
 
-function BoardControl.Create(board)
-	local bc = {
-		board = board,
-		selectedtile = nil
-	}
-	return bc
+function BoardControl:Create(board)
+	self.board = board
+	self.selectedtile = nil
 end
 
 function BoardControl:UpdateEvents(events)
 	if events.boardinput then
 		local i = events.boardinput.event
 		local m = i.mouse
-		if m.button == 1 then 
+		if m.button == 1 then
 			self:SelectTile(i.x, i.y)
 		else
 			if ui.selected then
@@ -25,7 +22,7 @@ end
 
 function BoardControl:Update(dt)
 	for t in self.board:GetTiles() do
-		for i,o in ipairs(t.objects) do 
+		for i,o in ipairs(t.objects) do
 			o:Update(dt)
 		end
 	end
@@ -37,9 +34,9 @@ function BoardControl:SelectTile(x,y)
 	end
 	local t = self.board:GetTile(x,y)
 	self.selectedtile = t
-	if t then		
+	if t then
 		t.selected = true
-		if #t.objects>0 then 
+		if #t.objects>0 then
 			ui:SelectObject(t.objects[1])
 		else
 			ui:SelectObject(nil)

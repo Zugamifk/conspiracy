@@ -1,18 +1,16 @@
 local Console = Class()
 
-function Console.Create()
-	local console= {}
-	console.log = {}
-	console.size = 1000
-	console.head = 1
-	console.lineHeight = 15
-	console.enabled = true
-	console.view = {
+function Console:Create()
+	self.log = {}
+	self.size = 1000
+	self.head = 1
+	self.lineHeight = 15
+	self.enabled = true
+	self.view = {
 		width = 300,
 		height = 500,
 		statsHeight = 30
 	}
-	return console
 end
 
 function Console:Log(message)

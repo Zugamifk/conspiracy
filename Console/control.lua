@@ -1,12 +1,8 @@
 local Control = Class()
 
-function Control.Create(console, commands)
-    local control = {
-        console = console,
-        commands = commands
-    }
-
-    return control
+function Control:Create(console, commands)
+    self.console = console
+    self.commands = commands
 end
 
 function Control:OnSubmit(text)

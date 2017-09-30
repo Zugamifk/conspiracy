@@ -1,8 +1,6 @@
 Distribution = Class()
 
-function Distribution.Create()
-	local w = {}
-	return w
+function Distribution:Create()
 end
 
 function Distribution.CreateWeightedDistribution(...)
@@ -14,7 +12,7 @@ function Distribution.CreateWeightedDistribution(...)
 	local intervals = {}
 	local sum = 0
 	local length = 0
-	for i=1,#arg/2 do 
+	for i=1,#arg/2 do
 		local ai = (i-1)*2+1
 		local step = arg[ai]
 		local weight = arg[ai+1]
@@ -28,7 +26,7 @@ function Distribution.CreateWeightedDistribution(...)
 		local step = 0
 		for i,int in ipairs(intervals) do
 			step = step + int.weight/self.weight
-			if x < step then 
+			if x < step then
 				return i
 			end
 		end

@@ -1,16 +1,15 @@
 local Window = Class()
 
-function Window.Create(rect, ui)
+function Window:Create(rect, ui)
         local editor = Animation.Editor
-        local window = {
-            rect = rect,
-            model = nil
-        }
+
+        self.rect = rect
+        self.model = nil
 
         local model = editor.Model()
         local keyframe = Animation.KeyFrame()
         model:SetKeyFrame(keyframe)
-        window.model = model
+        self.model = model
 
         local view = editor.View(rect, model)
         view.keyframeeditor:SetKeyFrame(keyframe)
@@ -32,9 +31,6 @@ function Window.Create(rect, ui)
                 control:MoveNode(node, pos)
             end
         )
-        --view.window.enabled = true
-
-        return window
 end
 
 return Window

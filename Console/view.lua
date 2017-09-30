@@ -1,29 +1,27 @@
 local View = Class()
 
-function View.Create(rect, console)
+function View:Create(rect, console)
     local window = UI.Window(rect)
     local lineheight = 16
-    local view = {
+    self.console = console
 
-        console = console,
+    self.window = window
+    self.lineheight = lineheight
 
-        window = window,
-        lineheight = lineheight,
+    self.scrollview = nil
 
-        scrollview = nil,
+    -- callbacks
+    self.onSubmit = nil
+    self.onClose = nil
 
-        -- callbacks
-        onSubmit = nil,
-        onClose = nil
-    }
     local windowwidth = rect.width
 
     local titlebar = UI.TitleBar("Console")
     titlebar:AddButton(
         "x",
         function()
-            if view.onClose then
-                view:onClose()
+            if self.onClose then
+                self:onClose()
             end
         end
      )
@@ -37,20 +35,18 @@ function View.Create(rect, console)
     local scrollheight  = rect.height - ypos -inputheight -10
 	local scrollrect = Rect(5,ypos,windowwidth-10,scrollheight)
 	window:AddObject(scrollview, scrollrect)
-    view.scrollview = scrollview
+    self.scrollview = scrollview
 
     ypos = ypos + scrollheight + 3
 	local textinput = UI.TextInput()
 	textinput.onSubmit = function()
         local text = textinput.text.text
         textinput.text.text = ""
-        if view.onSubmit then
-            view.onSubmit(text)
+        if self.onSubmit then
+            self.onSubmit(text)
         end
 	end
 	window:AddObject(textinput, Rect(5,ypos, windowwidth-10, lineheight+4))
-
-    return view
 end
 
 function View:AddEntry(text)

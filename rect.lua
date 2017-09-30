@@ -2,11 +2,17 @@ Rect = Class{
 	type = "Rect"
 }
 
-function Rect.Create(x,y,w,h)
+function Rect:Create(x,y,w,h)
 	if type(x) == "table" then
-		return x
+		self.x = x.x
+		self.y = x.y
+		self.width = x.width
+		self.height = x.height
 	else
-		return {x=x,y=y,width=w,height=h}
+		self.x = x
+		self.y = y
+		self.width = w
+		self.height = h
 	end
 end
 

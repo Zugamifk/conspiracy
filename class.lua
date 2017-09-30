@@ -4,22 +4,23 @@ Class = {
 
 -- constructor to make a new instance
 function Class.__call(class,...)
+	-- set metatable
+	local mt = {
+		__index = class -- index class for methods and static values
+	}
 	-- construct new instance
-	local result = {}
+	local result = setmetatable({}, mt)
 
 	if class.base then
 		result.base = class.base()
 	end
 
+	-- initialize result
 	if class.Create then
-		result = class.Create(...)
+		result:Create(...)
 	end
 
-	-- set metatable
-	local mt = {
-		__index = class -- index class for methods and static values
-	}
-	return setmetatable(result, mt)
+	return result
 end
 
 -- class metatable

@@ -1,12 +1,11 @@
 local View = Class()
 
-function View.Create(rect, model)
+function View:Create(rect, model)
     local window = UI.Window(rect)
-    local view = {
-        model = model,
-        window = window,
-        keyframeeditor = nil
-    }
+    self.model = model
+    self.window = window
+    self.keyframeeditor = nil
+
 
     local kfe = Animation.Editor.KeyFrameEditor()
     local kfr = rect:Copy()
@@ -15,8 +14,7 @@ function View.Create(rect, model)
     kfr.y = 10
     kfr.height = math.min(kfr.height - 200, 150)
     window:AddObject(kfe,kfr)
-    view.keyframeeditor = kfe
-    return view
+    self.keyframeeditor = kfe
 end
 
 function View:Refresh()

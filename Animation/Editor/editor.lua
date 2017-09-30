@@ -7,7 +7,6 @@ local Editor = Namespace{
     View = load"view",
     Control = load"control",
 
-
 }
 
 Editor:AddNames{

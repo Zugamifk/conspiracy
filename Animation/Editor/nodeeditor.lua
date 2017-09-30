@@ -1,27 +1,23 @@
 local NodeEditor = Class()
 
-function NodeEditor.Create(node)
-    local ne = {
-        focused = false,
-        selectable = nil,
-        circle = Circle(),
-        node = node,
+function NodeEditor:Create(node)
+    self.focused = false
+    self.selectable = nil
+    self.circle = Circle()
+    self.node = node
 
-        selectable = nil,
+    self.selectable = nil
 
-        -- callbacks
-        onSelectedNode = nil, -- function(self)
-        onMoveNode = nil -- function(self, pos)
-    }
+    -- callbacks
+    self.onSelectedNode = nil -- function(self)
+    self.onMoveNode = nil -- function(self, pos)
 
     local callbacks = {
-        onMouseUp = callback(ne, NodeEditor.MouseUp),
-        onDrag = callback(ne, NodeEditor.Drag)
+        onMouseUp = callback(self, NodeEditor.MouseUp),
+        onDrag = callback(self, NodeEditor.Drag)
     }
     local sel = UI.Selectable(nil, callbacks)
-    ne.selectable = sel
-
-    return ne
+    self.selectable = sel
 end
 
 function NodeEditor:Draw(rect, style)

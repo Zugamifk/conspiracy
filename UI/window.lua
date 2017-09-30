@@ -1,17 +1,15 @@
 local Window = Class()
 
-function Window.Create(rect)
-	return {
-		rect = rect,
-		focused = false,
-		objects = {},
+function Window:Create(rect)
+	self.rect = rect:Copy()
+	self.focused = false
+	self.objects = {}
 
-		dragoffset = {x=0,y=0},
+	self.dragoffset = {x=0,y=0}
 
-		selectables = {},
+	self.selectables = {}
 
-		enabled = false -- if true, is visible and active
-	}
+	self.enabled = false -- if true, is visible and active
 end
 
 function Window:AddObject(object, rect)

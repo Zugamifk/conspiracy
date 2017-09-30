@@ -1,11 +1,7 @@
 local Control = Class()
 
-function Control.Create(model)
-    local control = {
-        model = model
-    }
-
-    return control
+function Control:Create(model)
+    self.model = model
 end
 
 function Control:AddNodeToKeyFrame(pos)

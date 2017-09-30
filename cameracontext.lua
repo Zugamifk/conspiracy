@@ -1,13 +1,10 @@
 CameraContext = Class()
 
-function CameraContext.Create(x,y,w,h)
-	local cc = {
-		x=x,
-		y=y,
-		width = w,
-		height = h
-	}
-	return cc
+function CameraContext:Create(x,y,w,h)
+	self.x=x
+	self.y=y
+	self.width = w
+	self.height = h
 end
 
 function CameraContext:Rect()

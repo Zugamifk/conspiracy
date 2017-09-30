@@ -1,8 +1,6 @@
 local Events = Class()
 
-function Events.Create()
-	return {
-	}
+function Events:Create()
 end
 
 function Events:Focus(object)

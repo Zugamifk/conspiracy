@@ -1,15 +1,11 @@
 local TitleBar = Class()
 
-function TitleBar.Create(title)
-    local tb = {
-        title = title,
-        buttons = {}
-    }
+function TitleBar:Create(title)
+    self.title = title
+    self.buttons = {}
 
     local title = UI.Text(title)
-    tb.text = title
-
-    return tb
+    self.text = title
 end
 
 function TitleBar:Draw(rect, style)

@@ -1,15 +1,14 @@
 WangTiles = Class()
 
-function WangTiles.Create(wang)
-	local w = {}
-	w.wang = wang
-	
+function WangTiles:Create(wang)
+	self.wang = wang
+
 	local c1 = {80,100,88}
 	local c2 = {137,133,95}
 	local c3 = {195,186,83}
 	local c4 = {232,147,83}
 	local c5 = {63,56,46}
-	
+
 	wang:AddRule(
 		WangTiles.GetDrawFunction(c1,c2,c1,c1),
 		1,2,1,1
@@ -66,7 +65,6 @@ function WangTiles.Create(wang)
 		WangTiles.GetDrawFunction(c4,c3,c5,c5),
 		4,3,5,5
 	)
-	return w
 end
 
 function WangTiles.GetDrawFunction(l,r,t,b)

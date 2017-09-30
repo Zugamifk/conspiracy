@@ -1,12 +1,8 @@
 local Graph = Class()
 
-function Graph.Create()
-    local graph = {
-        vertices = {},
-        edges = {}
-    }
-
-    return graph
+function Graph:Create()
+    self.vertices = {}
+    self.edges = {}
 end
 
 function Graph:AddVertex(v)

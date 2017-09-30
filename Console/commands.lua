@@ -8,12 +8,8 @@ local Commands = Class{
     }
 }
 
-function Commands.Create()
-    local commands = {
-        commands = {}
-    }
-
-    return commands
+function Commands:Create()
+    self.commands = {}
 end
 
 function Commands:AddCommand(name, f)

@@ -1,7 +1,6 @@
 local Vertex = Class()
 
-function Vertex.Create()
-    return {}
+function Vertex:Create()
 end
 
 return Vertex

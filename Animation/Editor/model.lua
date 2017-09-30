@@ -1,11 +1,7 @@
 local Model = Class()
 
-function Model.Create()
-    local model = {
-        keyframe = nil
-    }
-
-    return model
+function Model:Create()
+    self.keyframe = nil
 end
 
 function Model:SetKeyFrame(keyframe)

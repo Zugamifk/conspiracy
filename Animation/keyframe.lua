@@ -1,11 +1,7 @@
 local KeyFrame = Class()
 
-function KeyFrame.Create()
-    local kf = {
-        skeleton = Graph.Graph() -- a graph
-    }
-
-    return kf
+function KeyFrame:Create()
+    self.skeleton = Graph.Graph() -- a graph
 end
 
 function KeyFrame:AddNode(x,y)

@@ -2,13 +2,9 @@ local Model = Class{
     max = 100
 }
 
-function Model.Create()
-    local model = {
-        entries = {},
-        currentindex = 1
-    }
-
-    return model
+function Model:Create()
+    self.entries = {}
+    self.currentindex = 1
 end
 
 function Model:Clear()

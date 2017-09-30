@@ -1,10 +1,7 @@
 PathFinding = Class()
 
-function PathFinding.Create(board)
-	local pf = {
-		board = board
-	}
-	return pf
+function PathFinding:Create(board)
+	self.board = board
 end
 
 function PathFinding:Path(start, goal)
@@ -20,9 +17,9 @@ function PathFinding:Path(start, goal)
 	local current = nil
 	local checkNeighbour = function(t)
 		if closed[t] then
-			return 
+			return
 		end
-		if not open[t] then 
+		if not open[t] then
 			open[t] = true
 			openCount = openCount + 1
 			pathScores[t] = math.huge
@@ -42,7 +39,7 @@ function PathFinding:Path(start, goal)
 				current = t
 			end
 		end
-		if current == goal then 
+		if current == goal then
 			break
 		end
 		open[current] = nil

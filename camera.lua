@@ -1,14 +1,11 @@
 Camera = Class()
 
-function Camera.Create(x,y,w,h, size)
-	local c = {
-		x = x,
-		y = y,
-		width = w,
-		height = h,
-		size = size
-	}
-	return c
+function Camera:Create(x,y,w,h, size)
+	self.x = x
+	self.y = y
+	self.width = w
+	self.height = h
+	self.size = size
 end
 
 function Camera:Draw(board)

@@ -1,7 +1,6 @@
 Wang = Class()
-function Wang.Create()
-	local w = {}
-	w.rules = {}
+function Wang:Create()
+	self.rules = {}
 	return w
 end
 
@@ -21,7 +20,7 @@ function Wang:GetRule(l,r,t,b)
 		end
 	end
 			--console:Log(#worker)
-	if #worker > 0 then 
+	if #worker > 0 then
 		local weights = {}
 		for i,v in ipairs(worker) do
 			local wi = (i-1)*2+1
@@ -31,7 +30,7 @@ function Wang:GetRule(l,r,t,b)
 		local d = Distribution.CreateWeightedDistribution(weights)
 		local i = d.distribution(math.random())
 		--console:Log(i)
-		return worker[i] 
+		return worker[i]
 	end
 end
 
@@ -44,7 +43,7 @@ function Wang:Draw(context, tile)
 	local h = context.height
 	local x = context.x
 	local y = context.y
-	if tile.wang then 
+	if tile.wang then
 		tile.wang.func(context)
 	end
 end
@@ -57,13 +56,13 @@ function Wang:Generate(board)
 	for iters = 1,10 do
 		for x = 1,w do
 			for y = 1,h do
-				if not board.tiles[x][y].wang then 
+				if not board.tiles[x][y].wang then
 					local l = x > 1 and board.tiles[x-1][y].wang and board.tiles[x-1][y].wang.r or nil
 					local r = x < w and board.tiles[x+1][y].wang and board.tiles[x+1][y].wang.l or nil
 					local t = y > 1 and board.tiles[x][y-1].wang and board.tiles[x][y-1].wang.b or nil
 					local b = y < h and board.tiles[x][y+1].wang and board.tiles[x][y+1].wang.t or nil
 					local rule = self:GetRule(l,r,t,b)
-					if rule then 
+					if rule then
 						board.tiles[x][y].wang = rule
 					else
 						errors = errors + 1
@@ -71,7 +70,7 @@ function Wang:Generate(board)
 				end
 			end
 		end
-		if iters < 10 and errors > 0 then 
+		if iters < 10 and errors > 0 then
 			for x = 1,w do
 				for y = 1,h do
 					if not board.tiles[x][y].wang then
@@ -90,10 +89,10 @@ end
 
 function Wang.Test()
 	local wang = Wang()
-	local log = function(msg) 
-		return function() console:Log(msg) end 
+	local log = function(msg)
+		return function() console:Log(msg) end
 	end
-	
+
 	-- trivial rule
 	wang:AddRule(
 			log("No sides!"),
@@ -102,14 +101,14 @@ function Wang.Test()
 	local f = wang:GetRule()
 	assert(f, "FAIL! Rule mismatch when testing \'trivial\' with GetRule()")
 	f()
-	
+
 	local f = wang:GetRule(1)
 	assert(f, "FAIL! Rule mismatch when testing \'trivial\' GetRule(1)")
 	f()
-	
+
 	wang:Clear()
 	assert(#wang.rules == 0, "failed to clear!")
-	
+
 	-- left
 	wang:AddRule(
 		log("Left side!"),
@@ -119,22 +118,22 @@ function Wang.Test()
 	local f = wang:GetRule(1)
 	assert(f, "FAIL! Rule mismatch when testing \'left\' with GetRule(1)")
 	f()
-	
+
 	local f = wang:GetRule(1,1)
 	assert(f, "FAIL! Rule mismatch when testing \'left\' with GetRule(1,1)")
 	f()
-	
+
 	local f = wang:GetRule()
 	assert(f, "FAIL! Rule mismatch when testing \'left\' with GetRule()")
 	f()
-	
+
 	local f = wang:GetRule(2)
 	assert(not f, "FAIL! Rule mismatch when testing \'left\' with GetRule(2)")
 	log("GetRule(2) == nil")()
-	
+
 	wang:Clear()
 	assert(#wang.rules == 0, "failed to clear!")
-	
+
 	-- two sides
 		wang:AddRule(
 		log("Two sides!"),
@@ -153,7 +152,7 @@ function Wang.Test()
 	local f = wang:GetRule(nil,nil,1)
 	assert(f, "FAIL! Rule mismatch when testing \'left\' with GetRule(nil,nil,1)")
 	f()
-	
+
 	local f = wang:GetRule(2)
 	assert(not f, "FAIL! Rule mismatch when testing \'left\' with GetRule(2)")
 	log("GetRule(2) == nil")()
@@ -166,5 +165,5 @@ function Wang.Test()
 	local f = wang:GetRule(2,nil,2)
 	assert(not f, "FAIL! Rule mismatch when testing \'left\' with GetRule(2,nil,2)")
 	log("GetRule(2,nil,2) == nil")()
-	
+
 end

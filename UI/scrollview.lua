@@ -1,16 +1,15 @@
 local ScrollView = Class()
 
-function ScrollView.Create()
-	local scrollview = {
-		options = {
+function ScrollView:Create()
+	local scrollview = self
+	scrollview.options = {
 			startsfrom = "top", -- also, "bottom"
 			direction = "down"
-		},
-		scrollposition = 0,
-		contents = {},
-		contentsheight = 0,
-		scrollheight = 0
-	}
+		}
+	scrollview.scrollposition = 0
+	scrollview.contents = {}
+	scrollview.contentsheight = 0
+	scrollview.scrollheight = 0
 
 	local scrollbar = UI.Selectable(Rect.Zero())
 	local scrollmousestart = 0
@@ -25,7 +24,6 @@ function ScrollView.Create()
 		scrollview.scrollposition = math.clamp(scrollview.scrollposition,0,1)
 	end
 	scrollview.scrollbar = scrollbar
-	return scrollview
 end
 
 function ScrollView:Draw(rect, style)

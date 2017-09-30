@@ -1,12 +1,9 @@
 local Control = Class()
 
-function Control.Create(console)
-	local cc = {
-		console = console,
-		focused = false,
-		mouseAction = nil
-	}
-	return cc
+function Control:Create(console)
+	self.console = console
+	self.focused = false
+	self.mouseAction = nil
 end
 
 function Control:UpdateEvents(events)

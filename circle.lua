@@ -2,8 +2,10 @@ Circle = Class{
 	type = "Circle"
 }
 
-function Circle.Create(x,y,r)
-    return {x=x,y=y,radius = r}
+function Circle:Create(x,y,r)
+    self.x=x
+    self.y=y
+    self.radius = r
 end
 
 function Circle:Contains(x,y)

@@ -1,16 +1,13 @@
 local Button = Class()
 
-function Button.Create(text)
-    local tb = {
-    }
+function Button:Create(text)
+    local tb = self
 
     local text = UI.Text(text)
     tb.text = text
 
     local selectable = UI.Selectable()
     tb.selectable = selectable
-
-    return tb
 end
 
 function Button:Draw(rect, style)
