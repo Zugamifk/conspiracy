@@ -1,7 +1,9 @@
 require "mathx"
 vec2 = require "vec2"
 callback = require "callback"
+argassert = require"assertarg"
 require "tablep"
+require "tableo"
 
 require "namespace"
 require "class"
@@ -54,7 +56,10 @@ function love.load()
 
 	local animeditor = Animation.Editor.Window(Rect(400,0,400,600), ui)
 
-	tablep.Test()
+--	tablep.Test()
+	--tableo.test()
+
+	argassert.test()
 
 	-- wang = Wang.Create()
 	-- wangtiles = WangTiles.Create(wang)
