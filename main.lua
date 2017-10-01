@@ -1,7 +1,9 @@
 require "mathx"
 vec2 = require "vec2"
 callback = require "callback"
+argassert = require"assertarg"
 require "tablep"
+require "tableo"
 
 require "namespace"
 require "class"
@@ -49,7 +51,10 @@ function love.load()
 
 	editor = Editor.UI()
 
-	tablep.Test()
+--	tablep.Test()
+	--tableo.test()
+
+	argassert.test()
 
 	-- wang = Wang.Create()
 	-- wangtiles = WangTiles.Create(wang)
