@@ -5,7 +5,7 @@ end
 
 function A.strongfunc(f, a)
     return function(...)
-        n = select("#", ...)
+        local n = select("#", ...)
         for i=1,n do
             local arg = select(i, ...)
             local asrt = a[i]
@@ -17,11 +17,13 @@ function A.strongfunc(f, a)
     end
 end
 
+function A.asserttype(arg, typename)
+    assert(type(arg) == typename,
+end
+
 function A.type(t)
     return function(arg)
-        assert(type(arg) == t,
-            "TYPE MISMATCH: expected "..t..", got "..type(arg))
-        return arg
+        A.asserttype(arg, t)
     end
 end
 
@@ -52,6 +54,14 @@ function A.tablekeys(keys)
             end
         )
         return t
+    end
+end
+
+function A.typedef(elements)
+    return function(t)
+        for k,v in pairs(t) do
+
+        end
     end
 end
 
