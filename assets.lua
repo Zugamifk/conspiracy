@@ -48,10 +48,10 @@ function Assets:GetImage(name)
 end
 
 function Assets:Draw(name, index, context)
-	local w = context.width
-	local h = context.height
-	local x = context.x
-	local y = context.y
+	local w = context.rect.width
+	local h = context.rect.height
+	local x = context.rect.x
+	local y = context.rect.y
 	local img = self:GetImage(name)
 	if type(img) == "table" then
 		local q = img.sprites[index]

@@ -6,17 +6,18 @@ end
 
 function CameraControl:UpdateEvents(events)
 	local c = self.camera
+	local r = c.rect
 	if events.w then
-		c.y = c.y-5
+		r.y = r.y-5
 	end
 	if events.a then
-		c.x = c.x-5
+		r.x = r.x-5
 	end
 	if events.s then
-		c.y = c.y+5
+		r.y = r.y+5
 	end
 	if events.d then
-		c.x = c.x+5
+		r.x = r.x+5
 	end
 	if events.mousewheelX then
 		self:SetSize (c.size+math.sign(events.mousewheelX.event))

@@ -1,11 +1,8 @@
-local function load(file)
-    return require ("Animation/Editor/"..file)
-end
 local Editor = Namespace{
 
-    Model = load"model",
-    View = load"view",
-    Control = load"control",
+    Model = "Animation/Editor/model",
+    View = "Animation/Editor/view",
+    Control = "Animation/Editor/control",
 
 }
 

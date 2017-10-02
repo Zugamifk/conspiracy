@@ -8,7 +8,8 @@ function TitleBar:Create(title)
     self.text = title
 end
 
-function TitleBar:Draw(rect, style)
+function TitleBar:Draw(style)
+    local rect = self.rect
     UI.Draw.Box(rect, style.colors.titlebar)
     local br = rect:Copy()
     local tpos = rect.y + rect.height / 2 - style.lineheight/2 +2
@@ -26,6 +27,10 @@ function TitleBar:Draw(rect, style)
         br = br:Copy()
         br.x = br.x - buttonwidth - 2
     end
+end
+
+function TitleBar:Rebuild(rect)
+
 end
 
 function TitleBar:AddButton(text, onclick)
