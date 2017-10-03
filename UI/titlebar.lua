@@ -9,28 +9,33 @@ function TitleBar:Create(title)
 end
 
 function TitleBar:Draw(style)
-    local rect = self.rect
-    UI.Draw.Box(rect, style.colors.titlebar)
-    local br = rect:Copy()
-    local tpos = rect.y + rect.height / 2 - style.lineheight/2 +2
-    br.y = tpos
-    self.text:Draw(br, style)
+    UI.Draw.Box(self.rect, style.colors.titlebar)
 
-    br = br:Copy()
-    local buttonwidth = rect.height - 4
-    br.x = br.x + br.width - buttonwidth - 2
-    br.y = rect.y + 2
-    br.height = buttonwidth
-    br.width = buttonwidth
+    self.text:Draw(style)
+    
     for i,b in ipairs(self.buttons) do
-        b:Draw(br, style)
-        br = br:Copy()
-        br.x = br.x - buttonwidth - 2
+        b:Draw(style)
     end
 end
 
-function TitleBar:Rebuild(rect)
+function TitleBar:Rebuild(rect, style)
+    self.rect = rect:Copy()
+    local tr = rect
+    local tpos = tr.y + tr.height / 2 - style.lineheight/2 +2
+    tr.y = tpos
+    self.text:Rebuild(tr)
 
+    local br = tr:Copy()
+    local buttonwidth = self.rect.height - 4
+    br.x = br.x + br.width - buttonwidth - 2
+    br.y = self.rect.y + 2
+    br.height = buttonwidth
+    br.width = buttonwidth
+    for i,b in ipairs(self.buttons) do
+        br = br:Copy()
+        b:Rebuild(br, style)
+        br.x = br.x - buttonwidth - 2
+    end
 end
 
 function TitleBar:AddButton(text, onclick)

@@ -23,11 +23,14 @@ function Selectable:GetColor(style)
 	return c[self.state]
 end
 
-function Selectable:Draw(rect, style, drawf)
+function Selectable:Draw(style, drawf)
 	drawf = drawf or UI.Draw.Box
 	local color = self:GetColor(style)
-	self.rect = rect:Copy()
 	drawf(self.rect,color)
+end
+
+function Selectable:Rebuild(rect, style)
+	self.rect = rect:Copy()
 end
 
 function Selectable:Focus(isfocused)

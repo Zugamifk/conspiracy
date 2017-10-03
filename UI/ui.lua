@@ -1,6 +1,8 @@
 UI = Namespace{
 	Events = require "UI/events",
 
+	AnchoredRect = require "UI/anchoredrect",
+
 	Colors = require "UI/colors",
 	Style = require "UI/style",
 

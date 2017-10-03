@@ -34,20 +34,43 @@ function Rect:Copy()
 	return Rect(self.x, self.y, self.width, self.height)
 end
 
-function Rect:Max()
+function Rect:GetMax()
 	return vec2(self.x+self.width, self.y+self.height)
 end
 
-function Rect:Position()
+function Rect:SetMax(max)
+	self.width = max.x - self.x
+	self.height = max.y - self.y
+end
+
+function Rect:GetPosition()
 	return vec2(self.x, self.y)
 end
 
-function Rect:Min()
+function Rect:SetPosition(pos)
+	self.x = pos.x
+	self.y = pos.y
+end
+
+function Rect:GetMin()
 	return vec2(self.x, self.y)
 end
 
-function Rect:Size()
+function Rect:SetMin(min)
+	local dx,dy = min.x-self.x, min.y-self.y
+	self.x = min.x
+	self.y = min.y
+	self.width = self.width - dx
+	self.height = self.height - dy
+end
+
+function Rect:GetSize()
 	return vec2(self.width, self.height)
+end
+
+function Rect:SetSize(size)
+	self.width = size.x
+	self.height = size.y
 end
 
 function Rect:Centre()
@@ -69,4 +92,8 @@ end
 
 function Rect.Zero()
 	return Rect(0,0,0,0)
+end
+
+function Rect.Unit()
+	return Rect(0,0,1,1)
 end

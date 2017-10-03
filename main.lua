@@ -54,7 +54,8 @@ function love.load()
 --	tablep.Test()
 	--tableo.test()
 
-	argassert.test()
+	-- argassert.test()
+	UI.AnchoredRect.Test()
 
 	-- wang = Wang.Create()
 	-- wangtiles = WangTiles.Create(wang)
@@ -65,7 +66,7 @@ end
 
 function love.draw()
 	camera:Draw(board)
-	editor:Draw(camera.rect)
+	editor:Draw()
 	console:Draw(0,0,500,500)
 end
 

@@ -5,7 +5,8 @@ function Graph:Create()
 	self.lines = {}
 end
 
-function Graph:Draw(rect,style)
+function Graph:Draw(style)
+	local rect = self.rect
 	local w = rect.width
 	local h = rect.height
 	local x = rect.x
@@ -30,6 +31,10 @@ function Graph:Draw(rect,style)
 		love.graphics.setColor(l.color or style.colors.line0)
 		love.graphics.line(points)
 	end
+end
+
+function Graph:Rebuild(rect,style)
+	self.rect = rect:Copy()
 end
 
 function Graph:AddLine(color, f, xmin, xmax, ymin, ymax)

@@ -35,14 +35,10 @@ function EditorUI:Update()
     -- if events["`"] and events["`"].event == "pressed" then
 	-- 	self:SetWindowActive("console")
 	-- end
+    self.ui:Update()
 end
 
-function EditorUI:Draw(rect)
-    local w = rect.width
-	local h = rect.height
-	local x = rect.x
-	local y = rect.y
-
+function EditorUI:Draw()
 	-- old
 	if self.selected then
 		local selectedrect = rect:Copy()
@@ -65,7 +61,7 @@ function EditorUI:Draw(rect)
 			love.graphics.rectangle("fill", unpack(selectedrect))
 		end
 	end
-    self.ui.view:Draw(rect)
+    self.ui.view:Draw()
 end
 
 -- old

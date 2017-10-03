@@ -1,19 +1,14 @@
 local UserInterfaceView = Class()
 
-function UserInterfaceView:Create(model)
-    self.model = model
-	self.style = UI.Style()
+function UserInterfaceView:Create(ui)
+    self.ui = ui
 end
 
-function UserInterfaceView:Draw(rect)
-	local w = rect.width
-	local h = rect.height
-	local x = rect.x
-	local y = rect.y
+function UserInterfaceView:Draw()
 	-- draw windows
-	for k,s in pairs(self.model.windows) do
+	for k,s in pairs(self.ui.windows) do
 		if s.enabled then
-			s:Draw(rect, self.style)
+			s:Draw(self.ui.style)
 		end
 	end
 end

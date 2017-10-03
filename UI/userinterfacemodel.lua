@@ -6,6 +6,8 @@ function UserInterfaceModel:Create(rect)
 
 	self.focus = nil -- object currently undder cursor
 	self.inputfocus = nil -- last object clicked on
+
+	self.style = UI.Style()
 end
 
 function UserInterfaceModel:GetWindow(name)

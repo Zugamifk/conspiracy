@@ -19,6 +19,7 @@ end
 
 function A.asserttype(arg, typename)
     assert(type(arg) == typename,
+        "TYPE MISMATCH: expected "..typename..", got "..type(arg))
 end
 
 function A.type(t)

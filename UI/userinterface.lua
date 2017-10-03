@@ -10,6 +10,9 @@ function UserInterface:Create()
 
 	local main = UI.Window()
 	self.control:AddWindow("main", main)
+
+	local rect = Rect(0,0,love.graphics.getDimensions())
+	self.control:Rebuild(rect)
 end
 
 function UserInterface:Draw()

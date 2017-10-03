@@ -10,9 +10,13 @@ function TextInput:AddText(text)
     self.text:SetText(self.text.text..text)
 end
 
-function TextInput:Draw(rect, style)
-    UI.Draw.FramedBox(rect, style)
-    self.text:Draw(rect, style)
+function TextInput:Draw(style)
+    UI.Draw.FramedBox(self.rect, style)
+    self.text:Draw(style)
+end
+
+function TextInput:Rebuild(rect, style)
+    self.text:Rebuild(rect, style)
     self.rect = rect
 end
 

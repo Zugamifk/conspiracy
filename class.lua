@@ -4,17 +4,29 @@ Class = {
 
 -- constructor to make a new instance
 function Class.__call(class,...)
+	local function instancebase(t,k)
+		local v = rawget(t,k)
+		if v~= nil then
+			return v
+		end
+		local b = rawget(t,"base")
+		if b then
+			return instancebase(b,k)
+		end
+	end
 	-- set metatable
 	local mt = {
-		__index = class -- index class for methods and static values
+		__index = function(t,k) -- index class for methods and static values
+			local base = instancebase(t,k)
+			if base~=nil then
+				return base
+			end
+
+			return class[k]
+		end
 	}
 	-- construct new instance
 	local result = setmetatable({}, mt)
-
-	-- initialize base class object if needed
-	if class.base then
-		result.base = class.base()
-	end
 
 	-- initialize result
 	if class.Create then

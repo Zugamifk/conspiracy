@@ -20,7 +20,7 @@ function Window:AddObject(object)
 	self.objects[#self.objects+1] = object
 end
 
-function Window:Draw(_,style)
+function Window:Draw(style)
 	UI.Draw.FramedBox(self.rect, style, self.focused)
 	for i,o in ipairs(self.objects) do
 		o:Draw(style)
@@ -79,10 +79,12 @@ function Window:RefreshSelectablesCache()
 end
 
 -- rebuild rects and reposition object, regenrate graphics
-function Window:Rebuild(rect)
-	RefreshSelectablesCache()
-	for _,o in ipairs(self.object) do
-		o:Rebuild(rect)
+function Window:Rebuild(rect, style)
+	self:RefreshSelectablesCache()
+	for _,o in ipairs(self.objects) do
+		if o.Rebuild then
+			o:Rebuild(self.rect, style)
+		end -- todo: remove this if
 	end
 end
 

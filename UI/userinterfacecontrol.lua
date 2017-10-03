@@ -71,7 +71,7 @@ end
 
 function UserInterfaceControl:Rebuild(rect)
 	for k,w in pairs(self.ui.windows) do
-		w:Rebuild(rect)
+		w:Rebuild(rect, self.ui.style)
 	end
 end
 
