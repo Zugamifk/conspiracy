@@ -16,8 +16,9 @@ function Window:Create(rect)
 	end
 end
 
-function Window:AddObject(object)
+function Window:AddObject(object, rect)
 	self.objects[#self.objects+1] = object
+	object.rect = rect
 end
 
 function Window:Draw(style)
@@ -48,6 +49,7 @@ function Window:Drag()
 	local x,y = love.mouse.getPosition()
 	self.rect.x = x+self.dragoffset.x
 	self.rect.y = y+self.dragoffset.y
+	console:Log(self.dragoffset)
 end
 
 function Window:SetActive(enabled)
@@ -75,16 +77,15 @@ function Window:RefreshSelectablesCache()
 			self.selectables[j] = nil
 		end
 	end
-	console:Log("refreshed selectables: now "..#self.selectables)
+	--console:Log("refreshed selectables: now "..#self.selectables)
 end
 
 -- rebuild rects and reposition object, regenrate graphics
 function Window:Rebuild(rect, style)
+	self.rect:Rebuild(rect)
 	self:RefreshSelectablesCache()
 	for _,o in ipairs(self.objects) do
-		if o.Rebuild then
-			o:Rebuild(self.rect, style)
-		end -- todo: remove this if
+		o:Rebuild(self.rect, style)
 	end
 end
 

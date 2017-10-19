@@ -69,9 +69,11 @@ function UserInterfaceControl:UpdateEvents(events)
 	end
 end
 
-function UserInterfaceControl:Rebuild(rect)
+function UserInterfaceControl:Rebuild()
 	for k,w in pairs(self.ui.windows) do
-		w:Rebuild(rect, self.ui.style)
+		if w.enabled then
+			w:Rebuild(self.ui.controlrect, self.ui.style)
+		end
 	end
 end
 
@@ -99,6 +101,7 @@ function UserInterfaceControl:SetWindowActive(name, enabled)
 	window:SetActive(enabled)
 
 	if enabled then
+		window:Rebuild(self.ui.controlrect, self.ui.style)
 		self.ui.selectables[name] = window.selectables
 	else
 		self.ui.selectables[name] = nil

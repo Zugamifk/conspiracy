@@ -9,7 +9,8 @@ Console = Namespace{
 
 function Console.Initialize(uicontroller)
     local model = Console.Model()
-	local view = Console.View(Rect(250,25,200,400), model)
+	local view = Console.View(
+        UI.AnchoredRect(Rect(600,25,200,400)), model)
 
     local commands = Console.Commands()
     local control = Console.Control(model, commands)

@@ -9,7 +9,7 @@ function Text:Draw(style)
 end
 
 function Text:Rebuild(rect)
-	self.rect = rect
+	self.rect:Rebuild(rect)
 end
 
 function Text:SetText(str)

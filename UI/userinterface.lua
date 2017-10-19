@@ -4,15 +4,16 @@ local control = require "UI/userinterfacecontrol"
 local UserInterface = Class()
 
 function UserInterface:Create()
-	self.model = model()
+	local rect = Rect(0,0,love.graphics.getDimensions())
+	local anchoredrect = UI.AnchoredRect(rect)
+	self.model = model(anchoredrect)
 	self.view = view(self.model)
 	self.control = control(self.model)
 
-	local main = UI.Window()
+	local main = UI.Window(anchoredrect)
 	self.control:AddWindow("main", main)
 
-	local rect = Rect(0,0,love.graphics.getDimensions())
-	self.control:Rebuild(rect)
+	self.control:Rebuild()
 end
 
 function UserInterface:Draw()
@@ -25,8 +26,7 @@ function UserInterface:UpdateEvents(events)
 end
 
 function UserInterface:Update()
-	local rect = Rect(0,0,love.graphics.getDimensions())
-	self.control:Rebuild(rect)
+	self.control:Rebuild()
 end
 
 function UserInterface:SetWindowActive(name, enabled)
@@ -34,8 +34,8 @@ function UserInterface:SetWindowActive(name, enabled)
 end
 
 function UserInterface:AddObjectToMainWindow(object, rect)
-	local main = self.model:GetWindow("main", rect)
-	main:AddObject(object)
+	local main = self.model:GetWindow("main")
+	main:AddObject(object, rect)
 end
 
 return UserInterface

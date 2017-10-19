@@ -153,7 +153,7 @@ function KeyFrameEditor:GetSelectables()
         :fold()
         :concat({self.selectable})
         :totable()
-    console:Log("returning "..#results.." results")
+--    console:Log("returning "..#results.." results")
     return results
 end
 

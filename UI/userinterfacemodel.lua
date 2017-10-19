@@ -1,6 +1,7 @@
 local UserInterfaceModel = Class()
 
 function UserInterfaceModel:Create(rect)
+	self.controlrect = rect -- an achored rect for rebuilding the ui
 	self.selectables = {} -- objects that can recieve input
 	self.windows = {}
 

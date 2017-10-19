@@ -22,11 +22,14 @@ function EditorUI:Create()
             controller:SetWindowActive("uitest")
         end
     )
-    ui:AddObjectToMainWindow()
+    ui:AddObjectToMainWindow(statusbar,
+        UI.AnchoredRect(
+            Rect(0,0,0,16),
+            UI.AnchoredRect.presets.stretch.top))
 
     Console.Initialize(ui.control)
 
-    local animeditor = Animation.Editor.Window(Rect(400,0,400,600), ui.control)
+    --local animeditor = Animation.Editor.Window(UI.AnchoredRect(Rect(400,0,400,600)), ui.control)
 
     self.ui = ui
 end
