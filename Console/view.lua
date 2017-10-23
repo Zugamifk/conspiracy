@@ -36,8 +36,10 @@ function View:Create(rect, console)
     local ypos = lineheight + 5
     local inputheight = lineheight
     local scrollheight  = rect.height - ypos -inputheight -10
-	local scrollrect = Rect(5,ypos,windowwidth-10,scrollheight)
-	--window:AddObject(scrollview, scrollrect)
+	local scrollrect = UI.AnchoredRect(
+        Rect(5,ypos,windowwidth-10,scrollheight)
+    )
+	window:AddObject(scrollview, scrollrect)
     self.scrollview = scrollview
 
     ypos = ypos + scrollheight + 3

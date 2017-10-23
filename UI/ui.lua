@@ -1,4 +1,5 @@
 UI = Namespace{
+	Element = require "UI/element",
 	Events = require "UI/events",
 
 	AnchoredRect = require "UI/anchoredrect",
@@ -25,6 +26,8 @@ UI:AddNames{
 UI:AddNames{
 	UserInterface = "UI/userinterface"
 }
+
+--UI.Hierarchy.test()
 
 function UI.BeginMask(rect)
 	-- this stencil is for objects in viewport

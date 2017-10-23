@@ -1,7 +1,10 @@
-local Window = Class()
+local Window = Class({
+	type = "Window"
+},
+UI.Element)
 
 function Window:Create(rect)
-	self.rect = nil
+	self:base()
 	self.focused = false
 	self.objects = {}
 
@@ -17,13 +20,13 @@ function Window:Create(rect)
 end
 
 function Window:AddObject(object, rect)
-	self.objects[#self.objects+1] = object
 	object.rect = rect
+	self:AddChild(object)
 end
 
 function Window:Draw(style)
 	UI.Draw.FramedBox(self.rect, style, self.focused)
-	for i,o in ipairs(self.objects) do
+	for i,o in ipairs(self.children) do
 		o:Draw(style)
 	end
 end
@@ -60,7 +63,7 @@ end
 
 function Window:RefreshSelectablesCache()
 	local i =1
-	for _,o in ipairs(self.objects) do
+	for _,o in ipairs(self.children) do
 		if o.GetSelectables then
 			local selectables = o:GetSelectables()
 			if selectables then
@@ -79,13 +82,9 @@ function Window:RefreshSelectablesCache()
 	--console:Log("refreshed selectables: now "..#self.selectables)
 end
 
--- rebuild rects and reposition object, regenrate graphics
-function Window:Rebuild(rect, style)
-	self.rect:Rebuild(rect)
+-- collect selectables
+function Window:OnRebuild(rect, style)
 	self:RefreshSelectablesCache()
-	for _,o in ipairs(self.objects) do
-		o:Rebuild(self.rect, style)
-	end
 end
 
 return Window

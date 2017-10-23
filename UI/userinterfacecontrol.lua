@@ -70,11 +70,7 @@ function UserInterfaceControl:UpdateEvents(events)
 end
 
 function UserInterfaceControl:Rebuild()
-	for k,w in pairs(self.ui.windows) do
-		if w.enabled then
-			w:Rebuild(self.ui.controlrect, self.ui.style)
-		end
-	end
+	self.ui.root:Rebuild(self.ui.viewrect, self.ui.style)
 end
 
 function UserInterfaceControl:Focus(object)
@@ -101,7 +97,7 @@ function UserInterfaceControl:SetWindowActive(name, enabled)
 	window:SetActive(enabled)
 
 	if enabled then
-		window:Rebuild(self.ui.controlrect, self.ui.style)
+		window:Rebuild(self.ui.viewrect, self.ui.style)
 		self.ui.selectables[name] = window.selectables
 	else
 		self.ui.selectables[name] = nil
@@ -118,5 +114,6 @@ end
 
 function UserInterfaceControl:AddWindow(name, window)
 	self.ui.windows[name] = window
+	self.ui.root:AddChild(window)
 end
 return UserInterfaceControl

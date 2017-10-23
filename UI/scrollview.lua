@@ -1,6 +1,10 @@
-local ScrollView = Class()
+local ScrollView = Class({
+	type = "ScrollView"
+},
+UI.Element)
 
 function ScrollView:Create()
+	self:base()
 	self.options = {
 			startsfrom = "top", -- also, "bottom"
 			direction = "down"
@@ -11,21 +15,19 @@ function ScrollView:Create()
 	self.contentsheight = 0
 	self.scrollheight = 0
 
-	local scrollbar = UI.Selectable(Rect.Zero())
-	local scrollmousestart = 0
-	local scrollpositionstart = 0
-	function scrollbar.onMouseDown()
-		_,scrollmousestart =love.mouse.getPosition()
-		scrollpositionstart = scrollview.scrollposition
-	end
-	function scrollbar.onDrag()
-		local _,my = love.mouse.getPosition()
-		self.scrollposition = scrollpositionstart+(my-scrollmousestart)/self.scrollheight
-		self.scrollposition = math.clamp(self.scrollposition,0,1)
-	end
-	self.scrollbar = scrollbar
-
-	self.rect = Rect.Zero()
+	-- local scrollbar = UI.Selectable(Rect.Zero())
+	-- local scrollmousestart = 0
+	-- local scrollpositionstart = 0
+	-- function scrollbar.onMouseDown()
+	-- 	_,scrollmousestart =love.mouse.getPosition()
+	-- 	scrollpositionstart = scrollview.scrollposition
+	-- end
+	-- function scrollbar.onDrag()
+	-- 	local _,my = love.mouse.getPosition()
+	-- 	self.scrollposition = scrollpositionstart+(my-scrollmousestart)/self.scrollheight
+	-- 	self.scrollposition = math.clamp(self.scrollposition,0,1)
+	-- end
+	-- self.scrollbar = scrollbar
 end
 
 function ScrollView:Draw(style)
@@ -33,68 +35,68 @@ function ScrollView:Draw(style)
 	UI.Draw.FramedBox(self.rect, style)
 
 	-- this stencil is for objects in viewport
-	UI.BeginMask(self.rect)
-	
-	for _,o in ipairs(self.visiblecontents) do
-		o:Draw(style)
-	end
-
-	self.scrollbar:Draw(style)
-
-	UI.EndMask()
+	-- UI.BeginMask(self.rect)
+	--
+	-- for _,o in ipairs(self.visiblecontents) do
+	-- 	o:Draw(style)
+	-- end
+	--
+	-- self.scrollbar:Draw(style)
+	--
+	-- UI.EndMask()
 
 end
 
-function ScrollView:Rebuild(rect, style)
-	self.visiblecontents = {} -- clear visible contents table
-
-	-- find position to start drawing
-	local yposition = 0
-	local viewporty = self.scrollposition
-		* math.max(self.contentsheight - self.rect.height, 0)
-	local startposition = yposition
-	if self.options.startsfrom == "bottom" then
-		startposition = math.max(0, self.rect.height - self.contentsheight)
-	end
-
-	local len = self:ContentsLength()
-	for i,o in ipairs(self.contents) do
-		if self.options.direction == "up" then
-			o = self.contents[len - i + 1]
-		end
-		-- rebuild objects that fit in the viewport
-		if yposition + o.rect.height >= viewporty then
-			local r = o.rect:Copy()
-			r.y =  self.rect.y + startposition + yposition - viewporty
-			r.x = self.rect.x
-			r.width = self.rect.width
-			self.visiblecontents[#self.visiblecontents+1] = o
-			o.object:Rebuild(rect, style)
-		end
-		yposition = yposition + o.rect.height
-		if yposition >= viewporty + self.rect.height then
-			break
-		end
-	end
-
-	-- rebuild the scroll bar
-	local scrollbarheight = self.rect.height-style.scrollbarpadding*2
-	if scrollbarheight < self.contentsheight then
-		local scrollbarsize = math.max(
-			style.scrollbarminheight,
-			2*scrollbarheight/self.contentsheight
-		)
-		local scrollbary = style.scrollbarpadding +
-			self.scrollposition * (scrollbarheight-scrollbarsize)
-		self.scrollbar:Rebuild(Rect(
-			rect.x + rect.width - style.scrollbarpadding - style.scrollbarwidth,
-			rect.y + scrollbary,
-			style.scrollbarwidth,
-			scrollbarsize
-		),
-		style)
-	end
-	self.scrollheight = rect.height - style.scrollbarpadding*2 - self.scrollbar.rect.height
+function ScrollView:OnRebuild(rect, style)
+	-- self.visiblecontents = {} -- clear visible contents table
+	--
+	-- -- find position to start drawing
+	-- local yposition = 0
+	-- local viewporty = self.scrollposition
+	-- 	* math.max(self.contentsheight - self.rect.height, 0)
+	-- local startposition = yposition
+	-- if self.options.startsfrom == "bottom" then
+	-- 	startposition = math.max(0, self.rect.height - self.contentsheight)
+	-- end
+	--
+	-- local len = self:ContentsLength()
+	-- for i,o in ipairs(self.contents) do
+	-- 	if self.options.direction == "up" then
+	-- 		o = self.contents[len - i + 1]
+	-- 	end
+	-- 	-- rebuild objects that fit in the viewport
+	-- 	if yposition + o.rect.height >= viewporty then
+	-- 		local r = o.rect:Copy()
+	-- 		r.y =  self.rect.y + startposition + yposition - viewporty
+	-- 		r.x = self.rect.x
+	-- 		r.width = self.rect.width
+	-- 		self.visiblecontents[#self.visiblecontents+1] = o
+	-- 		o.object:Rebuild(rect, style)
+	-- 	end
+	-- 	yposition = yposition + o.rect.height
+	-- 	if yposition >= viewporty + self.rect.height then
+	-- 		break
+	-- 	end
+	-- end
+	--
+	-- -- rebuild the scroll bar
+	-- local scrollbarheight = self.rect.height-style.scrollbarpadding*2
+	-- if scrollbarheight < self.contentsheight then
+	-- 	local scrollbarsize = math.max(
+	-- 		style.scrollbarminheight,
+	-- 		2*scrollbarheight/self.contentsheight
+	-- 	)
+	-- 	local scrollbary = style.scrollbarpadding +
+	-- 		self.scrollposition * (scrollbarheight-scrollbarsize)
+	-- 	self.scrollbar:Rebuild(Rect(
+	-- 		rect.x + rect.width - style.scrollbarpadding - style.scrollbarwidth,
+	-- 		rect.y + scrollbary,
+	-- 		style.scrollbarwidth,
+	-- 		scrollbarsize
+	-- 	),
+	-- 	style)
+	-- end
+	-- self.scrollheight = rect.height - style.scrollbarpadding*2 - self.scrollbar.rect.height
 end
 
 function ScrollView:AddObject(object, rect, position)

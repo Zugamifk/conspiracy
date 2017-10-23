@@ -1,31 +1,31 @@
 local EditorUI = Class()
 function EditorUI:Create()
     local ui = UI.UserInterface()
-
-    local statusbar = UI.StatusBar("Hello, World!")
-    statusbar:AddButton(
-        "~",
-        function()
-            controller:SetWindowActive("console")
-            console.enabled = not console.enabled
-        end
-    )
-    statusbar:AddButton(
-         "A",
-         function()
-             controller:SetWindowActive("animation")
-         end
-    )
-    statusbar:AddButton(
-        "T",
-        function()
-            controller:SetWindowActive("uitest")
-        end
-    )
-    ui:AddObjectToMainWindow(statusbar,
-        UI.AnchoredRect(
-            Rect(0,0,0,16),
-            UI.AnchoredRect.presets.stretch.top))
+    --
+    -- local statusbar = UI.StatusBar("Hello, World!")
+    -- statusbar:AddButton(
+    --     "~",
+    --     function()
+    --         controller:SetWindowActive("console")
+    --         console.enabled = not console.enabled
+    --     end
+    -- )
+    -- statusbar:AddButton(
+    --      "A",
+    --      function()
+    --          controller:SetWindowActive("animation")
+    --      end
+    -- )
+    -- statusbar:AddButton(
+    --     "T",
+    --     function()
+    --         controller:SetWindowActive("uitest")
+    --     end
+    -- )
+    -- ui:AddObjectToMainWindow(statusbar,
+    --     UI.AnchoredRect(
+    --         Rect(0,0,0,16),
+    --         UI.AnchoredRect.presets.stretch.top))
 
     Console.Initialize(ui.control)
 
