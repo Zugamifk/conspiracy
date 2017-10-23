@@ -1,8 +1,16 @@
 local A = {}
+
+-- assert a function on an arg
+-- a: the argument to test
+-- s: a function returning a boolean and optionally a message on fail
 function A.arg(a,s)
     assert(s(a))
 end
 
+-- composes a function with a function that intercepts the call and runs asserts
+-- on the arguments given to the call. calls the function as normal
+-- f: the funciton to wrap
+-- a: an index set of functions of the type A -> () which should be asserts
 function A.strongfunc(f, a)
     return function(...)
         local n = select("#", ...)
@@ -17,27 +25,32 @@ function A.strongfunc(f, a)
     end
 end
 
+-- asserts that a value has a given type or will throw an error
 function A.asserttype(arg, typename)
     assert(type(arg) == typename,
         "TYPE MISMATCH: expected "..typename..", got "..type(arg))
 end
 
+-- curry asserttype
 function A.type(t)
     return function(arg)
         A.asserttype(arg, t)
     end
 end
 
+-- a bunch of predefined A.type functions
 A.number = A.type"number"
 A.string = A.type"string"
 A.table = A.type"table"
 A.boolean = A.type"boolean"
 A["nil"] = A.type"nil"
+A.null = A.type"nil"
+A.func = A.type"function"
 A["function"] = A.type"function"
 A.userdata = A.type"userdata"
 A.thread = A.type"thread"
 
-
+-- get a function that will assert a table's values are of a certain type
 function A.tabletypes(types)
     return function(t)
         for a,b in tablep.zipiter(t,types) do
@@ -47,6 +60,7 @@ function A.tabletypes(types)
     end
 end
 
+-- get a function that asserts that a table contains certain keys
 function A.tablekeys(keys)
     return function(t)
         tableo.foreach(keys,
@@ -58,14 +72,24 @@ function A.tablekeys(keys)
     end
 end
 
+-- function that tests a table's elements based on the key-value pairs of elements
+-- the key will eb the key looked up in t, the value is either a string
+-- representation of the required type or a function that will do a test of some
+-- kind
 function A.typedef(elements)
     return function(t)
-        for k,v in pairs(t) do
-
+        for k,v in pairs(elements) do
+            if type(v)=="string" then
+                A[v](t[k])
+            elseif type(v) == "function" then
+                v(t[k])
+            end
         end
     end
 end
 
+-- protected a table so that adding new keys to it will assert tests on the value
+-- and optionally the table itself afterwards
 function A.strongtable(t, a, ta)
     a = a or {}
     local mt = {}
@@ -80,6 +104,16 @@ function A.strongtable(t, a, ta)
         end
     end
     return setmetatable(t, mt)
+end
+
+-- check a class's 'type' values
+function A.classtype(ctype)
+    return function(t)
+        assert(t.type == ctype,
+            string.format(
+                "CLASS TYPE MISMATCH: expected %s, got %s",
+                ctype, tostring(t.type)))
+    end
 end
 
 function A.test()

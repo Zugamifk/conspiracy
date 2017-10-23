@@ -7,7 +7,8 @@ function Class.__call(class,...)
 
 	-- set metatable
 	local mt = {
-		__index = class-- index class for methods and static values
+		__index = class, -- index class for methods and static values
+		__tostring = class.ToString -- use the class tostring if it exists
 	}
 
 	-- construct new instance

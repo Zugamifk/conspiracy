@@ -47,9 +47,8 @@ end
 
 function Window:Drag()
 	local x,y = love.mouse.getPosition()
-	self.rect.x = x+self.dragoffset.x
-	self.rect.y = y+self.dragoffset.y
-	console:Log(self.dragoffset)
+	self.rect:Translate(vec2(x,y)+self.dragoffset)
+	console:Log(self.rect)
 end
 
 function Window:SetActive(enabled)

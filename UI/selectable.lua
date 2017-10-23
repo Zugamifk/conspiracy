@@ -2,7 +2,6 @@ local Selectable = Class()
 
 function Selectable:Create(rect, callbacks)
 	self.state = "normal"
-	self.rect = rect or Rect.Zero()
 	self.focused = false
 	self.dragoffset = vec2(0,0)
 
@@ -30,7 +29,7 @@ function Selectable:Draw(style, drawf)
 end
 
 function Selectable:Rebuild(rect, style)
-	self.rect = rect:Copy()
+	self.rect:Rebuild(rect)
 end
 
 function Selectable:Focus(isfocused)

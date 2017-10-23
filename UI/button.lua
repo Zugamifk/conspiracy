@@ -4,9 +4,11 @@ function Button:Create(text)
     local tb = self
 
     local text = UI.Text(text)
+    text.rect = UI.AnchoredRect(Rect(2,-2,0,0), UI.AnchoredRect.presets.stretch.full)
     tb.text = text
 
     local selectable = UI.Selectable()
+    selectable.rect = UI.AnchoredRect(Rect.Zero(), UI.AnchoredRect.presets.stretch.full)
     tb.selectable = selectable
 end
 
@@ -16,13 +18,9 @@ function Button:Draw(style)
 end
 
 function Button:Rebuild(rect, style)
-    self.selectable:Rebuild(rect, style)
-
-    local ty = rect.y + rect.height / 2 - style.lineheight/2 +2
-    rect.y = ty
-    local tx = rect.x + 2
-    rect.x = tx
-    self.text:Rebuild(rect, style)
+    self.rect:Rebuild(rect)
+    self.selectable:Rebuild(self.rect, style)
+    self.text:Rebuild(self.rect, style)
 end
 
 function Button:GetColor(style)

@@ -17,14 +17,14 @@ function View:Create(rect, console)
     local windowwidth = rect.width
 
     local titlebar = UI.TitleBar("Console")
-    -- titlebar:AddButton(
-    --     "x",
-    --     function()
-    --         if self.onClose then
-    --             self:onClose()
-    --         end
-    --     end
-    --  )
+    titlebar:AddButton(
+        "x",
+        function()
+            if self.onClose then
+                self:onClose()
+            end
+        end
+     )
      window:AddObject(titlebar,
         UI.AnchoredRect(
             Rect(0,0,windowwidth,lineheight),

@@ -97,3 +97,7 @@ end
 function Rect.Unit()
 	return Rect(0,0,1,1)
 end
+
+function Rect:ToString()
+	return string.format("rect: (x:%d y:%d w:%d h:%d)",self.x, self.y, self.width, self.height)
+end
