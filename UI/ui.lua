@@ -8,8 +8,10 @@ UI = Namespace{
 	Style = require "UI/style",
 
 	Draw = require "UI/draw",
+}
 
-	Selectable = require "UI/selectable",
+UI:AddNames{
+	Selectable = require "UI/selectable"
 }
 
 UI:AddNames{

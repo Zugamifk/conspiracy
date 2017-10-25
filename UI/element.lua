@@ -39,12 +39,17 @@ function Element:ForEach(f, ...)
 end
 
 function Element:Rebuild(rect, style)
+    if self.PrepareRebuild then
+        self:PrepareRebuild(rect, style)
+    end
+
     self.rect:Rebuild(rect)
     for _,c in ipairs(self.children) do
         c:Rebuild(self.rect, style)
-        if self.OnRebuild then
-            self:OnRebuild(rect, style)
-        end
+    end
+
+    if self.OnRebuild then
+        self:OnRebuild(rect, style)
     end
 end
 

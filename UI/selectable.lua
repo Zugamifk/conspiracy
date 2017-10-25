@@ -1,6 +1,11 @@
-local Selectable = Class()
+local Selectable = Class(
+{
+	type = "Selectable"
+},
+UI.Element)
 
 function Selectable:Create(rect, callbacks)
+	self:base()
 	self.state = "normal"
 	self.focused = false
 	self.dragoffset = vec2(0,0)
@@ -26,10 +31,6 @@ function Selectable:Draw(style, drawf)
 	drawf = drawf or UI.Draw.Box
 	local color = self:GetColor(style)
 	drawf(self.rect,color)
-end
-
-function Selectable:Rebuild(rect, style)
-	self.rect:Rebuild(rect)
 end
 
 function Selectable:Focus(isfocused)
