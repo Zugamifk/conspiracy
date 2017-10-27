@@ -3,6 +3,7 @@ local UserInterfaceModel = Class()
 function UserInterfaceModel:Create(rect)
 	self.selectables = {} -- objects that can recieve input
 	self.windows = {} -- dictionary of windows, for lookup
+	self.orphans = {} -- objects not in windows
 
 	-- root node for the ui, all windows are its children
 	self.root = UI.Element(UI.AnchoredRect(

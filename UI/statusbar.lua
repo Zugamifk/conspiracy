@@ -1,7 +1,11 @@
 -- required in UI.lua
-local StatusBar = Class()
+local StatusBar = Class({
+	type = "Status Bar"
+},
+UI.Element)
 
 function StatusBar:Create(defaultText)
+	self:base()
 	self.text = defaultText or ""
 	self.buttons = {}
 end
@@ -11,51 +15,12 @@ function StatusBar:SetText(text)
 end
 
 function StatusBar:Draw(style)
-	local rect = self.rect
-	local verticalpadding = 5
-	local rx0 = rect.x
 
-	-- correct height for stlye
-	rect.y = rect.y + rect.height
-	rect.height = style.lineheight + verticalpadding * 2
-	rect.y = rect.y - rect.height
-
-	UI.Draw.FramedBox(rect, style)
-	local ry0 = rect.y
-
-	rect.y = rect.y + verticalpadding
-	rect.x = rect.x + style.horizontalpadding
-	UI.Draw.Text(rect, self.text, style)
+	UI.Draw.FramedBox(self.rect, style)
+	UI.Draw.Text(self.rect, self.text, style)
 
 	for i,b in ipairs(self.buttons) do
 		b:Draw(style)
-	end
-end
-
-function StatusBar:Rebuild(rect, style)
-	local verticalpadding = 5
-	local rx0 = rect.x
-
-	-- correct height for stlye
-	rect.y = rect.y + rect.height
-	rect.height = style.lineheight + verticalpadding * 2
-	rect.y = rect.y - rect.height
-
-	local ry0 = rect.y
-
-	rect.y = rect.y + verticalpadding
-	rect.x = rect.x + style.horizontalpadding
-
-	local br = rect:Copy()
-	local buttonwidth = rect.height - verticalpadding*2
-	br.x = rx0 + br.width - buttonwidth - verticalpadding
-	br.y = ry0 + verticalpadding
-	br.height = buttonwidth
-	br.width = buttonwidth
-	for i,b in ipairs(self.buttons) do
-		b:Rebuild(br, style)
-		br = br:Copy()
-		br.x = br.x - buttonwidth - verticalpadding
 	end
 end
 

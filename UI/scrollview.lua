@@ -90,9 +90,7 @@ function ScrollView:PrepareRebuild(rect, style)
 		)
 		--console:Log(tostring(srect))
 	end
-end
 
-function ScrollView:OnRebuild(rect, style)
 	self.children = {} -- clear visible contents table
 
 	-- find position to start drawing
@@ -112,6 +110,7 @@ function ScrollView:OnRebuild(rect, style)
 		-- collect objects that fit in the viewport
 		if yposition + o.rect.height >= viewporty then
 			self:AddChild(o)
+			o.rect.offset.y = yposition
 		end
 		yposition = yposition + o.rect.height
 		if yposition >= viewporty + self.rect.height then

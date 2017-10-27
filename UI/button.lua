@@ -8,7 +8,7 @@ function Button:Create(text)
     local tb = self
 
     local text = UI.Text(text)
-    text.rect = UI.AnchoredRect(Rect(2,-2,0,0), UI.AnchoredRect.presets.stretch.full)
+    text.rect = UI.AnchoredRect(Rect(100,-2,0,0), UI.AnchoredRect.presets.stretch.full)
     tb.text = text
     self:AddChild(text)
 

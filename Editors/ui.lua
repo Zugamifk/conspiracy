@@ -1,8 +1,8 @@
 local EditorUI = Class()
 function EditorUI:Create()
     local ui = UI.UserInterface()
-    --
-    -- local statusbar = UI.StatusBar("Hello, World!")
+
+    local statusbar = UI.StatusBar("Hello, World!")
     -- statusbar:AddButton(
     --     "~",
     --     function()
@@ -22,10 +22,10 @@ function EditorUI:Create()
     --         controller:SetWindowActive("uitest")
     --     end
     -- )
-    -- ui:AddObjectToMainWindow(statusbar,
-    --     UI.AnchoredRect(
-    --         Rect(0,0,0,16),
-    --         UI.AnchoredRect.presets.stretch.top))
+    statusbar.rect = UI.AnchoredRect(
+        Rect(0,0,0,16),
+        UI.AnchoredRect.presets.stretch.bottom)
+    ui:AddObjectToRoot(statusbar)
 
     Console.Initialize(ui.control)
 

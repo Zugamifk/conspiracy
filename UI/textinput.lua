@@ -8,8 +8,9 @@ function TextInput:Create()
     self:base()
     self.text = UI.Text()
     self.text.rect = UI.AnchoredRect(
-        Rect(2,-2,0,0),
+        Rect(2,2,0,0),
         UI.AnchoredRect.presets.stretch.full)
+    self:AddChild(self.text)
     self.onSubmit = nil -- callback
 end
 

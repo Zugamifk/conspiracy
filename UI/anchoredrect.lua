@@ -91,8 +91,8 @@ AnchoredRect.presets = {
         top = function(a)
             a.anchormin = vec2(0,0)
             a.anchormax = vec2(1,0)
-            a.offset = vec2(0, a.height)
-            a.pivot = vec2(0.5, 1)
+            a.offset = vec2(0, 0)
+            a.pivot = vec2(0.5, 0)
             a.padding = vec2(0,a.height)
         end,
         centrehorz = function(a)
@@ -100,6 +100,13 @@ AnchoredRect.presets = {
             a.anchormax = vec2(1,0.5)
             a.offset = vec2(0, 0)
             a.pivot = vec2(0.5)
+            a.padding = vec2(0,a.height)
+        end,
+        bottom = function(a)
+            a.anchormin = vec2(0,1)
+            a.anchormax = vec2(1,1)
+            a.offset = vec2(0, 0)
+            a.pivot = vec2(0.5, 1)
             a.padding = vec2(0,a.height)
         end,
         rightvert = function(a)
@@ -112,7 +119,7 @@ AnchoredRect.presets = {
         full = function(a)
             a.anchormin = vec2(0,0)
             a.anchormax = vec2(1,1)
-            a.offset = vec2(0, 0)
+            a.offset = vec2(0,0)
             a.pivot = vec2(0.5)
             a.padding = vec2(0,0)
         end,

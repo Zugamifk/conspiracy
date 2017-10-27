@@ -33,9 +33,9 @@ function UserInterface:SetWindowActive(name, enabled)
 	self.control:SetWindowActive(name, enabled)
 end
 
-function UserInterface:AddObjectToMainWindow(object, rect)
-	local main = self.model:GetWindow("main")
-	main:AddObject(object, rect)
+function UserInterface:AddObjectToRoot(object)
+	self.model.root:AddChild(object)
+	self.model.orphans[#self.model.orphans+1] = object
 end
 
 return UserInterface
