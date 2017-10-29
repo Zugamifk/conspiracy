@@ -10,8 +10,12 @@ function UserInterface:Create()
 	self.view = view(self.model)
 	self.control = control(self.model)
 
-	local main = UI.Window(anchoredrect)
+	local main = UI.Window(UI.AnchoredRect(nil, UI.AnchoredRect.presets.stretch.full))
+	main.draggable = false
+	main.drawframe = false
+	main.canfocus = false
 	self.control:AddWindow("main", main)
+	self:SetWindowActive("main", true)
 
 	self.control:Rebuild()
 end
@@ -34,8 +38,7 @@ function UserInterface:SetWindowActive(name, enabled)
 end
 
 function UserInterface:AddObjectToRoot(object)
-	self.model.root:AddChild(object)
-	self.model.orphans[#self.model.orphans+1] = object
+	self.model.windows.main:AddObject(object)
 end
 
 return UserInterface

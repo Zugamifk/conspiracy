@@ -20,17 +20,14 @@ function NodeEditor:Create(node)
     self.selectable = sel
 end
 
-function NodeEditor:Draw(rect, style)
-    local centre = rect:Centre()
-    local r = math.min(rect.width, rect.height)/2
+function NodeEditor:Draw(style)
+    local centre = self.rect:Centre()
+    local r = math.min(self.rect.width, self.rect.height)/2
     self.circle.x = centre.x
     self.circle.y = centre.y
     self.circle.r = r
     local c = self.selectable:GetColor(style)
     UI.Draw.Circle(self.circle, c)
-
-    -- refactor out
-    self.selectable.rect = rect:Copy()
 end
 
 function NodeEditor:SetNode(node)

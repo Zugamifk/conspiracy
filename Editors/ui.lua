@@ -3,25 +3,25 @@ function EditorUI:Create()
     local ui = UI.UserInterface()
 
     local statusbar = UI.StatusBar("Hello, World!")
-    -- statusbar:AddButton(
-    --     "~",
-    --     function()
-    --         controller:SetWindowActive("console")
-    --         console.enabled = not console.enabled
-    --     end
-    -- )
-    -- statusbar:AddButton(
-    --      "A",
-    --      function()
-    --          controller:SetWindowActive("animation")
-    --      end
-    -- )
-    -- statusbar:AddButton(
-    --     "T",
-    --     function()
-    --         controller:SetWindowActive("uitest")
-    --     end
-    -- )
+    statusbar:AddButton(
+        "~",
+        function()
+            ui.control:SetWindowActive("console")
+            console.enabled = not console.enabled
+        end
+    )
+    statusbar:AddButton(
+         "A",
+         function()
+             ui.control:SetWindowActive("animation")
+         end
+    )
+    statusbar:AddButton(
+        "T",
+        function()
+            ui.control:SetWindowActive("uitest")
+        end
+    )
     statusbar.rect = UI.AnchoredRect(
         Rect(0,0,0,16),
         UI.AnchoredRect.presets.stretch.bottom)
@@ -29,7 +29,9 @@ function EditorUI:Create()
 
     Console.Initialize(ui.control)
 
-    --local animeditor = Animation.Editor.Window(UI.AnchoredRect(Rect(400,0,400,600)), ui.control)
+    local animeditor = Animation.Editor.Window(
+        UI.AnchoredRect(Rect(400,0,400,600)),
+        ui.control)
 
     self.ui = ui
 end

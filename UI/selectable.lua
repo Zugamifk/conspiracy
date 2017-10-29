@@ -9,6 +9,7 @@ function Selectable:Create(rect, callbacks)
 	self.state = "normal"
 	self.focused = false
 	self.dragoffset = vec2(0,0)
+	self.rect = rect or UI.AnchoredRect(Rect.Zero(), UI.AnchoredRect.presets.stretch.full)
 
 	if callbacks then
 		Selectable.SetCallbacks(self, callbacks)

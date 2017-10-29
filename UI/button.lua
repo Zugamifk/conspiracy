@@ -8,12 +8,11 @@ function Button:Create(text)
     local tb = self
 
     local text = UI.Text(text)
-    text.rect = UI.AnchoredRect(Rect(100,-2,0,0), UI.AnchoredRect.presets.stretch.full)
+    text.rect = UI.AnchoredRect(Rect(2,-2,0,0), UI.AnchoredRect.presets.stretch.full)
     tb.text = text
     self:AddChild(text)
 
     local selectable = UI.Selectable()
-    selectable.rect = UI.AnchoredRect(Rect.Zero(), UI.AnchoredRect.presets.stretch.full)
     tb.selectable = selectable
     self:AddChild(selectable)
 end

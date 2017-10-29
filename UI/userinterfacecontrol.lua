@@ -20,7 +20,7 @@ function UserInterfaceControl:UpdateEvents(events)
 	-- find a window
 	if not f then
 		for k,s in pairs(self.ui.windows) do
-			if s.enabled then
+			if s.enabled and s.canfocus then
 				if s.rect:Contains(mx,my) then
 					f = s
 					break

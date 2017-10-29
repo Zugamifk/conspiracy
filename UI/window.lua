@@ -14,18 +14,32 @@ function Window:Create(rect)
 
 	self.enabled = false -- if true, is visible and active
 
+	-- options
+	-- can teh window be dragged?
+	self.draggable = true
+
+	-- should we draw the frame of the window?
+	self.drawframe = true
+
+	-- should the window itself take input events?
+	self.canfocus = true
+
 	if rect then
 		self.rect = rect:Copy()
 	end
 end
 
 function Window:AddObject(object, rect)
-	object.rect = rect
+	if rect then
+		object.rect = rect
+	end
 	self:AddChild(object)
 end
 
 function Window:Draw(style)
-	UI.Draw.FramedBox(self.rect, style, self.focused)
+	if self.drawframe then
+		UI.Draw.FramedBox(self.rect, style, self.focused)
+	end
 	for i,o in ipairs(self.children) do
 		o:Draw(style)
 	end
@@ -49,9 +63,11 @@ function Window:MouseDown()
 end
 
 function Window:Drag()
-	local x,y = love.mouse.getPosition()
-	self.rect:Translate(vec2(x,y)+self.dragoffset)
-	console:Log(self.rect)
+	if self.draggable then
+		local x,y = love.mouse.getPosition()
+		self.rect:Translate(vec2(x,y)+self.dragoffset)
+		console:Log(self.rect)
+	end
 end
 
 function Window:SetActive(enabled)

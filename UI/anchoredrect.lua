@@ -23,6 +23,9 @@ function AnchoredRect:Create(rect, preset)
         self.pivot = vec2(0)
          -- size of rect relative to anchors
         self.padding = self:GetSize()
+        -- offsets for min and max anchors
+        self.anchorminoffset = vec2(0)
+        self.anchormaxoffset = vec2(0)
     end
 
 end
@@ -33,14 +36,29 @@ function AnchoredRect:Translate(position)
     self.offset = self.offset + os
 end
 
+function AnchoredRect:SetAnchorOffsets(minx,miny,maxx,maxy)
+    if minx then
+        self.anchorminoffset.x = minx
+    end
+    if miny then
+        self.anchorminoffset.y = miny
+    end
+    if maxx then
+        self.anchormaxoffset.x = maxx
+    end
+    if maxy then
+        self.anchormaxoffset.y = maxy
+    end
+end
+
 function AnchoredRect:Rebuild(rect)
     local sz = rect:GetSize()
     local minpx = sz*self.anchormin
     local maxpx = sz*self.anchormax
     local minds = - self.padding * self.pivot
     local maxds = self.padding * (vec2(1)-self.pivot)
-    local min = minpx + minds + self.offset
-    local max = maxpx + maxds + self.offset
+    local min = minpx + minds + self.offset + self.anchorminoffset
+    local max = maxpx + maxds + self.offset + self.anchormaxoffset
     --console:Log(tostring(minds))
     local pos = rect:GetPosition()
     self:SetMin(pos+min)
@@ -64,64 +82,65 @@ function AnchoredRect:Copy()
     return copy
 end
 
+local function defaultSettings(a)
+    a.anchormin = vec2(0.5)
+    a.anchormax = vec2(0.5)
+    a.offset = vec2(0)
+    a.pivot = vec2(0.5)
+    a.padding = vec2(a.width,a.height)
+    a.anchorminoffset = vec2(0)
+    a.anchormaxoffset = vec2(0)
+end
 
 AnchoredRect.presets = {
     topright = function(a)
+        defaultSettings(a)
         a.anchormin = vec2(1,0)
         a.anchormax = vec2(1,0)
         a.offset = vec2(-a.width, a.height)
         a.pivot = vec2(1, 0)
-        a.padding = vec2(a.width,a.height)
     end,
     centremid = function(a)
-        a.anchormin = vec2(0.5)
-        a.anchormax = vec2(0.5)
-        a.offset = vec2(0)
-        a.pivot = vec2(0.5)
-        a.padding = vec2(a.width, a.height)
+        defaultSettings(a)
     end,
     centreright = function(a)
+        defaultSettings(a)
         a.anchormin = vec2(1,0.5)
         a.anchormax = vec2(1,0.5)
-        a.offset = vec2(0)
         a.pivot = vec2(1,0.5)
-        a.padding = vec2(a.width, a.height)
     end,
     stretch = {
         top = function(a)
+            defaultSettings(a)
             a.anchormin = vec2(0,0)
             a.anchormax = vec2(1,0)
-            a.offset = vec2(0, 0)
             a.pivot = vec2(0.5, 0)
             a.padding = vec2(0,a.height)
         end,
         centrehorz = function(a)
+            defaultSettings(a)
             a.anchormin = vec2(0,0.5)
             a.anchormax = vec2(1,0.5)
-            a.offset = vec2(0, 0)
-            a.pivot = vec2(0.5)
             a.padding = vec2(0,a.height)
         end,
         bottom = function(a)
+            defaultSettings(a)
             a.anchormin = vec2(0,1)
             a.anchormax = vec2(1,1)
-            a.offset = vec2(0, 0)
             a.pivot = vec2(0.5, 1)
             a.padding = vec2(0,a.height)
         end,
         rightvert = function(a)
+            defaultSettings(a)
             a.anchormin = vec2(1,0)
             a.anchormax = vec2(1,1)
-            a.offset = vec2(-a.width, 0)
             a.pivot = vec2(1,0.5)
             a.padding = vec2(a.width,0)
         end,
         full = function(a)
+            defaultSettings(a)
             a.anchormin = vec2(0,0)
             a.anchormax = vec2(1,1)
-            a.offset = vec2(0,0)
-            a.pivot = vec2(0.5)
-            a.padding = vec2(0,0)
         end,
     }
 }

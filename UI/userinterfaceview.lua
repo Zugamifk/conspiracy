@@ -11,9 +11,6 @@ function UserInterfaceView:Draw()
 			s:Draw(self.ui.style)
 		end
 	end
-    for _,o in ipairs(self.ui.orphans) do
-        o:Draw(self.ui.style)
-    end
 end
 
 return UserInterfaceView
