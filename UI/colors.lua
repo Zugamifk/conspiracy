@@ -5,6 +5,8 @@ Colors.default = {
 	outline = {154,85,70,255},
 	focusoutline = {174,125,90,255},
 
+	debug = {255,0,0,255},
+
 	selectable = {
 		normal = {161,226,38,255},
 		hover = {255,209,25,255},

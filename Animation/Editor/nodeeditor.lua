@@ -1,12 +1,17 @@
-local NodeEditor = Class()
+local NodeEditor = Class({
+    type = "Node Editor"
+},
+UI.Element)
 
 function NodeEditor:Create(node)
+    local rect = UI.AnchoredRect(
+        Rect(0,0,50,50),
+        UI.AnchoredRect.presets.topleft)
+    self:base(rect)
     self.focused = false
     self.selectable = nil
     self.circle = Circle()
     self.node = node
-
-    self.selectable = nil
 
     -- callbacks
     self.onSelectedNode = nil -- function(self)
@@ -18,6 +23,7 @@ function NodeEditor:Create(node)
     }
     local sel = UI.Selectable(nil, callbacks)
     self.selectable = sel
+    self:AddChild(sel)
 end
 
 function NodeEditor:Draw(style)
