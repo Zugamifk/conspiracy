@@ -6,7 +6,7 @@ UI.Element)
 function KeyFrameEditor:Create()
     self:base()
     self.focused = false
-    self.selectable = UI.Selectable(UI.AnchoredRect(),{
+    self.selectable = UI.Selectable(nil,{
         onMouseUp = callback(self, KeyFrameEditor.MouseUp)
     })
     self:AddChild(self.selectable)
@@ -59,12 +59,7 @@ function KeyFrameEditor:Draw(style)
     for n in self.keyframe:Nodes() do
         local ne = self.nodeeditors[n]
         if ne then
-            local ner = rect:Copy()
-            ner.width = 16
-            ner.height = 16
-            ner:SetPositionByCentre(
-                rect:Position() + self:KeyFrameToRectSpace(rect, n.position))
-            ne:Draw(ner, style)
+            ne:Draw(style)
         end
     end
 
@@ -84,7 +79,7 @@ function KeyFrameEditor:RefreshKeyFrame()
     console:Log("refreshing keyframe")
     for n, e in pairs(self.nodeeditors) do
         if not self.keyframe:HasNode(n) then
-            self.nodeeditors[n] = nil
+            self:RemoveNodeEditor(n)
         end
     end
     if self.keyframe then
@@ -109,7 +104,7 @@ end
 -- transform a position in keyframe space to a position in the rect
 function KeyFrameEditor:KeyFrameToRectSpace(vec)
     local asp = self.rect.height/self.rect.width
-    local xi, yi = (vec.x-self.position.x)*asp, vec.y-self.position.y
+    local xi, yi = (vec.x)*asp, vec.y
     return vec2(
         (xi+1)/2 * self.rect.width,
         (yi+1)/2 * self.rect.height
@@ -121,13 +116,19 @@ function KeyFrameEditor:AddNodeEditor(node)
     console:Log("added node editor")
     local editor = Animation.Editor.NodeEditor(node)
     function editor.onMoveNode(node, pos)
-        pos = vec2(love.mouse.getPosition())-self.selectable.rect:Position()
+        pos = vec2(love.mouse.getPosition())-self.selectable.rect:GetPosition()
         if self.onMoveNode then
-            pos = self:RectToKeyFrameSpace(self.selectable.rect, pos)
+            pos = self:RectToKeyFrameSpace(pos)
             self.onMoveNode(node.node, pos)
         end
     end
     self.nodeeditors[node] = editor
+    self:AddChild(editor)
+end
+
+function KeyFrameEditor:RemoveNodeEditor(editor)
+    self:RemoveChild(editor)
+    self.nodeeditors[editor.node] = nil
 end
 
 -- event when selecting a node
@@ -142,13 +143,22 @@ end
 
 -- event when clicking in the field
 function KeyFrameEditor:MouseUp(pos)
+    console:Log(pos)
     if self.selectednode == nil then
-        pos = self:RectToKeyFrameSpace(self.selectable.rect, pos)
+        pos = self:RectToKeyFrameSpace(pos)
         if self.onSelectedField then
             self.onSelectedField(pos)
         end
     else
         self.selectednode = nil
+    end
+end
+
+function KeyFrameEditor:OnRebuild(rect,style)
+    for n, e in pairs(self.nodeeditors) do
+        local np = self:KeyFrameToRectSpace(e.node.position)
+        e.rect.offset = np - e.rect:GetSize()/2
+        console:Log(tostring(np).." <- "..tostring(e.node.position))
     end
 end
 

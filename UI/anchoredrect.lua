@@ -93,11 +93,18 @@ local function defaultSettings(a)
 end
 
 AnchoredRect.presets = {
+    topleft = function(a)
+        defaultSettings(a)
+        a.anchormin = vec2(0,0)
+        a.anchormax = vec2(0,0)
+        a.offset = vec2(0)
+        a.pivot = vec2(0, 0)
+    end,
     topright = function(a)
         defaultSettings(a)
         a.anchormin = vec2(1,0)
         a.anchormax = vec2(1,0)
-        a.offset = vec2(-a.width, a.height)
+        a.offset = vec2(-a.width,0)
         a.pivot = vec2(1, 0)
     end,
     centremid = function(a)
