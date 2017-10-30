@@ -1,10 +1,7 @@
 Camera = Class()
 
 function Camera:Create(x,y,w,h, size)
-	self.x = x
-	self.y = y
-	self.width = w
-	self.height = h
+	self.rect = Rect(x,y,w,h)
 	self.size = size
 end
 
@@ -19,8 +16,8 @@ function Camera:Draw(board)
 	local tiles = board:GetTiles(
 		wx,
 		wy,
-		self.width/s+1,
-		self.height/s+1)
+		self.rect.width/s+1,
+		self.rect.height/s+1)
 
 	love.graphics.setColor(
 		255,255,255
@@ -43,26 +40,24 @@ function Camera:Draw(board)
 	tiles = board:GetTiles(
 		wx,
 		wy,
-		self.width/s+1,
-		self.height/s+1)
+		self.rect.width/s+1,
+		self.rect.height/s+1)
 	for tile, x, y in tiles do
 		local cxt = context(x, y)
 		for _,o in ipairs(tile.objects) do
 			o:Draw(cxt)
 		end
 	end
-
-	ui:Draw(Rect(0,0,self.width, self.height))
 end
 
 function Camera:WorldToScreenPosition(x,y)
-	return (x-1)*self.size-self.x, (y-1)*self.size-self.y
+	return (x-1)*self.size-self.rect.x, (y-1)*self.size-self.rect.y
 end
 
 function Camera:ScreenToWorldPosition(x,y)
-	return (x + self.x)/self.size +1, (y + self.y)/self.size +1
+	return (x + self.rect.x)/self.size +1, (y + self.rect.y)/self.size +1
 end
 
 function Camera:ToString()
-	return "Camera:\n\tx: "..self.x.."\n\ty: "..self.y.."\n\tw: "..self.width.."\n\th: "..self.width.."\n\ts: "..self.size
+	return "Camera:\n\tx: "..self.rect.x.."\n\ty: "..self.rect.y.."\n\tw: "..self.rect.width.."\n\th: "..self.rect.height.."\n\ts: "..self.size
 end

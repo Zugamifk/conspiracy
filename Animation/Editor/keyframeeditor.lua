@@ -1,10 +1,15 @@
-local KeyFrameEditor = Class()
+local KeyFrameEditor = Class({
+    type = "Key Frame Editor"
+},
+UI.Element)
 
 function KeyFrameEditor:Create()
+    self:base()
     self.focused = false
-    self.selectable = UI.Selectable(nil,{
+    self.selectable = UI.Selectable(UI.AnchoredRect(),{
         onMouseUp = callback(self, KeyFrameEditor.MouseUp)
     })
+    self:AddChild(self.selectable)
 
     self.position = vec2(0,0)
     self.rectorigin = vec2(0,0) -- position in rect space
@@ -19,31 +24,35 @@ function KeyFrameEditor:Create()
     self.onMoveNode = nil -- function(node, pos)
 end
 
-function KeyFrameEditor:Draw(rect, style)
-    UI.Draw.FramedBox(rect, style, self.focused)
+function KeyFrameEditor:Draw(style)
+    UI.Draw.FramedBox(self.rect, style, self.focused)
 
-    UI.BeginMask(rect)
+    UI.BeginMask(self.rect)
 
-    local linespace = 50
-    local min = self:RectToKeyFrameSpace(rect, vec2(0,0))
-    local max = self:RectToKeyFrameSpace(rect, vec2(rect.width, rect.height))
-    local origin = rect:Centre()
+    local min = self:RectToKeyFrameSpace(vec2(0,0))
+    local max = self:RectToKeyFrameSpace(self.rect:GetSize())
+    local origin = self.rect:Centre()
+    local linespace = self.rect.height/3
 
     -- background grid
+    local ry = self.rect.y
+    local rx = self.rect.x
     love.graphics.setColor(style.colors.line1)
     for x = math.floor(min.x), math.ceil(max.x) do
+        local lx = x*linespace
         love.graphics.line(
-            origin.x+x*linespace,
-            rect.y,
-            origin.x+x*linespace,
-            rect.y+rect.height)
+            origin.x+lx,
+            ry,
+            origin.x+lx,
+            ry+self.rect.height)
     end
     for y = math.floor(min.y), math.ceil(max.y) do
+        local ly = y*linespace
         love.graphics.line(
-            rect.x,
-            origin.y+y*linespace,
-            rect.x+rect.width,
-            origin.y+y*linespace)
+            rx,
+            origin.y+ly,
+            rx+self.rect.width,
+            origin.y+ly)
     end
 
     -- nodes
@@ -61,7 +70,6 @@ function KeyFrameEditor:Draw(rect, style)
 
     UI.EndMask()
 
-    self.selectable.rect = rect:Copy()
     self.rectorigin = origin
 end
 
@@ -89,9 +97,9 @@ function KeyFrameEditor:RefreshKeyFrame()
 end
 
 -- transform a position in the rect to a position in keyframe space
-function KeyFrameEditor:RectToKeyFrameSpace(rect, vec)
-    local xi, yi = vec.x/rect.width, vec.y/rect.height
-    local asp = rect.height/rect.width
+function KeyFrameEditor:RectToKeyFrameSpace(vec)
+    local xi, yi = vec.x/self.rect.width, vec.y/self.rect.height
+    local asp = self.rect.height/self.rect.width
     return vec2(
         (xi*2-1)/asp + self.position.x,
         (yi*2-1) + self.position.y
@@ -99,12 +107,12 @@ function KeyFrameEditor:RectToKeyFrameSpace(rect, vec)
 end
 
 -- transform a position in keyframe space to a position in the rect
-function KeyFrameEditor:KeyFrameToRectSpace(rect, vec)
-    local asp = rect.height/rect.width
+function KeyFrameEditor:KeyFrameToRectSpace(vec)
+    local asp = self.rect.height/self.rect.width
     local xi, yi = (vec.x-self.position.x)*asp, vec.y-self.position.y
     return vec2(
-        (xi+1)/2 * rect.width,
-        (yi+1)/2 * rect.height
+        (xi+1)/2 * self.rect.width,
+        (yi+1)/2 * self.rect.height
     )
 end
 
@@ -150,10 +158,10 @@ function KeyFrameEditor:GetSelectables()
         tablep.map(
             self.nodeeditors,
             function(ne) return ne:GetSelectables() end)
-        :fold()
+        :flatten()
         :concat({self.selectable})
         :totable()
-    console:Log("returning "..#results.." results")
+--    console:Log("returning "..#results.." results")
     return results
 end
 

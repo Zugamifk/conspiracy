@@ -1,10 +1,15 @@
-local Selectable = Class()
+local Selectable = Class(
+{
+	type = "Selectable"
+},
+UI.Element)
 
 function Selectable:Create(rect, callbacks)
+	self:base()
 	self.state = "normal"
-	self.rect = rect or Rect.Zero()
 	self.focused = false
 	self.dragoffset = vec2(0,0)
+	self.rect = rect or UI.AnchoredRect(Rect.Zero(), UI.AnchoredRect.presets.stretch.full)
 
 	if callbacks then
 		Selectable.SetCallbacks(self, callbacks)
@@ -23,10 +28,9 @@ function Selectable:GetColor(style)
 	return c[self.state]
 end
 
-function Selectable:Draw(rect, style, drawf)
+function Selectable:Draw(style, drawf)
 	drawf = drawf or UI.Draw.Box
 	local color = self:GetColor(style)
-	self.rect = rect:Copy()
 	drawf(self.rect,color)
 end
 

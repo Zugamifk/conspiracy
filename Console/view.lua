@@ -25,7 +25,10 @@ function View:Create(rect, console)
             end
         end
      )
-    window:AddObject(titlebar, Rect(0,0,windowwidth,lineheight))
+     window:AddObject(titlebar,
+        UI.AnchoredRect(
+            Rect(0,0,windowwidth,lineheight),
+            UI.AnchoredRect.presets.stretch.top))
 
     local scrollview = UI.ScrollView()
     scrollview.options.startsfrom = "bottom"
@@ -33,12 +36,16 @@ function View:Create(rect, console)
     local ypos = lineheight + 5
     local inputheight = lineheight
     local scrollheight  = rect.height - ypos -inputheight -10
-	local scrollrect = Rect(5,ypos,windowwidth-10,scrollheight)
+	local scrollrect = UI.AnchoredRect(
+        Rect(5,ypos,windowwidth-10,scrollheight)
+    )
 	window:AddObject(scrollview, scrollrect)
     self.scrollview = scrollview
 
-    ypos = ypos + scrollheight + 3
 	local textinput = UI.TextInput()
+    local textrect = UI.AnchoredRect(
+        Rect(5, rect.height - inputheight - 5, windowwidth-10, inputheight)
+    )
 	textinput.onSubmit = function()
         local text = textinput.text.text
         textinput.text.text = ""
@@ -46,11 +53,13 @@ function View:Create(rect, console)
             self.onSubmit(text)
         end
 	end
-	window:AddObject(textinput, Rect(5,ypos, windowwidth-10, lineheight+4))
+	window:AddObject(textinput, textrect)
 end
 
 function View:AddEntry(text)
-    self.scrollview:AddObject(UI.Text(text), Rect(0,0,0,self.lineheight))
+    local obj = UI.Text(text)
+    obj.rect = UI.AnchoredRect(Rect(0,0,0,self.lineheight))
+    self.scrollview:AddObject(obj)
     if self.scrollview:ContentsLength() > self.console.max then
         self.scrollview:RemoveObject(1)
     end

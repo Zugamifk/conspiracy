@@ -4,17 +4,15 @@ Class = {
 
 -- constructor to make a new instance
 function Class.__call(class,...)
+
 	-- set metatable
 	local mt = {
-		__index = class -- index class for methods and static values
+		__index = class, -- index class for methods and static values
+		__tostring = class.ToString -- use the class tostring if it exists
 	}
+
 	-- construct new instance
 	local result = setmetatable({}, mt)
-
-	-- initialize base class object if needed
-	if class.base then
-		result.base = class.base()
-	end
 
 	-- initialize result
 	if class.Create then
@@ -33,10 +31,17 @@ function Class.mt.__call(t,class,base)
 	class = class or {}
 	local mt = {
 		__call = t.__call, -- calling the table will call the above constructor
-		__index = base -- if base is given, missing indexes in the table will lookup the base class
 	}
-	-- set the base class if given
-	class.base = base
+	-- copy the base class if given
+	if base then
+		for k,v in pairs(base) do
+			if k == "Create" then
+				class.base = v
+			else
+				class[k] = v
+			end
+		end
+	end
 	return setmetatable(class, mt)
 end
 

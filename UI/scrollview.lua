@@ -1,50 +1,105 @@
-local ScrollView = Class()
+local ScrollView = Class({
+	type = "ScrollView"
+},
+UI.Element)
 
 function ScrollView:Create()
-	local scrollview = self
-	scrollview.options = {
+	self:base()
+	self.options = {
 			startsfrom = "top", -- also, "bottom"
 			direction = "down"
 		}
-	scrollview.scrollposition = 0
-	scrollview.contents = {}
-	scrollview.contentsheight = 0
-	scrollview.scrollheight = 0
+	-- normalized value to determine position of scrollbar
+	self.scrollposition = 0
+	-- all the contents of the scrollview, visible or otherwise
+	self.contents = {}
+	-- total height of all contents
+	self.contentsheight = 0
 
-	local scrollbar = UI.Selectable(Rect.Zero())
+	-- create scrollbar object
+	local scrollbar = UI.Selectable()
+	scrollbar.rect = UI.AnchoredRect(Rect.Zero(), UI.AnchoredRect.presets.topright)
+
+	-- set parents for scrollbar
+	local scrollrect = UI.AnchoredRect(Rect(0,0,10,0), UI.AnchoredRect.presets.stretch.rightvert)
+	local scrollbarroot = UI.Element(scrollrect)
+--	scrollbarroot:AddChild(scrollbar)
+	self:AddChild(scrollbar)
+
+	-- crate locals for storing use in callbacks
 	local scrollmousestart = 0
 	local scrollpositionstart = 0
+
+	-- record current mouse y position and current scroll position
 	function scrollbar.onMouseDown()
 		_,scrollmousestart =love.mouse.getPosition()
-		scrollpositionstart = scrollview.scrollposition
+		scrollpositionstart = self.scrollposition
 	end
+
+	-- calcaulate new scroll position
 	function scrollbar.onDrag()
 		local _,my = love.mouse.getPosition()
-		scrollview.scrollposition = scrollpositionstart+(my-scrollmousestart)/scrollview.scrollheight
-		scrollview.scrollposition = math.clamp(scrollview.scrollposition,0,1)
+		self.scrollposition = scrollpositionstart+(my-scrollmousestart)/scrollbarroot.rect.height
+		self.scrollposition = math.clamp(self.scrollposition,0,1)
 	end
-	scrollview.scrollbar = scrollbar
+
+	self.scrollbar = scrollbar
+
 end
 
-function ScrollView:Draw(rect, style)
+function ScrollView:Draw(style)
 	--draw frame
-	UI.Draw.FramedBox(rect, style)
+	UI.Draw.FramedBox(self.rect, style)
 
 	-- this stencil is for objects in viewport
-	love.graphics.stencil(
-		function()
-			love.graphics.rectangle("fill", rect.x, rect.y, rect.width, rect.height)
-		end,
-		"replace",
-		1)
-	love.graphics.setStencilTest("greater", 0)
+	--UI.BeginMask(self.rect)
+
+	for _,o in ipairs(self.children) do
+		o:Draw(style)
+	end
+
+	self.scrollbar:Draw(style)
+
+	--UI.EndMask()
+
+end
+
+function ScrollView:PrepareRebuild(rect, style)
+	-- rebuild the scroll bar
+	local scrollbarheight = self.rect.height
+	-- if contents taller than viewport, draw the scrollbar
+	if scrollbarheight < self.contentsheight then
+		-- calculate scrollbar size
+		local scrollbarsize = math.max(
+			style.scrollbarminheight,
+			scrollbarheight/self.contentsheight
+		)
+		local sdiff = (1-scrollbarsize)
+		local srect = self.scrollbar.rect
+		srect.anchormin = vec2(
+			srect.anchormin.x,
+			self.scrollposition * sdiff
+		)
+		srect.anchormax = vec2(
+			srect.anchormax.x,
+			scrollbarsize + self.scrollposition * sdiff
+		)
+		srect.padding = vec2(
+			style.scrollbarwidth,
+			0
+		)
+		--console:Log(tostring(srect))
+	end
+
+	self.children = {} -- clear visible contents table
 
 	-- find position to start drawing
 	local yposition = 0
-	local viewporty = self.scrollposition * math.max(self.contentsheight - rect.height, 0)
+	local viewporty = self.scrollposition
+		* math.max(self.contentsheight - self.rect.height, 0)
 	local startposition = yposition
 	if self.options.startsfrom == "bottom" then
-		startposition = math.max(0, rect.height - self.contentsheight)
+		startposition = math.max(0, self.rect.height - self.contentsheight)
 	end
 
 	local len = self:ContentsLength()
@@ -52,53 +107,26 @@ function ScrollView:Draw(rect, style)
 		if self.options.direction == "up" then
 			o = self.contents[len - i + 1]
 		end
-		-- draw objects that fit in the viewport
+		-- collect objects that fit in the viewport
 		if yposition + o.rect.height >= viewporty then
-			local r = o.rect:Copy()
-			r.y =  rect.y + startposition + yposition - viewporty
-			r.x = rect.x
-			r.width = rect.width
-			o.object:Draw(r, style)
+			self:AddChild(o)
+			o.rect.offset.y = yposition
 		end
 		yposition = yposition + o.rect.height
-		if yposition >= viewporty + rect.height then
+		if yposition >= viewporty + self.rect.height then
 			break
 		end
 	end
-
-	-- draw the scroll bar
-	local scrollbarheight = rect.height-style.scrollbarpadding*2
-	if scrollbarheight < self.contentsheight then
-		local scrollbarsize = math.max(
-			style.scrollbarminheight,
-			2*scrollbarheight/self.contentsheight
-		)
-		local scrollbary = style.scrollbarpadding +
-			self.scrollposition * (scrollbarheight-scrollbarsize)
-		self.scrollbar:Draw(Rect(
-			rect.x + rect.width - style.scrollbarpadding - style.scrollbarwidth,
-			rect.y + scrollbary,
-			style.scrollbarwidth,
-			scrollbarsize
-		),
-		style)
-	end
-	love.graphics.setStencilTest()
-	self.scrollheight = rect.height - style.scrollbarpadding*2 - self.scrollbar.rect.height
 end
 
-function ScrollView:AddObject(object, rect, position)
+function ScrollView:AddObject(object, position)
 	position = position or #self.contents+1
-	local newObject = {
-		object = object,
-		rect = rect
-	}
-	self.contentsheight = self.contentsheight + rect.height
-	table.insert(self.contents, position, newObject)
+	self.contentsheight = self.contentsheight + object.rect.height
+	table.insert(self.contents, position, object)
 end
 
 function ScrollView:GetObject(index)
-	return self.contents[index] and self.contents[index].object or nil
+	return self.contents[index] or nil
 end
 
 function ScrollView:RemoveObject(index)
@@ -110,7 +138,7 @@ function ScrollView:ContentsLength()
 end
 
 function ScrollView:GetSelectables()
-	return self.scrollbar
+	return {self.scrollbar}
 end
 
 return ScrollView

@@ -1,10 +1,15 @@
-local Console = Class()
+local Console = Class{
+	traceback = true
+}
 
 function Console:Create()
 	self.log = {}
 	self.size = 1000
 	self.head = 1
 	self.lineHeight = 15
+	if Console.traceback then
+		self.lineHeight = 30
+	end
 	self.enabled = true
 	self.view = {
 		width = 300,
@@ -14,7 +19,16 @@ function Console:Create()
 end
 
 function Console:Log(message)
-	self.log[self.head] = message
+	message = tostring(message)
+	if self.traceback then
+		local info = debug.getinfo(2, "Sn")
+		self.log[self.head] =  info.source.." -> "
+			..(info.name or "INTERNAL")
+			.."\tline "..info.linedefined
+			.."\n\t"..message
+	else
+		self.log[self.head] = message
+	end
 	self.head = self.head + 1
 	if self.head > self.size then
 		self.head = 1
@@ -63,7 +77,7 @@ function Console:Draw()
 		for i=0,lineNum-1 do
 			local msg = self:GetMessage(i)
 			if msg then
-				love.graphics.print(msg,x + 15, y+h-25-i*self.lineHeight)
+				love.graphics.print(msg,x + 15, y+h-15-(i+1)*self.lineHeight)
 			end
 		end
 		love.graphics.setStencilTest()

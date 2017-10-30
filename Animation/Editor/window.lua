@@ -22,7 +22,7 @@ function Window:Create(rect, ui)
             function(pos)
                 control:AddNodeToKeyFrame(pos)
                 view:Refresh()
-                view.window:RefreshSelecablesCache()
+                view.window:RefreshSelectablesCache()
             end
         )
 

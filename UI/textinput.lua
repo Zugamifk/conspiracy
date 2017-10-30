@@ -1,8 +1,16 @@
-local TextInput = Class()
+local TextInput = Class(
+{
+    type = "TextInput"
+},
+UI.Element)
 
 function TextInput:Create()
+    self:base()
     self.text = UI.Text()
-    self.rect = Rect.Zero()
+    self.text.rect = UI.AnchoredRect(
+        Rect(2,2,0,0),
+        UI.AnchoredRect.presets.stretch.full)
+    self:AddChild(self.text)
     self.onSubmit = nil -- callback
 end
 
@@ -10,13 +18,13 @@ function TextInput:AddText(text)
     self.text:SetText(self.text.text..text)
 end
 
-function TextInput:Draw(rect, style)
-    UI.Draw.FramedBox(rect, style)
-    self.text:Draw(rect, style)
-    self.rect = rect
+function TextInput:Draw(style)
+    UI.Draw.FramedBox(self.rect, style)
+    self.text:Draw(style)
 end
 
 function TextInput:Submit()
+    console:Log("submit text")
     if self.onSubmit then
         self.onSubmit()
     end

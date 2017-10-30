@@ -1,13 +1,17 @@
 UI = Namespace{
+	Element = require "UI/element",
 	Events = require "UI/events",
-	Controller = require "UI/controller",
+
+	AnchoredRect = require "UI/anchoredrect",
 
 	Colors = require "UI/colors",
 	Style = require "UI/style",
 
 	Draw = require "UI/draw",
+}
 
-	Selectable = require "UI/selectable",
+UI:AddNames{
+	Selectable = require "UI/selectable"
 }
 
 UI:AddNames{
@@ -20,6 +24,12 @@ UI:AddNames{
 	ScrollView = "UI/scrollview",
 	Window = "UI/window"
 }
+
+UI:AddNames{
+	UserInterface = "UI/userinterface"
+}
+
+--UI.Hierarchy.test()
 
 function UI.BeginMask(rect)
 	-- this stencil is for objects in viewport

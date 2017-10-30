@@ -1,16 +1,10 @@
-local Controller = Class()
+local UserInterfaceControl = Class()
 
-function Controller:Create(ui)
+function UserInterfaceControl:Create(ui)
 	self.ui = ui
-	self.focus = nil -- object currently undder cursor
-	self.inputfocus = nil -- last object clicked on
 end
 
-function Controller:UpdateEvents(events)
-	if events["`"] and events["`"].event == "pressed" then
-		self:SetWindowActive("console")
-	end
-
+function UserInterfaceControl:UpdateEvents(events)
 	-- get input focus
 	local f = nil --this might not work
 	local mx,my = love.mouse.getPosition()
@@ -26,7 +20,7 @@ function Controller:UpdateEvents(events)
 	-- find a window
 	if not f then
 		for k,s in pairs(self.ui.windows) do
-			if s.enabled then
+			if s.enabled and s.canfocus then
 				if s.rect:Contains(mx,my) then
 					f = s
 					break
@@ -35,57 +29,61 @@ function Controller:UpdateEvents(events)
 		end
 	end
 	-- switch focus
-	if f ~= self.focus then
+	if f ~= self.ui.focus then
 		self:Focus(f)
 	end
 	-- update input focus if mouse button was pressed
 	if events.mousebutton and
 		events.mousebutton.event.buttonevent == "pressed" then
-		self.inputfocus = f;
+		self.ui.inputfocus = f;
 	end
 
+	local ifoc = self.ui.inputfocus
 	-- input events
-	if self.inputfocus then
+	if ifoc then
 		if events.mousebutton then
 			local e = events.mousebutton.event
 			if e.buttonevent == "pressed" then
-				if self.inputfocus.MouseDown then
-					self.inputfocus:MouseDown()
+				if ifoc.MouseDown then
+					ifoc:MouseDown()
 				end
-			elseif e.buttonevent == "held" and self.inputfocus.Drag then
-				self.inputfocus:Drag()
+			elseif e.buttonevent == "held" and ifoc.Drag then
+				ifoc:Drag()
 			elseif e.buttonevent == "released" then
-				if self.inputfocus.MouseUp then
-					self.inputfocus:MouseUp()
+				if ifoc.MouseUp then
+					ifoc:MouseUp()
 				end
 				if self.inputfocus ~= self.focus then
 					self.inputfocus = nil
 				end
 			end
 		end
-		if events.textinput and self.inputfocus.TextInput then
-			self.inputfocus:TextInput(events.textinput.event)
+		if events.textinput and ifoc.TextInput then
+			ifoc:TextInput(events.textinput.event)
 		end
 		if events["return"] and events["return"].event == "pressed" then
-			if self.inputfocus.Submit then
-				self.inputfocus:Submit()
+			if ifoc.Submit then
+				ifoc:Submit()
 			end
 		end
 	end
 end
 
-function Controller:Focus(object)
-	if self.focus and self.focus.Focus then
-		self.focus:Focus(false)
+function UserInterfaceControl:Rebuild()
+	self.ui.root:Rebuild(self.ui.viewrect, self.ui.style)
+end
+
+function UserInterfaceControl:Focus(object)
+	if self.ui.focus and self.ui.focus.Focus then
+		self.ui.focus:Focus(false)
 	end
-	self.focus = object
-	self.ui.statusbar.text = "focus "..tostring(object)
+	self.ui.focus = object
 	if object and object.Focus then
 		object:Focus(true)
 	end
 end
 
-function Controller:SetWindowActive(name, enabled)
+function UserInterfaceControl:SetWindowActive(name, enabled)
 	local window = self.ui.windows[name]
 	if not window then
 		console:Log("No window named "..name.." exists!")
@@ -99,21 +97,23 @@ function Controller:SetWindowActive(name, enabled)
 	window:SetActive(enabled)
 
 	if enabled then
+		window:Rebuild(self.ui.viewrect, self.ui.style)
 		self.ui.selectables[name] = window.selectables
 	else
 		self.ui.selectables[name] = nil
 		for i,s in ipairs(window.selectables) do
-			if s == self.focus then
+			if s == self.ui.focus then
 				self:Focus(nil)
 			end
-			if s == self.inputfocus then
-				self.inputfocus = nil
+			if s == self.ui.inputfocus then
+				self.ui.inputfocus = nil
 			end
 		end
 	end
 end
 
-function Controller:AddWindow(name, window)
+function UserInterfaceControl:AddWindow(name, window)
 	self.ui.windows[name] = window
+	self.ui.root:AddChild(window)
 end
-return Controller
+return UserInterfaceControl

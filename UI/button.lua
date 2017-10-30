@@ -1,24 +1,25 @@
-local Button = Class()
+local Button = Class({
+    type = "Button"
+},
+UI.Element)
 
 function Button:Create(text)
+    self:base()
     local tb = self
 
     local text = UI.Text(text)
+    text.rect = UI.AnchoredRect(Rect(2,-2,0,0), UI.AnchoredRect.presets.stretch.full)
     tb.text = text
+    self:AddChild(text)
 
     local selectable = UI.Selectable()
     tb.selectable = selectable
+    self:AddChild(selectable)
 end
 
-function Button:Draw(rect, style)
-    rect = rect:Copy()
-    self.selectable.rect = rect
-    UI.Draw.Box(rect, self:GetColor(style))
-    local ty = rect.y + rect.height / 2 - style.lineheight/2 +2
-    rect.y = ty
-    local tx = rect.x + 2
-    rect.x = tx
-    self.text:Draw(rect, style)
+function Button:Draw(style)
+    UI.Draw.Box(self.selectable.rect, self:GetColor(style))
+    self.text:Draw(style)
 end
 
 function Button:GetColor(style)

@@ -14,7 +14,7 @@ function Style:Create()
 
 	--scrollbars
 	self.scrollbarwidth = 5
-	self.scrollbarminheight = 25
+	self.scrollbarminheight = 0.1
 	self.scrollbarpadding = 3
 
 	-- colors

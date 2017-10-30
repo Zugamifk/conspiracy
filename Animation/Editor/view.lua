@@ -8,11 +8,10 @@ function View:Create(rect, model)
 
 
     local kfe = Animation.Editor.KeyFrameEditor()
-    local kfr = rect:Copy()
-    kfr.x = 10
-    kfr.width = kfr.width - 20
-    kfr.y = 10
-    kfr.height = math.min(kfr.height - 200, 150)
+    local kfr = UI.AnchoredRect(
+        Rect(0,10,0,250),
+        UI.AnchoredRect.presets.stretch.top)
+    kfr:SetAnchorOffsets(10,nil,-10,nil)
     window:AddObject(kfe,kfr)
     self.keyframeeditor = kfe
 end

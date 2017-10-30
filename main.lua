@@ -28,7 +28,7 @@ require "distribution"
 require "pathfinding"
 
 require "UI/ui"
-require "UI/userinterface"
+require "Editors/editor"
 
 require "Animation/animation"
 
@@ -49,17 +49,13 @@ function love.load()
 	camera = Camera(5,5,dx,dy, 10)
 	cameracontrol = CameraControl(camera)
 
-	ui = UserInterface()
-	uicontrol = ui.controller
-
-	Console.Initialize(uicontrol)
-
-	local animeditor = Animation.Editor.Window(Rect(400,0,400,600), ui)
+	editor = Editor.UI()
 
 --	tablep.Test()
 	--tableo.test()
 
-	argassert.test()
+	-- argassert.test()
+	UI.AnchoredRect.Test()
 
 	-- wang = Wang.Create()
 	-- wangtiles = WangTiles.Create(wang)
@@ -70,16 +66,18 @@ end
 
 function love.draw()
 	camera:Draw(board)
+	editor:Draw()
 	console:Draw(0,0,500,500)
 end
 
 function love.update(dt)
 	Input:DoEvents(consolecontrol)
-	Input:DoEvents(uicontrol)
+	Input:DoEvents(editor.ui)
 	Input:DoEvents(cameracontrol)
 	Input:DoEvents(boardcontrol)
 	Input:Update()
 
+	editor:Update()
 	Console.Update()
 
 	boardcontrol:Update(dt)

@@ -1,7 +1,11 @@
 -- required in UI.lua
-local StatusBar = Class()
+local StatusBar = Class({
+	type = "Status Bar"
+},
+UI.Element)
 
 function StatusBar:Create(defaultText)
+	self:base()
 	self.text = defaultText or ""
 	self.buttons = {}
 end
@@ -10,38 +14,23 @@ function StatusBar:SetText(text)
 	self.text = text
 end
 
-function StatusBar:Draw(rect, style)
-	local verticalpadding = 5
-	local rx0 = rect.x
-
-	-- correct height for stlye
-	rect.y = rect.y + rect.height
-	rect.height = style.lineheight + verticalpadding * 2
-	rect.y = rect.y - rect.height
-
-	UI.Draw.FramedBox(rect, style)
-	local ry0 = rect.y
-
-	rect.y = rect.y + verticalpadding
-	rect.x = rect.x + style.horizontalpadding
-	UI.Draw.Text(rect, self.text, style)
-
-	local br = rect:Copy()
-	local buttonwidth = rect.height - verticalpadding*2
-	br.x = rx0 + br.width - buttonwidth - verticalpadding
-	br.y = ry0 + verticalpadding
-	br.height = buttonwidth
-	br.width = buttonwidth
+function StatusBar:Draw(style)
+	UI.Draw.FramedBox(self.rect, style)
+	UI.Draw.Text(self.rect, self.text, style)
 	for i,b in ipairs(self.buttons) do
-		b:Draw(br, style)
-		br.x = br.x - buttonwidth - verticalpadding
+		b:Draw(style)
 	end
 end
 
 function StatusBar:AddButton(text, onclick)
-    local button = UI.Button(text)
-    button:SetOnClick(onclick)
-    self.buttons[#self.buttons+1] = button
+	local button = UI.Button(text)
+	local w = 12
+	local x = 2 + w * (#self.buttons)
+	local br = UI.AnchoredRect(Rect(-x,0,w,w), UI.AnchoredRect.presets.centreright)
+	button.rect = br
+	button:SetOnClick(onclick)
+	self.buttons[#self.buttons+1] = button
+	self:AddChild(button)
 end
 
 function StatusBar:GetSelectables()
