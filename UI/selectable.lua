@@ -44,7 +44,7 @@ function Selectable:Focus(isfocused)
 	console:Log("Focused "..tostring(self))
 end
 
-function Selectable:MouseDown()
+function Selectable:MouseDown(button)
 	local x,y = love.mouse.getPosition()
 	self.dragoffset = vec2(
 		x-self.rect.x,
@@ -53,31 +53,31 @@ function Selectable:MouseDown()
 	self.state = "selected"
 	console:Log("selected "..tostring(self))
 	if self.onMouseDown then
-		self.onMouseDown(self.dragoffset)
+		self.onMouseDown(self.dragoffset, button)
 	end
 end
 
-function Selectable:MouseUp()
+function Selectable:MouseUp(button)
 	self:Focus(self.focused)
 	if self.onMouseUp then
-		self.onMouseUp(self.dragoffset)
+		self.onMouseUp(self.dragoffset, button)
 	end
 end
 
-function Selectable:Drag()
+function Selectable:Drag(button)
 	local x,y = love.mouse.getPosition()
 	self.dragoffset = vec2(
 		x-self.rect.x,
 		y-self.rect.y
 	)
 	if self.onDrag then
-		self.onDrag(self.dragoffset)
+		self.onDrag(self.dragoffset, button)
 	end
 end
 
-function Selectable:Submit()
+function Selectable:Submit(button)
 	if self.onSubmit then
-		self.onSubmit()
+		self.onSubmit(button)
 	end
 end
 

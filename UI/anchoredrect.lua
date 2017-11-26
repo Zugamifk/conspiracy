@@ -137,6 +137,13 @@ AnchoredRect.presets = {
             a.pivot = vec2(0.5, 1)
             a.padding = vec2(0,a.height)
         end,
+        left = function(a)
+            defaultSettings(a)
+            a.anchormin = vec2(0,0)
+            a.anchormax = vec2(0,1)
+            a.pivot = vec2(0,0.5)
+            a.padding = vec2(0)
+        end,
         rightvert = function(a)
             defaultSettings(a)
             a.anchormin = vec2(1,0)

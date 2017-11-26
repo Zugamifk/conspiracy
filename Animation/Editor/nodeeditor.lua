@@ -40,16 +40,18 @@ function NodeEditor:SetNode(node)
     self.node = node
 end
 
-function NodeEditor:Drag(pos)
-    if self.onMoveNode then
-        console:Log("dragged node to "..tostring(pos))
-        self:onMoveNode(pos)
+function NodeEditor:Drag(pos, button)
+    if button == 1 then
+        if self.onMoveNode then
+            console:Log("dragged node to "..tostring(pos))
+            self:onMoveNode(pos)
+        end
     end
 end
 
-function NodeEditor:MouseUp()
+function NodeEditor:MouseUp(pos,button)
     if self.onSelectedNode then
-        self:onSelectedNode()
+        self:onSelectedNode(button)
     end
 end
 

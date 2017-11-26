@@ -11,11 +11,13 @@ UI = Namespace{
 }
 
 UI:AddNames{
-	Selectable = require "UI/selectable"
+	Selectable = require "UI/selectable",
+	LayoutGroup = require "UI/layoutgroup"
 }
 
 UI:AddNames{
 	Text = "UI/text",
+	TextBox = "UI/textbox",
 	Button =  "UI/button",
 	TextInput = "UI/textinput",
 	TitleBar = "UI/titlebar",

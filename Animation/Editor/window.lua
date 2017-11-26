@@ -31,6 +31,12 @@ function Window:Create(rect, ui)
                 control:MoveNode(node, pos)
             end
         )
+
+        view:SetOnConnectedNodes(
+            function(a,b)
+                control:ConnectNodes(a.node, b.node)
+            end
+        )
 end
 
 return Window

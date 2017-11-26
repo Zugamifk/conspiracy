@@ -47,26 +47,25 @@ end
 
 function Window:Focus(isfocused)
 	self.focused = isfocused
-	local x,y = love.mouse.getPosition()
-	self.dragoffset = vec2(
-		self.rect.x - x,
-		self.rect.y - y
-	)
 end
 
-function Window:MouseDown()
-	local x,y = love.mouse.getPosition()
-	self.dragoffset = vec2(
-		self.rect.x - x,
-		self.rect.y - y
-	)
-end
-
-function Window:Drag()
-	if self.draggable then
+function Window:MouseDown(button)
+	if button == 1 then
 		local x,y = love.mouse.getPosition()
-		self.rect:Translate(vec2(x,y)+self.dragoffset)
-		console:Log(self.rect)
+		self.dragoffset = vec2(
+			self.rect.x - x,
+			self.rect.y - y
+		)
+	end
+end
+
+function Window:Drag(button)
+	if button == 1 then
+		if self.draggable then
+			local x,y = love.mouse.getPosition()
+			self.rect:Translate(vec2(x,y)+self.dragoffset)
+			console:Log(self.rect)
+		end
 	end
 end
 

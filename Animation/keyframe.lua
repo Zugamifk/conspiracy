@@ -27,12 +27,11 @@ function KeyFrame:Disconnect(a,b)
 end
 
 function KeyFrame:Nodes()
-    local k = nil
-    return function()
-        local nk,v = next(self.skeleton.vertices, k)
-        k = nk
-        return v
-    end
+    return pairs(self.skeleton.vertices)
+end
+
+function KeyFrame:Connections()
+    return pairs(self.skeleton.edges)
 end
 
 return KeyFrame

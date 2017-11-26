@@ -12,10 +12,10 @@ function BoardControl:UpdateEvents(events)
 		if m.button == 1 then
 			self:SelectTile(i.x, i.y)
 		else
-			if ui.selected then
-				ui.selected.path = pathfinding:Path(ui.selected.tile, self.board:GetTile(i.x,i.y))
-				--board:MoveObject(ui.selected, self.board:GetTile(i.x,i.y))
-			end
+			-- if ui.selected then
+			-- 	ui.selected.path = pathfinding:Path(ui.selected.tile, self.board:GetTile(i.x,i.y))
+			-- 	--board:MoveObject(ui.selected, self.board:GetTile(i.x,i.y))
+			-- end
 		end
 	end
 end

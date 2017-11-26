@@ -53,6 +53,22 @@ function Element:Rebuild(rect, style)
     end
 end
 
+function Element:Draw(style)
+    for _,c in ipairs(self.children) do
+        c:Draw(style)
+    end
+end
+
+function Element:GetSelectables()
+    return tablep.map(
+        self.children,
+        function (c)
+            return c:GetSelectables()
+        end)
+        :flatten()
+        :totable()
+end
+
 function Element.test()
     local h = Hierarchy()
     h:AddChild(1)

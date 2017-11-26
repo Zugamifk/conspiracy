@@ -45,13 +45,13 @@ function UserInterfaceControl:UpdateEvents(events)
 			local e = events.mousebutton.event
 			if e.buttonevent == "pressed" then
 				if ifoc.MouseDown then
-					ifoc:MouseDown()
+					ifoc:MouseDown(e.button)
 				end
 			elseif e.buttonevent == "held" and ifoc.Drag then
-				ifoc:Drag()
+				ifoc:Drag(e.button)
 			elseif e.buttonevent == "released" then
 				if ifoc.MouseUp then
-					ifoc:MouseUp()
+					ifoc:MouseUp(e.button)
 				end
 				if self.inputfocus ~= self.focus then
 					self.inputfocus = nil
