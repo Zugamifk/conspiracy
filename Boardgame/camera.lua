@@ -1,4 +1,4 @@
-Camera = Class()
+local Camera = Class()
 
 function Camera:Create(x,y,w,h, size)
 	self.rect = Rect(x,y,w,h)
@@ -61,3 +61,5 @@ end
 function Camera:ToString()
 	return "Camera:\n\tx: "..self.rect.x.."\n\ty: "..self.rect.y.."\n\tw: "..self.rect.width.."\n\th: "..self.rect.height.."\n\ts: "..self.size
 end
+
+return Camera

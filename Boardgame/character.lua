@@ -1,4 +1,4 @@
-Character = Class()
+local Character = Class()
 
 function Character:Create()
 	self.speed = 5 -- tiles per second
@@ -28,3 +28,4 @@ function Character:Update(dt)
 		end
 	end
 end
+ return Character

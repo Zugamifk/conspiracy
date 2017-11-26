@@ -1,4 +1,4 @@
-Personality = Class()
+local Personality = Class()
 
 function Personality.Create()
 	self.opinions = {} -- concepts and our favourability
@@ -7,3 +7,5 @@ function Personality.Create()
 	self.traits = {} -- biological and psychological things
 	self.currentState = {} -- mood, thoughts, desires
 end
+
+return Personality

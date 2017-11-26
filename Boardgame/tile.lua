@@ -1,4 +1,4 @@
-Tile = Class()
+local Tile = Class()
 
 function Tile:Create(x,y)
 	self.x=x
@@ -20,3 +20,5 @@ function Tile:RemoveObject(object)
 	end
 	object.tile = nil
 end
+
+return Tile

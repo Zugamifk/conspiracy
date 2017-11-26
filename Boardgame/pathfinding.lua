@@ -1,4 +1,4 @@
-PathFinding = Class()
+local PathFinding = Class()
 
 function PathFinding:Create(board)
 	self.board = board
@@ -84,3 +84,5 @@ function PathFinding:DebugDraw(context, path)
 	end
 	love.graphics.line(points)
 end
+
+return PathFinding

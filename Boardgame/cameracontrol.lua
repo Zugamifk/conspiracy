@@ -1,4 +1,4 @@
-CameraControl = Class()
+local CameraControl = Class()
 
 function CameraControl:Create(camera)
 	self.camera = camera
@@ -41,3 +41,5 @@ function CameraControl:SetSize(size)
 	c.size = size
 	if c.size < 1 then c.size = 1 end
 end
+
+return CameraControl

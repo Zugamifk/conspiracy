@@ -1,4 +1,4 @@
-TileGraphics = {
+local TileGraphics = {
 
 }
 
@@ -86,7 +86,7 @@ function TileGraphics.Init(board)
 		1,1,1,2,
 		5
 	)
-	
+
 	wang:Generate(board)
 	TileGraphics.wang = wang
 end
@@ -106,3 +106,5 @@ function TileGraphics.Draw(context, tile)
 		-- love.graphics.print(math.floor(tile.heat), x+5, y+3)
 	-- end
 end
+
+return TileGraphics

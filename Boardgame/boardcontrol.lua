@@ -1,4 +1,4 @@
-BoardControl = Class()
+local BoardControl = Class()
 
 function BoardControl:Create(board)
 	self.board = board
@@ -43,3 +43,5 @@ function BoardControl:SelectTile(x,y)
 	-- 	end
 	-- end
 end
+
+return BoardControl

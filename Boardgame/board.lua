@@ -1,4 +1,4 @@
-Board = Class({
+local Board = Class({
 	width = 100,
 	height = 100,
 	selection = nil -- current selected board object
@@ -86,3 +86,5 @@ function Board:MoveObject(object, destination)
 	object.tile:RemoveObject(object)
 	destination:AddObject(object)
 end
+
+return Board
