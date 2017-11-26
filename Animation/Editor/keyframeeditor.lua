@@ -20,8 +20,12 @@ function KeyFrameEditor:Create()
     self.nodeeditors = {}
 
     -- callbacks
+    -- called when clicking the background
     self.onSelectedField = nil -- function(pos)
+    -- called when dragging a node
     self.onMoveNode = nil -- function(node, pos)
+    -- called when two nodes are connected
+    self.onConnectNodes = nil
 end
 
 function KeyFrameEditor:Draw(style)
@@ -53,6 +57,22 @@ function KeyFrameEditor:Draw(style)
             origin.y+ly,
             rx+self.rect.width,
             origin.y+ly)
+    end
+
+
+
+    -- new connection line
+    if self.selectednode then
+        local pos = self.selectednode.rect:GetPosition() +
+            self.selectednode.rect:GetSize()/2
+        love.graphics.line(pos.x,pos.y,love.mouse.getPosition())
+    end
+
+    -- connectiond
+    for e in self.keyframe:Connections() do
+        local a = e.a.rect:GetPosition()
+        local b = e.b.rect:GetPosition()
+        love.graphics.line(a.x,a.y,b.x,b.y)
     end
 
     -- nodes
@@ -122,6 +142,18 @@ function KeyFrameEditor:AddNodeEditor(node)
             self.onMoveNode(node.node, pos)
         end
     end
+    function editor.onSelectedNode(node,button)
+        console:Log("selected! "..button)
+        if button == 1 then
+            if self.selectednode and self.selectednode ~= editor then
+                self:ConnectNodes(editor, self.selectednode)
+            end
+            console:Log("selected for fake!")
+        elseif button == 2 then
+            console:Log("selected for real!")
+            self.selectednode = editor
+        end
+    end
     self.nodeeditors[node] = editor
     self:AddChild(editor)
 end
@@ -131,34 +163,32 @@ function KeyFrameEditor:RemoveNodeEditor(editor)
     self.nodeeditors[editor.node] = nil
 end
 
--- event when selecting a node
-function KeyFrameEditor:SelectNode(node)
-    self.selectednode = node
-end
-
--- event when dragging in the field
-function KeyFrameEditor:Drag(pos)
-    self.position = self.position + pos
-end
-
--- event when clicking in the field
-function KeyFrameEditor:MouseUp(pos)
-    console:Log(pos)
-    if self.selectednode == nil then
-        pos = self:RectToKeyFrameSpace(pos)
-        if self.onSelectedField then
-            self.onSelectedField(pos)
-        end
-    else
-        self.selectednode = nil
+function KeyFrameEditor:ConnectNodes(a,b)
+    if self.onConnectNodes then
+        self.onConnectNodes(a,b)
     end
 end
 
-function KeyFrameEditor:OnRebuild(rect,style)
+-- event when clicking in the field
+function KeyFrameEditor:MouseUp(pos, button)
+    console:Log(pos)
+    if button == 1 then
+        if self.selectednode == nil then
+            pos = self:RectToKeyFrameSpace(pos)
+            if self.onSelectedField then
+                self.onSelectedField(pos)
+            end
+        else
+            self.selectednode = nil
+        end
+    end
+end
+
+function KeyFrameEditor:PrepareRebuild(rect,style)
     for n, e in pairs(self.nodeeditors) do
         local np = self:KeyFrameToRectSpace(e.node.position)
         e.rect.offset = np - e.rect:GetSize()/2
-        console:Log(tostring(np).." <- "..tostring(e.node.position))
+    --    console:Log(tostring(np).." <- "..tostring(e.node.position))
     end
 end
 
