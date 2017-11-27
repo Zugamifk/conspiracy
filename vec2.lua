@@ -3,10 +3,16 @@ local vec2 = {
 }
 local mt = {}
 
+function vec2:length()
+    return math.sqrt(self.x*self.x + self.y*self.y)
+end
+
 function mt:__call(x,y)
     local v = {x=x,y=y or x}
     return setmetatable(v, mt)
 end
+
+mt.__index = vec2
 
 function mt:__newindex(k, v)
     -- no new assignments

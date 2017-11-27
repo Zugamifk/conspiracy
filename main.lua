@@ -1,5 +1,6 @@
 require "mathx"
 vec2 = require "vec2"
+mat2 = require "mat2"
 callback = require "callback"
 argassert = require"assertarg"
 require "tablep"
@@ -14,10 +15,9 @@ require "Graph/graph"
 
 require "Console/console"
 
-require "assets"
-
 require "input"
 require "Boardgame/boardgame"
+require "Spacegame/spacegame"
 require "distribution"
 
 require "UI/ui"
@@ -34,21 +34,23 @@ function love.load()
 
 	local dx, dy = love.graphics.getDimensions()
 	editor = Editor.UI()
+	spacegame = SpaceGame.GameState()
 	UI.AnchoredRect.Test()
-	assets = Assets()
-	assets:Load()
 end
 
 function love.draw()
+	spacegame:Draw()
 	editor:Draw()
 	console:Draw(0,0,500,500)
 end
 
 function love.update(dt)
+	Input:DoEvents(spacegame)
 	Input:DoEvents(consolecontrol)
 	Input:DoEvents(editor.ui)
 	Input:Update()
 
+	spacegame:Update(dt)
 	editor:Update()
 	Console.Update()
 end
@@ -86,6 +88,6 @@ function love.mousereleased(x,y,button)
 end
 
 function love.resize(w,h)
-	camera.width = w
-	camera.height = h
+	--camera.width = w
+--	camera.height = h
 end

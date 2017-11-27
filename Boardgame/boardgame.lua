@@ -2,6 +2,7 @@ local path = "Boardgame/"
 BoardGame = Namespace{}
 
 BoardGame:AddNames{
+    Assets = path.."assets",
     Board = path.."board",
     BoardControl = path.."boardcontrol",
     Camera = path.."camera",

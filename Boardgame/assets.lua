@@ -1,4 +1,4 @@
-Assets = Class()
+local Assets = Class()
 
 function Assets:Create()
 end
@@ -63,3 +63,5 @@ function Assets:Draw(name, index, context)
 		love.graphics.draw(img, x, y)
 	end
 end
+
+return Assets

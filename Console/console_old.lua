@@ -10,7 +10,7 @@ function Console:Create()
 	if Console.traceback then
 		self.lineHeight = 30
 	end
-	self.enabled = true
+	self.enabled = false
 	self.view = {
 		width = 300,
 		height = 500,

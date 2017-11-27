@@ -23,7 +23,7 @@ function Console.Initialize(uicontroller)
     end
 
 	uicontroller:AddWindow("console", view.window)
-    uicontroller:SetWindowActive("console", true)
+--    uicontroller:SetWindowActive("console", true)
 
     Console.current = {
         model = model,
